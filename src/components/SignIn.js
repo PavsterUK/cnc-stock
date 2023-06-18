@@ -1,14 +1,14 @@
-import * as React from "react";
+import { useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import Link from "@mui/material/Link";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import LoginErrorModal from "./LoginErrorModal";
 
 function Copyright(props) {
   return (
@@ -19,32 +19,50 @@ function Copyright(props) {
       {...props}
     >
       {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}
+      "RotaVal Stock Monitor" {new Date().getFullYear()}
       {"."}
     </Typography>
   );
 }
 
-// TODO remove, this demo shouldn't need to reset the theme.
-
 const defaultTheme = createTheme();
 
-export default function SignIn() {
-  const handleSubmit = (event) => {
+const users = [
+  { name: "Pavel Naumovic", rotavalId: 107, password: 1234 },
+  { name: "Sam Smith", rotavalId: 108, password: 1234 },
+  { name: "Elton John", rotavalId: 109, password: 1234 },
+];
+
+export default function SignIn({ setIsLoggedIn }) {
+  const [isLoginError, setIsLoginError] = useState(false);
+
+  const handleLogin = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+    const enteredId = data.get("id");
+    const enteredPassword = data.get("password");
+
+    const user = users.find(
+      (user) =>
+        user.rotavalId === parseInt(enteredId) &&
+        user.password === parseInt(enteredPassword)
+    );
+
+    if (user) {
+      setIsLoggedIn(true);
+    } else {
+      setIsLoginError(true);
+    }
+  };
+
+  const handleModalClose = () => {
+    setIsLoginError(false);
   };
 
   return (
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
+        <LoginErrorModal open={isLoginError} onClose={handleModalClose} />
         <CssBaseline />
         <Box
           sx={{
@@ -58,11 +76,11 @@ export default function SignIn() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            CNC Stock
+            RotaVal Stock Monitor
           </Typography>
           <Box
             component="form"
-            onSubmit={handleSubmit}
+            onSubmit={handleLogin}
             noValidate
             sx={{ mt: 1 }}
           >
@@ -70,10 +88,9 @@ export default function SignIn() {
               margin="normal"
               required
               fullWidth
-              id="email"
+              id="id"
               label="RotaVal ID"
-              name="email"
-              autoComplete="email"
+              name="id"
               autoFocus
             />
             <TextField

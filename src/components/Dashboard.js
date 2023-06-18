@@ -1,18 +1,16 @@
-import * as React from "react";
+import { React, useState } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
 import Button from "@mui/material/Button";
-import Card from "@mui/material/Card";
-import CardHeader from "@mui/material/CardHeader";
 import CssBaseline from "@mui/material/CssBaseline";
 import Grid from "@mui/material/Grid";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import Link from "@mui/material/Link";
 import GlobalStyles from "@mui/material/GlobalStyles";
 import Container from "@mui/material/Container";
 import { TextField } from "@mui/material";
 import CategorySelector from "./CategorySelector";
+import StockItemModal from "./StockItemModal";
 
 const stockItems = [
   {
@@ -21,12 +19,53 @@ const stockItems = [
     description: "turning insert",
     category: "turning",
   },
+  {
+    title: "DNMG150408-WPP20S",
+    location: "0",
+    description: "turning insert",
+    category: "turning",
+  },
+  {
+    title: "12MM Endmill",
+    location: "0",
+    description: "turning insert",
+    category: "milling",
+  },
+  {
+    title: "12MM Endmill",
+    location: "0",
+    description: "turning insert",
+    category: "milling",
+  },
+  {
+    title: "19MM Drill",
+    location: "0",
+    description: "turning insert",
+    category: "hole making",
+  },
+  {
+    title: "19MM Drill",
+    location: "0",
+    description: "turning insert",
+    category: "hole making",
+  },
 ];
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
-export default function Pricing() {
+export default function Dashboard({ setIsLoggedIn }) {
+  const [searchKeyword, setSearchKeyword] = useState("");
+  const [searchCategory, setSearchCategory] = useState("all");
+
+  const handleInputChange = (event) => {
+    setSearchKeyword(event.target.value);
+  };
+
+  const userLogOut = () => {
+    setIsLoggedIn(false);
+  };
+
   return (
     <ThemeProvider theme={defaultTheme}>
       <GlobalStyles
@@ -41,9 +80,16 @@ export default function Pricing() {
       >
         <Toolbar sx={{ flexWrap: "wrap" }}>
           <Typography variant="h6" color="inherit" noWrap sx={{ flexGrow: 1 }}>
-            CNC Inventory
+            RotaVal CNC Stock
           </Typography>
-          <Button href="#" variant="outlined" sx={{ my: 1, mx: 1.5 }}>
+          <Typography variant="h6" color="inherit" noWrap sx={{ flexGrow: 1 }}>
+            RotaVal CNC Stock
+          </Typography>
+          <Button
+            onClick={userLogOut}
+            variant="outlined"
+            sx={{ my: 1, mx: 1.5 }}
+          >
             Log Out
           </Button>
         </Toolbar>
@@ -62,7 +108,7 @@ export default function Pricing() {
           color="text.primary"
           gutterBottom
         >
-          Look For Items
+          Find Items
         </Typography>
 
         <Container
@@ -71,68 +117,39 @@ export default function Pricing() {
           component="main"
           sx={{ display: "flex" }}
         >
-          <CategorySelector />
+          <CategorySelector
+            searchCategory={searchCategory}
+            setSearchCategory={setSearchCategory}
+          />
           <TextField
             id="outlined-basic"
-            label="Item desription"
+            label="Item keyword"
             variant="outlined"
+            value={searchKeyword}
+            onChange={handleInputChange}
           />
         </Container>
       </Container>
       {/* End search bar */}
       <Container maxWidth="md" component="main">
         <Grid container spacing={5} alignItems="flex-end">
-          {stockItems.map((stockItem) => (
-            // Enterprise card is full width at sm breakpoint
-            <Grid item key={stockItem.title} xs={12}>
-              <Card>
-                <CardHeader
-                  title={stockItem.title}
-                  subheader={stockItem.subheader}
-                  titleTypographyProps={{ align: "left" }}
-                  subheaderTypographyProps={{
-                    align: "center",
-                  }}
-                  sx={{
-                    backgroundColor: (theme) =>
-                      theme.palette.mode === "light"
-                        ? theme.palette.grey[200]
-                        : theme.palette.grey[700],
-                  }}
-                />
-                {/* <CardContent>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "baseline",
-                      mb: 2,
-                    }}
-                  >
-                    <Typography
-                      variant="h6"
-                      color="text.secondary"
-                    ></Typography>
-                  </Box>
-                  <ul>
-                    <Typography
-                      component="li"
-                      variant="subtitle1"
-                      align="center"
-                      key={stockItem.description}
-                    >
-                      {stockItem.description}
-                    </Typography>
-                  </ul>
-                </CardContent>
-                <CardActions>
-                  <Button fullWidth variant="contained">
-                    Withdraw Stock
-                  </Button>
-                </CardActions> */}
-              </Card>
-            </Grid>
-          ))}
+          <Grid item xs={12}>
+            {stockItems.reduce((filteredItems, stockItem) => {
+              if (
+                (searchCategory === "all" ||
+                  stockItem.category === searchCategory.toLowerCase()) &&
+                (searchKeyword === "" ||
+                  stockItem.title
+                    .toLowerCase()
+                    .includes(searchKeyword.toLowerCase()))
+              ) {
+                filteredItems.push(
+                  <StockItemModal stockItemData={stockItem} />
+                );
+              }
+              return filteredItems;
+            }, [])}
+          </Grid>
         </Grid>
       </Container>
     </ThemeProvider>

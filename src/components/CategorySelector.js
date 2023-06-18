@@ -1,29 +1,27 @@
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
-import { useState } from "react";
 
-const CategorySelector = () => {
-  const [category, setCategory] = useState();
-
+const CategorySelector = ({ searchCategory, setSearchCategory }) => {
   const handleChange = (event) => {
-    setCategory(event.target.value);
+    setSearchCategory(event.target.value);
   };
 
   return (
     <div>
       <FormControl>
-        <InputLabel id="demo-simple-select-label">All Categories</InputLabel>
+        <InputLabel id="demo-simple-select-label">Select Category</InputLabel>
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
-          value={category}
-          defaultValue={category}
+          value={searchCategory}
+          defaultValue="all"
           label="category"
           onChange={handleChange}
           sx={{ width: "13rem" }}
         >
-          <MenuItem value={10}>Ten</MenuItem>
-          <MenuItem value={20}>Twenty</MenuItem>
-          <MenuItem value={30}>Thirty</MenuItem>
+          <MenuItem value="all">All Categories</MenuItem>
+          <MenuItem value={"Turning"}>Turning</MenuItem>
+          <MenuItem value={"Milling"}>Milling</MenuItem>
+          <MenuItem value={"Hole Making"}>Hole Making</MenuItem>
         </Select>
       </FormControl>
     </div>
