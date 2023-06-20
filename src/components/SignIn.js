@@ -29,11 +29,11 @@ const defaultTheme = createTheme();
 
 const users = [
   { name: "Pavel Naumovic", rotavalId: 107, password: 1234 },
-  { name: "Sam Smith", rotavalId: 108, password: 1234 },
-  { name: "Elton John", rotavalId: 109, password: 1234 },
+  { name: "Bob Smith", rotavalId: 108, password: 1234 },
+  { name: "Pamela Anderson", rotavalId: 109, password: 1234 },
 ];
 
-export default function SignIn({ setIsLoggedIn }) {
+export default function SignIn({ setIsLoggedIn, setAuthenticatedUser }) {
   const [isLoginError, setIsLoginError] = useState(false);
 
   const handleLogin = (event) => {
@@ -50,6 +50,7 @@ export default function SignIn({ setIsLoggedIn }) {
 
     if (user) {
       setIsLoggedIn(true);
+      setAuthenticatedUser(user.name);
     } else {
       setIsLoginError(true);
     }

@@ -6,11 +6,14 @@ import "./index.css";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [authenticatedUser, setAuthenticatedUser] = useState("");
 
   return (
     <>
-      {!isLoggedIn && <SignIn setIsLoggedIn={setIsLoggedIn} />}
-      {isLoggedIn && <Dashboard setIsLoggedIn={setIsLoggedIn} />}
+      {!isLoggedIn && <SignIn setIsLoggedIn={setIsLoggedIn} setAuthenticatedUser={setAuthenticatedUser} />}
+      {isLoggedIn && (
+        <Dashboard setIsLoggedIn={setIsLoggedIn} authenticatedUser={authenticatedUser} />
+      )}
     </>
   );
 }

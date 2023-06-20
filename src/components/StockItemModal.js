@@ -3,17 +3,23 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
+import styles from "./StockItemModal.module.css";
 
 const style = {
   position: "absolute",
-  top: "50%",
+  top: "40%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 400,
+  minWidth: "25rem",
+  width: "fit-content",
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
   p: 4,
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  flexDirection: "column",
 };
 
 export default function StockItemModal({ stockItemData }) {
@@ -23,7 +29,9 @@ export default function StockItemModal({ stockItemData }) {
 
   return (
     <div>
-      <Button fullWidth variant="outlined" onClick={handleOpen}>{stockItemData.title}</Button>
+      <Button fullWidth variant="outlined" onClick={handleOpen}>
+        {stockItemData.title}
+      </Button>
       <Modal
         open={open}
         onClose={handleClose}
@@ -31,12 +39,34 @@ export default function StockItemModal({ stockItemData }) {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            Text in a modal
+          <Typography
+            id="modal-modal-title"
+            variant="h6"
+            component="h2"
+            align="center"
+          >
+            
           </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-          </Typography>
+          <table className={styles}>
+            <tr>
+              <th colspan="8">{stockItemData.title}</th>
+            </tr>
+
+            <tr>
+              <th>Currently In Stock</th>
+              <td colspan="7">8</td>
+            </tr>
+            <tr>
+              <th>Suitable Materials</th>
+              <td>P</td>
+              <td>M</td>
+              <td>K</td>
+              <td>N</td>
+              <td>S</td>
+              <td>H</td>
+              <td>O</td>
+            </tr>
+          </table>
         </Box>
       </Modal>
     </div>

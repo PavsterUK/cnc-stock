@@ -54,7 +54,7 @@ const stockItems = [
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
-export default function Dashboard({ setIsLoggedIn }) {
+export default function Dashboard({ setIsLoggedIn, authenticatedUser }) {
   const [searchKeyword, setSearchKeyword] = useState("");
   const [searchCategory, setSearchCategory] = useState("all");
 
@@ -79,11 +79,9 @@ export default function Dashboard({ setIsLoggedIn }) {
         sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
       >
         <Toolbar sx={{ flexWrap: "wrap" }}>
+
           <Typography variant="h6" color="inherit" noWrap sx={{ flexGrow: 1 }}>
-            RotaVal CNC Stock
-          </Typography>
-          <Typography variant="h6" color="inherit" noWrap sx={{ flexGrow: 1 }}>
-            RotaVal CNC Stock
+            {authenticatedUser}
           </Typography>
           <Button
             onClick={userLogOut}
