@@ -11,7 +11,7 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   minWidth: "25rem",
-  width: "fit-content",
+  maxWidth: "30rem",
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
@@ -44,17 +44,15 @@ export default function StockItemModal({ stockItemData }) {
             variant="h6"
             component="h2"
             align="center"
-          >
-            
-          </Typography>
+          ></Typography>
           <table className={styles}>
             <tr>
               <th colspan="8">{stockItemData.title}</th>
             </tr>
 
             <tr>
-              <th>Currently In Stock</th>
-              <td colspan="7">8</td>
+              <th>Description</th>
+              <td colspan="7">Some basic descriptions aboit an item  sdfsdfsdf sdfsdfsdfs sdfsdfsdf sdfsdfsd  sdfsdfsdf  sdfsdfsd  sdfsfd</td>
             </tr>
             <tr>
               <th>Suitable Materials</th>
@@ -65,6 +63,10 @@ export default function StockItemModal({ stockItemData }) {
               <td>S</td>
               <td>H</td>
               <td>O</td>
+            </tr>
+            <tr>
+              <th>Currently In Stock</th>
+              <td colspan="7">8</td>
             </tr>
           </table>
         </Box>

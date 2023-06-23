@@ -11,6 +11,7 @@ import Container from "@mui/material/Container";
 import { TextField } from "@mui/material";
 import CategorySelector from "./CategorySelector";
 import StockItemModal from "./StockItemModal";
+import Drawer from "./Drawer";
 
 const stockItems = [
   {
@@ -79,6 +80,9 @@ export default function Dashboard({ setIsLoggedIn, authenticatedUser }) {
         sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
       >
         <Toolbar sx={{ flexWrap: "wrap" }}>
+          <Typography variant="h6" color="inherit" noWrap sx={{ flexGrow: 1 }}>
+            <Drawer />
+          </Typography>
 
           <Typography variant="h6" color="inherit" noWrap sx={{ flexGrow: 1 }}>
             {authenticatedUser}
