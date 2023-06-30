@@ -1,7 +1,7 @@
 import { React, useState } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
-import Button from "@mui/material/Button";
+
 import CssBaseline from "@mui/material/CssBaseline";
 import Grid from "@mui/material/Grid";
 import Toolbar from "@mui/material/Toolbar";
@@ -63,10 +63,6 @@ export default function Dashboard({ setIsLoggedIn, authenticatedUser }) {
     setSearchKeyword(event.target.value);
   };
 
-  const userLogOut = () => {
-    setIsLoggedIn(false);
-  };
-
   return (
     <ThemeProvider theme={defaultTheme}>
       <GlobalStyles
@@ -81,19 +77,15 @@ export default function Dashboard({ setIsLoggedIn, authenticatedUser }) {
       >
         <Toolbar sx={{ flexWrap: "wrap" }}>
           <Typography variant="h6" color="inherit" noWrap sx={{ flexGrow: 1 }}>
-            <Drawer />
+            <Drawer
+              setIsLoggedIn={setIsLoggedIn}
+              authenticatedUser={authenticatedUser}
+            />
           </Typography>
 
           <Typography variant="h6" color="inherit" noWrap sx={{ flexGrow: 1 }}>
             {authenticatedUser}
           </Typography>
-          <Button
-            onClick={userLogOut}
-            variant="outlined"
-            sx={{ my: 1, mx: 1.5 }}
-          >
-            Log Out
-          </Button>
         </Toolbar>
       </AppBar>
       {/* Search Bar  */}
