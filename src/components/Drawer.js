@@ -139,15 +139,8 @@ export default function PersistentDrawerLeft({
         </DrawerHeader>
         <Divider />
         <List>
-          <ListItem disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                <InboxIcon />
-              </ListItemIcon>
-              <ListItemText primary={"Request a Purchase"}>
-                <PurchaseRequest />
-              </ListItemText>
-            </ListItemButton>
+          <ListItem  >
+            <PurchaseRequest />
           </ListItem>
         </List>
         <Divider />
