@@ -1,6 +1,5 @@
 import * as React from "react";
 import Modal from "@mui/material/Modal";
-import ItemSelectAutocomplete from "./ItemSelectAutocomplete";
 import {
   Box,
   Typography,
@@ -10,7 +9,9 @@ import {
   TableRow,
   TableCell,
   Button,
+  TextField,
 } from "@mui/material/";
+import AlertDialog from "./AlertDialog";
 
 const style = {
   position: "absolute",
@@ -32,6 +33,10 @@ export default function PurchaseRequest({ purchaseRequestOpen }) {
   const [open, setOpen] = React.useState(purchaseRequestOpen);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  const handleSendRequest = () => {
+    handleClose();
+  };
 
   return (
     <>
@@ -69,7 +74,22 @@ export default function PurchaseRequest({ purchaseRequestOpen }) {
             <TableBody>
               <TableRow>
                 <TableCell>
-                  <ItemSelectAutocomplete />
+                  <TextField
+                    id="outlined-multiline-static"
+                    label="Item('s) to be purchased."
+                    multiline
+                    rows={8}
+                    sx={{ width: "100%" }}
+                  />
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>
+                  <AlertDialog
+                    onClick={handleSendRequest}
+                    name={"Send Request"}
+                    handleCloseParent={handleClose}
+                  />
                 </TableCell>
               </TableRow>
             </TableBody>
