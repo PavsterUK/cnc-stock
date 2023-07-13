@@ -29,8 +29,8 @@ const style = {
   flexDirection: "column",
 };
 
-export default function PurchaseRequest({ purchaseRequestOpen }) {
-  const [open, setOpen] = React.useState(purchaseRequestOpen);
+export default function AddNewStockItem({ AddNewStockItemOpenOpen }) {
+  const [open, setOpen] = React.useState(AddNewStockItemOpenOpen);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -41,7 +41,7 @@ export default function PurchaseRequest({ purchaseRequestOpen }) {
   return (
     <>
       <Button variant="outlined" align="center" onClick={handleOpen} fullWidth>
-        Purchase Request
+      Add New Item
       </Button>
       <Modal
         open={open}

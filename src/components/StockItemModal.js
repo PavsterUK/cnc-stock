@@ -1,8 +1,10 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
+import Switch from "@mui/material/Switch";
+import { Typography } from "@mui/material";
+import { ArrowLeft, ArrowRight } from "@mui/icons-material";
 import styles from "./StockItemModal.module.css";
 
 const style = {
@@ -24,8 +26,44 @@ const style = {
 
 export default function StockItemModal({ stockItemData }) {
   const [open, setOpen] = React.useState(false);
+  const [checked, setChecked] = React.useState(true);
+  const [number, setNumber] = React.useState(1);
+  const [feedbackMessage, setFeedbackMessage] = React.useState("");
+
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const decreaseNumber = () => {
+    setNumber((prevNumber) => (prevNumber > 1 ? prevNumber - 1 : 1));
+  };
+
+  const increaseNumber = () => {
+    setNumber((prevNumber) => prevNumber + 1);
+  };
+
+  const handleToggleTakeorReturn = () => {
+    setChecked(!checked);
+  };
+
+  const handleTake = () => {
+    setFeedbackMessage(`You took ${number} item(s).`);
+    setTimeout(() => {
+      handleClose();
+      setFeedbackMessage(""); // Clear the feedback message after the modal is closed
+    }, 2000); // Delay for 2 seconds (adjust as needed)
+    // Additional logic for processing the "Take" action
+  };
+
+  const handleReturn = () => {
+    setFeedbackMessage(`You returned ${number} item(s).`);
+    setTimeout(() => {
+      handleClose();
+      setFeedbackMessage(""); // Clear the feedback message after the modal is closed
+    }, 2000); // Delay for 2 seconds (adjust as needed)
+    // Additional logic for processing the "Return" action
+  };
 
   return (
     <div>
@@ -52,7 +90,10 @@ export default function StockItemModal({ stockItemData }) {
 
             <tr>
               <th>Description</th>
-              <td colspan="7">Some basic descriptions aboit an item  sdfsdfsdf sdfsdfsdfs sdfsdfsdf sdfsdfsd  sdfsdfsdf  sdfsdfsd  sdfsfd</td>
+              <td colspan="7">
+                Some basic descriptions aboit an item sdfsdfsdf sdfsdfsdfs
+                sdfsdfsdf sdfsdfsd sdfsdfsdf sdfsdfsd sdfsfd
+              </td>
             </tr>
             <tr>
               <th>Suitable Materials</th>
@@ -69,6 +110,70 @@ export default function StockItemModal({ stockItemData }) {
               <td colspan="7">8</td>
             </tr>
           </table>
+
+          <div className={styles.vendingQuantity}>
+            <Button
+              variant="contained"
+              fullWidth
+              color="primary"
+              onClick={decreaseNumber}
+            >
+              <ArrowLeft />
+            </Button>
+
+            <Typography
+              padding="0 1em"
+              variant="h4"
+              component="h2"
+              align="center"
+            >
+              {number}
+            </Typography>
+
+            <Button
+              variant="contained"
+              fullWidth
+              color="primary"
+              onClick={increaseNumber}
+            >
+              <ArrowRight />
+            </Button>
+          </div>
+
+          <div className={styles.vendingOptions}>
+            <Button
+              onClick={handleReturn}
+              fullWidth
+              variant="contained"
+              color="success"
+              disabled={checked}
+            >
+              Return
+            </Button>
+            <Switch
+              className={styles.toggleSwitch}
+              checked={checked}
+              onChange={handleToggleTakeorReturn}
+            />
+            <Button
+              onClick={handleTake}
+              fullWidth
+              variant="contained"
+              color="error"
+              disabled={!checked}
+            >
+              Take
+            </Button>
+          </div>
+          <Typography
+              
+              variant="h4"
+              component="h2"
+              align="center"
+            >
+             {feedbackMessage}
+            </Typography>
+          
         </Box>
       </Modal>
     </div>
