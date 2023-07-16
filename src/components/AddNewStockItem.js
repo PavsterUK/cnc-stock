@@ -86,32 +86,52 @@ export default function AddNewStockItem() {
             />
           </Grid>
           <Grid item xs={12} md={4} lg={4}>
+            <TextField fullWidth id="outlined-required" label="Brand" />
+          </Grid>
+
+          <Grid item xs={12} md={12} lg={12}>
             <TextField
               fullWidth
+              required
               id="outlined-required"
-              label="Brand"
+              label="Item description"
             />
           </Grid>
 
-          <TextField fullWidth required id="outlined-required" label="Item description" />
+          <Grid item xs={12} md={6} lg={3}>
+            <TextField
+              fullWidth
+              required
+              id="outlined-required"
+              label="Item Location"
+            />
+          </Grid>
+          <Grid item xs={12} md={6} lg={3}>
+            <TextField
+              fullWidth
+              required
+              id="outlined-required"
+              label="Supplier"
+            />
+          </Grid>
 
-          <TextField fullWidth required id="outlined-required" label="Item Location" />
-          <TextField fullWidth required id="outlined-required" label="Supplier" />
+          <Grid item xs={12} md={6} lg={3}>
+            <TextField
+              fullWidth
+              id="outlined-select-currency"
+              select
+              label="Choose item Category"
+            >
+              {categories.map((category, index) => (
+                <MenuItem key={index} value={category.value}>
+                  {category.value}
+                </MenuItem>
+              ))}
+            </TextField>
+          </Grid>
 
-          <TextField
-            fullWidth
-            id="outlined-select-currency"
-            select
-            label="Choose item Category"
-          >
-            {categories.map((category, index) => (
-              <MenuItem key={index} value={category.value}>
-                {category.value}
-              </MenuItem>
-            ))}
-          </TextField>
-
-          <FormControl classes={{ root: styles.materials }}>
+          <Grid item xs={12} md={6} lg={3}>
+          <FormControl fullWidth>
             <InputLabel id="item-attributes-label">
               Suitable Materials
             </InputLabel>
@@ -200,7 +220,9 @@ export default function AddNewStockItem() {
               </MenuItem>
             </Select>
           </FormControl>
+          </Grid>
 
+          <Grid item xs={12} md={12} lg={12}>
           <AlertDialog
             onClick={handleSendRequest}
             name={"Add Item"}
@@ -210,6 +232,7 @@ export default function AddNewStockItem() {
               "Added Item will now appear on the stock list. Thank you!"
             }
           />
+          </Grid>
         </Grid>
       </Modal>
     </>

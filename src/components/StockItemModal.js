@@ -109,6 +109,10 @@ export default function StockItemModal({ stockItemData }) {
               <th>Currently In Stock</th>
               <td colspan="7">8</td>
             </tr>
+            <tr>
+              <th>Location</th>
+              <td colspan="7">135</td>
+            </tr>
           </table>
 
           <div className={styles.vendingQuantity}>

@@ -12,6 +12,7 @@ import {
   TextField,
 } from "@mui/material/";
 import AlertDialog from "./AlertDialog";
+import HintWordEndingInput from "./HintWordEndingInput";
 
 const style = {
   position: "absolute",
@@ -29,13 +30,26 @@ const style = {
   flexDirection: "column",
 };
 
-export default function PurchaseRequest({ purchaseRequestOpen }) {
+const PurchaseRequest = ({ purchaseRequestOpen }) => {
   const [open, setOpen] = React.useState(purchaseRequestOpen);
+  const [inputValue, setInputValue] = React.useState("");
+  const [lastWord, setLastWord] = React.useState("");
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   const handleSendRequest = () => {
     handleClose();
+  };
+
+  const handleInputChange = (event) => {
+    setInputValue(event.target.value);
+    setLastWord(getLastWordFromString(event.target.value));
+  };
+
+  const getLastWordFromString = (str) => {
+    const words = str.trim().split(" ");
+    return words[words.length - 1];
   };
 
   return (
@@ -49,13 +63,7 @@ export default function PurchaseRequest({ purchaseRequestOpen }) {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>
-          <Typography
-            id="modal-modal-title"
-            variant="h6"
-            component="h2"
-            align="center"
-          ></Typography>
+        <Box sx={{ ...style }}>
           <Table>
             <TableHead>
               <TableRow>
@@ -75,12 +83,15 @@ export default function PurchaseRequest({ purchaseRequestOpen }) {
               <TableRow>
                 <TableCell>
                   <TextField
+                    value={inputValue}
+                    onChange={handleInputChange}
                     id="outlined-multiline-static"
-                    label="Item('s) to be purchased."
+                    label="Item(s) to be purchased."
                     multiline
                     rows={8}
                     sx={{ width: "100%" }}
                   />
+                  {lastWord && <HintWordEndingInput word={lastWord} />}
                 </TableCell>
               </TableRow>
               <TableRow>
@@ -90,7 +101,9 @@ export default function PurchaseRequest({ purchaseRequestOpen }) {
                     name={"Send Request"}
                     handleCloseParent={handleClose}
                     dialogTitle={"Purchase Request Accepted!"}
-                    dialogMessage={"Your request has been accepted and will be reviewed by the responsible person. Thank you!"}
+                    dialogMessage={
+                      "Your request has been accepted and will be reviewed by the responsible person. Thank you!"
+                    }
                   />
                 </TableCell>
               </TableRow>
@@ -100,4 +113,6 @@ export default function PurchaseRequest({ purchaseRequestOpen }) {
       </Modal>
     </>
   );
-}
+};
+
+export default PurchaseRequest;
