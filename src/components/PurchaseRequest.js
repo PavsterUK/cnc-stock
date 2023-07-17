@@ -69,12 +69,12 @@ const PurchaseRequest = ({ purchaseRequestOpen }) => {
               <TableRow>
                 <TableCell colSpan={8}>
                   <Typography
-                    variant="h6"
+                    variant="h5"
                     component="h2"
                     align="center"
-                    style={{ fontWeight: "bold" }}
+                    sx={{ fontWeight: "bold" }}
                   >
-                    Purchase Request
+                    PURCHASE REQUEST
                   </Typography>
                 </TableCell>
               </TableRow>
@@ -86,7 +86,7 @@ const PurchaseRequest = ({ purchaseRequestOpen }) => {
                     value={inputValue}
                     onChange={handleInputChange}
                     id="outlined-multiline-static"
-                    label="Item(s) to be purchased."
+                    label="Enter item('s) information here"
                     multiline
                     rows={8}
                     sx={{ width: "100%" }}

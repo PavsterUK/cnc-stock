@@ -11,7 +11,7 @@ import {
 } from "@mui/material/";
 import FormControl from "@mui/material/FormControl";
 import AlertDialog from "./AlertDialog";
-import styles from "./AddNewStockItem.module.css";
+import EditIcon from "@mui/icons-material/Edit";
 
 const style = {
   position: "absolute",
@@ -40,7 +40,7 @@ const categories = [
   },
 ];
 
-export default function AddNewStockItem() {
+export default function AddNewStockItem({ stockItemData }) {
   const [open, setOpen] = React.useState();
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -56,8 +56,14 @@ export default function AddNewStockItem() {
 
   return (
     <>
-      <Button variant="outlined" align="center" onClick={handleOpen} fullWidth>
-        Add New Item
+      <Button
+        sx={{ position: "absolute", top: "0", right: "0" }}
+        variant="text"
+        align="center"
+        color="info"
+        onClick={handleOpen}
+      >
+        <EditIcon />
       </Button>
       <Modal
         open={open}
@@ -73,7 +79,7 @@ export default function AddNewStockItem() {
               align="center"
               style={{ fontWeight: "bold" }}
             >
-              ADD A NEW ITEM TO THE STOCK LIST
+              Update Item Info
             </Typography>
           </Grid>
 
@@ -83,10 +89,16 @@ export default function AddNewStockItem() {
               required
               id="outlined-required"
               label="Item Code or Title"
+              value={stockItemData.title}
             />
           </Grid>
           <Grid item xs={12} md={4} lg={4}>
-            <TextField fullWidth id="outlined-required" label="Brand" />
+            <TextField
+              fullWidth
+              id="outlined-required"
+              label="Brand"
+              value={stockItemData.brand}
+            />
           </Grid>
 
           <Grid item xs={12} md={12} lg={12}>
@@ -97,6 +109,7 @@ export default function AddNewStockItem() {
               label="Item description"
               multiline
               rows={2}
+              value={stockItemData.description}
             />
           </Grid>
 
@@ -106,6 +119,7 @@ export default function AddNewStockItem() {
               required
               id="outlined-required"
               label="Item Location"
+              value={stockItemData.location}
             />
           </Grid>
           <Grid item xs={12} md={6} lg={3}>
@@ -114,6 +128,7 @@ export default function AddNewStockItem() {
               required
               id="outlined-required"
               label="Supplier"
+              value={stockItemData.supplier}
             />
           </Grid>
 
@@ -142,16 +157,16 @@ export default function AddNewStockItem() {
                 labelId="item-attributes-label"
                 id="item-attributes-select"
                 multiple
-                value={selectedAttributes}
+                value={stockItemData.materials}
                 onChange={handleAttributeChange}
               >
                 <MenuItem
                   value="P"
                   sx={{
-                    backgroundColor: selectedAttributes.includes("P")
+                    backgroundColor: stockItemData.materials.includes("P")
                       ? "#0eb6f7 !important"
                       : "transparent",
-                    color: selectedAttributes.includes("P")
+                    color: stockItemData.materials.includes("P")
                       ? "white !important"
                       : "black",
                   }}
@@ -161,7 +176,7 @@ export default function AddNewStockItem() {
                 <MenuItem
                   value="M"
                   sx={{
-                    backgroundColor: selectedAttributes.includes("M")
+                    backgroundColor: stockItemData.materials.includes("M")
                       ? "#f6ea02 !important"
                       : "transparent",
                   }}
@@ -171,10 +186,10 @@ export default function AddNewStockItem() {
                 <MenuItem
                   value="K"
                   sx={{
-                    backgroundColor: selectedAttributes.includes("K")
+                    backgroundColor: stockItemData.materials.includes("K")
                       ? "#e31c1e !important"
                       : "transparent",
-                    color: selectedAttributes.includes("K")
+                    color: stockItemData.materials.includes("K")
                       ? "white !important"
                       : "black",
                   }}
@@ -184,10 +199,10 @@ export default function AddNewStockItem() {
                 <MenuItem
                   value="N"
                   sx={{
-                    backgroundColor: selectedAttributes.includes("N")
+                    backgroundColor: stockItemData.materials.includes("N")
                       ? "#2dc65b !important"
                       : "transparent",
-                    color: selectedAttributes.includes("N")
+                    color: stockItemData.materials.includes("N")
                       ? "white !important"
                       : "black",
                   }}
@@ -197,10 +212,10 @@ export default function AddNewStockItem() {
                 <MenuItem
                   value="S"
                   sx={{
-                    backgroundColor: selectedAttributes.includes("S")
+                    backgroundColor: stockItemData.materials.includes("S")
                       ? "#f77b00 !important"
                       : "transparent",
-                    color: selectedAttributes.includes("S")
+                    color: stockItemData.materials.includes("S")
                       ? "white !important"
                       : "black",
                   }}
@@ -210,10 +225,10 @@ export default function AddNewStockItem() {
                 <MenuItem
                   value="H"
                   sx={{
-                    backgroundColor: selectedAttributes.includes("H")
+                    backgroundColor: stockItemData.materials.includes("H")
                       ? "#bababa !important"
                       : "transparent",
-                    color: selectedAttributes.includes("H")
+                    color: stockItemData.materials.includes("H")
                       ? "white !important"
                       : "black",
                   }}
@@ -230,6 +245,7 @@ export default function AddNewStockItem() {
               required
               id="outlined-required"
               label="Red Alert Qty"
+              value={stockItemData.minQty}
             />
           </Grid>
 
@@ -245,11 +261,11 @@ export default function AddNewStockItem() {
           <Grid item xs={12} md={12} lg={12}>
             <AlertDialog
               onClick={handleSendRequest}
-              name={"Add Item"}
+              name={"Update Info"}
               handleCloseParent={handleClose}
-              dialogTitle={"New Item Added!"}
+              dialogTitle={"Item Info Has Been Updated!"}
               dialogMessage={
-                "Added Item will now appear on the stock list. Thank you!"
+                "Updated Item will now appear on the stock list. Thank you!"
               }
             />
           </Grid>
