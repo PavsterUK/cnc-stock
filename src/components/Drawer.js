@@ -17,6 +17,7 @@ import ListItem from "@mui/material/ListItem";
 import LogoutIcon from "@mui/icons-material/Logout";
 import PurchaseRequest from "./PurchaseRequest";
 import AddNewStockItem from "./AddNewStockItem";
+import PurchaseRequestsManager from "./PurchaseRequestsManager";
 
 const drawerWidth = 240;
 
@@ -139,12 +140,16 @@ export default function PersistentDrawerLeft({
           <ListItem>
             <PurchaseRequest />
           </ListItem>
+          <Divider />
           <ListItem>
             <AddNewStockItem />
           </ListItem>
+          <Divider />
+          <ListItem>
+            <PurchaseRequestsManager />
+          </ListItem>
         </List>
         <Divider />
-        <List></List>
       </Drawer>
       <Main open={open}></Main>
     </Box>

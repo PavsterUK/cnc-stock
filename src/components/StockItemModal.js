@@ -98,7 +98,12 @@ export default function StockItemModal({ stockItemData }) {
             <TableHead>
               <TableRow>
                 <TableCell align="center">
-                  <Typography variant="h5" component="h5" align="center">
+                  <Typography
+                    sx={{ fontWeight: "bold" }}
+                    variant="h6"
+                    component="h6"
+                    align="center"
+                  >
                     Description
                   </Typography>
                 </TableCell>
@@ -120,7 +125,12 @@ export default function StockItemModal({ stockItemData }) {
             <TableBody>
               <TableRow>
                 <TableCell align="center">
-                  <Typography variant="h5" component="h5" align="center">
+                  <Typography
+                    sx={{ fontWeight: "bold" }}
+                    variant="h6"
+                    component="h6"
+                    align="center"
+                  >
                     Materials
                   </Typography>
                 </TableCell>
@@ -202,15 +212,20 @@ export default function StockItemModal({ stockItemData }) {
               </TableRow>
               <TableRow>
                 <TableCell align="center">
-                  <Typography variant="h5" component="h5" align="center">
+                  <Typography
+                    sx={{ fontWeight: "bold" }}
+                    variant="h6"
+                    component="h6"
+                    align="center"
+                  >
                     Stock
                   </Typography>
                 </TableCell>
                 <TableCell align="center" colSpan={7}>
                   <Typography
                     sx={{ fontWeight: "bold" }}
-                    variant="h5"
-                    component="h5"
+                    variant="h6"
+                    component="h6"
                     align="center"
                   >
                     8
@@ -219,7 +234,12 @@ export default function StockItemModal({ stockItemData }) {
               </TableRow>
               <TableRow>
                 <TableCell align="center">
-                  <Typography variant="h5" component="h5" align="center">
+                  <Typography
+                    sx={{ fontWeight: "bold" }}
+                    variant="h6"
+                    component="h6"
+                    align="center"
+                  >
                     Location
                   </Typography>
                 </TableCell>
@@ -240,7 +260,7 @@ export default function StockItemModal({ stockItemData }) {
           <div className={styles.vendingQuantity}>
             <Button
               variant="contained"
-              fullWidth
+              
               color="primary"
               onClick={decreaseNumber}
             >
@@ -258,7 +278,7 @@ export default function StockItemModal({ stockItemData }) {
 
             <Button
               variant="contained"
-              fullWidth
+              
               color="primary"
               onClick={increaseNumber}
             >

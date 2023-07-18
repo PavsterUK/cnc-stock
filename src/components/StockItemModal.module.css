@@ -27,5 +27,6 @@ td {
   margin-top: 2em;
   height: 3rem;
   display: flex;
+  justify-content: center;
   width: 100%;
 }
