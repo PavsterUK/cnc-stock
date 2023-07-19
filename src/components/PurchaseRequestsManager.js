@@ -3,11 +3,6 @@ import Modal from "@mui/material/Modal";
 import {
   Box,
   Typography,
-  Table,
-  TableHead,
-  TableBody,
-  TableRow,
-  TableCell,
   Button,
   Grid,
 } from "@mui/material/";
