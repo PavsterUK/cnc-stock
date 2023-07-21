@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React, useState, useEffect } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -11,80 +11,38 @@ import { TextField } from "@mui/material";
 import CategorySelector from "./CategorySelector";
 import StockItemModal from "./StockItemModal";
 import Drawer from "./Drawer";
-
-const stockItems = [
-  {
-    title: "CNMG120408-WPP20S",
-    location: "0",
-    brand: "walter",
-    supplier: "rotaval",
-    minQty: "5",
-    description: "turning insert",
-    category: "turning",
-    materials: ["P", "M", "K", "S"],
-  },
-  {
-    title: "DNMG150408-WPP20S",
-    location: "0",
-    brand: "walter",
-    supplier: "rotaval",
-    minQty: "5",
-    description: "turning insert",
-    category: "turning",
-    materials: ["P", "K", "S"],
-  },
-  {
-    title: "12MM Endmill",
-    location: "0",
-    brand: "walter",
-    supplier: "rotaval",
-    minQty: "5",
-    description: "turning insert",
-    category: "milling",
-    materials: ["P", "K", "S"],
-  },
-  {
-    title: "12MM Endmill",
-    location: "0",
-    brand: "walter",
-    supplier: "rotaval",
-    minQty: "5",
-    description: "turning insert",
-    category: "milling",
-    materials: ["P", "K", "S"],
-  },
-  {
-    title: "19MM Drill",
-    location: "0",
-    brand: "walter",
-    supplier: "rotaval",
-    minQty: "5",
-    description: "turning insert",
-    category: "hole making",
-    materials: ["P", "K", "S"],
-  },
-  {
-    title: "19MM Drill",
-    location: "0",
-    brand: "walter",
-    supplier: "rotaval",
-    minQty: "5",
-    description: "turning insert",
-    category: "hole making",
-    materials: ["P", "K", "S"],
-  },
-];
+import axios from "axios";
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
 export default function Dashboard({ setIsLoggedIn, authenticatedUser }) {
+  const [stockItems, setStockItems] = useState([]);
   const [searchKeyword, setSearchKeyword] = useState("");
-  const [searchCategory, setSearchCategory] = useState("all");
+  const [itemCategory, setItemCategory] = useState("all");
 
   const handleInputChange = (event) => {
     setSearchKeyword(event.target.value);
   };
+
+  useEffect(() => {
+    // Function to fetch stock items from the server
+    const fetchStockItems = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8080/api/stock-list"
+        );
+        setStockItems(response.data);
+        console.log(response.data);
+      } catch (error) {
+        // Handle error if the request fails
+        console.error("Error fetching stock items:", error);
+      }
+    };
+
+    // Call the fetch function when the component mounts
+    fetchStockItems();
+  }, []);
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -135,8 +93,8 @@ export default function Dashboard({ setIsLoggedIn, authenticatedUser }) {
           sx={{ display: "flex" }}
         >
           <CategorySelector
-            searchCategory={searchCategory}
-            setSearchCategory={setSearchCategory}
+            itemCategory={itemCategory}
+            setItemCategory={setItemCategory}
           />
           <TextField
             id="outlined-basic"
@@ -153,8 +111,9 @@ export default function Dashboard({ setIsLoggedIn, authenticatedUser }) {
           <Grid item xs={12}>
             {stockItems.reduce((filteredItems, stockItem) => {
               if (
-                (searchCategory === "all" ||
-                  stockItem.category === searchCategory.toLowerCase()) &&
+                (itemCategory === "all" ||
+                  stockItem.category.toLowerCase() ===
+                    itemCategory.toLowerCase()) &&
                 (searchKeyword === "" ||
                   stockItem.title
                     .toLowerCase()

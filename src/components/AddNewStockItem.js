@@ -74,18 +74,9 @@ export default function AddNewStockItem() {
   };
 
   const handleSendRequest = () => {
-    
-    // setItemCodeOrTitleError(false);
-    // setBrandError(false);
-    // setItemDescriptionError(false);
-    // setItemLocationError(false);
-    // setSupplierError(false);
-    // setMinQtyError(false);
-    // setItemCategoryError(false);
-
-    // Check for empty required fields
     if (itemCodeOrTitle.trim() === "") {
       setItemCodeOrTitleError(true);
+      return;
     }
     if (brand.trim() === "") {
       setBrandError(true);

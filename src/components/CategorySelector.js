@@ -1,8 +1,8 @@
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 
-const CategorySelector = ({ searchCategory, setSearchCategory }) => {
+const CategorySelector = ({ searchCategory, setItemCategory }) => {
   const handleChange = (event) => {
-    setSearchCategory(event.target.value);
+    setItemCategory(event.target.value);
   };
 
   return (
