@@ -63,13 +63,6 @@ const categories = [
 
 export default function AddNewStockItem() {
   const [open, setOpen] = React.useState();
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => {
-    setOpen(false);
-    setItemCategory("");
-  };
-  const [selectedAttributes, setSelectedAttributes] = React.useState([]);
-
   // State variables for text fields
   const [itemCodeOrTitle, setItemCodeOrTitle] = React.useState("");
   const [brand, setBrand] = React.useState("");
@@ -78,25 +71,76 @@ export default function AddNewStockItem() {
   const [supplier, setSupplier] = React.useState("");
   const [itemCategory, setItemCategory] = React.useState("");
   const [minQty, setMinQty] = React.useState("");
-  const [otherCategory, setOtherCategory] = React.useState(false);
 
   // State variable for checkboxes
   const [isConstantStock, setIsConstantStock] = React.useState(false);
+  const [selectedAttributes, setSelectedAttributes] = React.useState([]);
 
   // State variables for field validation
-  const [itemCodeOrTitleError, setItemCodeOrTitleError] = React.useState(true);
-  const [itemLocationError, setItemLocationError] = React.useState(true);
-  const [supplierError, setSupplierError] = React.useState(true);
-  const [minQtyError, setMinQtyError] = React.useState(true);
-  const [itemCategoryError, setItemCategoryError] = React.useState(true);
+  const [itemCodeOrTitleError, setItemCodeOrTitleError] = React.useState(false);
+  const [itemLocationError, setItemLocationError] = React.useState(false);
+  const [supplierError, setSupplierError] = React.useState(false);
+  const [categoryError, setCategoryError] = React.useState(false);
+  const [minQtyError, setMinQtyError] = React.useState(false);
+
+  const handleOpen = () => {
+    setOpen(true);
+    setItemCodeOrTitleError(true);
+    setItemLocationError(true);
+    setSupplierError(true);
+    setCategoryError(true);
+    setMinQtyError(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+    resetinputFields();
+  };
+
+  const handleCodeOrTitleChange = (e) => {
+    const value = e.target.value;
+    setItemCodeOrTitle(value);
+    setItemCodeOrTitleError(value.trim().length === 0);
+  };
+
+  const handleItemLocationChange = (e) => {
+    const value = e.target.value;
+    setItemLocation(value);
+    setItemLocationError(value.trim().length === 0);
+  };
+
+  const handleSupplierChange = (e) => {
+    const value = e.target.value;
+    setSupplier(value);
+    setSupplierError(value.trim().length === 0);
+  };
+
+  const handleCategoryChange = (e) => {
+    const value = e.target.value;
+    setItemCategory(value);
+    setCategoryError(value.trim().length === 0);
+  };
+
+  const handleMinQtyChange = (e) => {
+    const value = e.target.value;
+    setMinQty(value);
+    setMinQtyError(value.trim().length === 0);
+  };
 
   const handleAttributeChange = (event) => {
     setSelectedAttributes(event.target.value);
   };
 
-  const handleSendRequest = () => {
-    handleClose();
+  const resetinputFields = () => {
+    setItemCodeOrTitle("");
+    setBrand("");
+    setItemDescription("");
+    setItemLocation("");
+    setSupplier("");
+    setItemCategory("");
+    setMinQty("");
   };
+
+  const handleSendRequest = () => {};
 
   return (
     <>
@@ -128,7 +172,8 @@ export default function AddNewStockItem() {
               id="outlined-required"
               label="Item Code or Title"
               value={itemCodeOrTitle}
-              onChange={(e) => setItemCodeOrTitle(e.target.value)}
+              onChange={(e) => handleCodeOrTitleChange(e)}
+              onBlur={(e) => handleCodeOrTitleChange(e)}
               error={itemCodeOrTitleError}
               helperText={itemCodeOrTitleError && "Field cannot be empty"}
             />
@@ -162,7 +207,8 @@ export default function AddNewStockItem() {
               id="outlined-required"
               label="Item Location"
               value={itemLocation}
-              onChange={(e) => setItemLocation(e.target.value)}
+              onChange={(e) => handleItemLocationChange(e)}
+              onBlur={(e) => handleItemLocationChange(e)}
               error={itemLocationError}
               helperText={itemLocationError && "Field cannot be empty"}
             />
@@ -174,7 +220,8 @@ export default function AddNewStockItem() {
               id="outlined-required"
               label="Supplier"
               value={supplier}
-              onChange={(e) => setSupplier(e.target.value)}
+              onChange={(e) => handleSupplierChange(e)}
+              onBlur={(e) => handleSupplierChange(e)}
               error={supplierError}
               helperText={supplierError && "Field cannot be empty"}
             />
@@ -188,9 +235,10 @@ export default function AddNewStockItem() {
               select
               label="Choose item Category"
               value={itemCategory}
-              onChange={(e) => setItemCategory(e.target.value)}
-              error={itemCategory ? false : true}
-              helperText={!itemCategory && "Field cannot be empty"}
+              onChange={(e) => handleCategoryChange(e)}
+              onBlur={(e) => handleCategoryChange(e)}
+              error={categoryError}
+              helperText={categoryError && "Field cannot be empty"}
             >
               {categories.map((category, index) => (
                 <MenuItem key={index} value={category.value}>
@@ -299,7 +347,8 @@ export default function AddNewStockItem() {
               id="outlined-required"
               label="Min Qty"
               value={minQty}
-              onChange={(e) => setMinQty(e.target.value)}
+              onChange={(e) => handleMinQtyChange(e)}
+              onBlur={(e) => handleMinQtyChange(e)}
               error={minQtyError}
               helperText={minQtyError && "Field cannot be empty"}
             />
@@ -320,14 +369,20 @@ export default function AddNewStockItem() {
             </FormGroup>
           </Grid>
 
-          <Grid item xs={12} md={12} lg={12}>
+          <Grid onMouseDown={handleSendRequest} item xs={12} md={12} lg={12}>
             <AlertDialog
-              onClick={handleSendRequest}
               name={"Add Item"}
               handleCloseParent={handleClose}
               dialogTitle={"New Item Added!"}
               dialogMessage={
                 "Added Item will now appear on the stock list. Thank you!"
+              }
+              areAllFieldsFilled={
+                !itemCodeOrTitleError &&
+                !itemLocationError &&
+                !supplierError &&
+                !categoryError &&
+                !minQtyError
               }
             />
           </Grid>

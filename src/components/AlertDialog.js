@@ -16,6 +16,7 @@ export default function AlertDialogSlide({
   handleCloseParent,
   dialogTitle,
   dialogMessage,
+  areAllFieldsFilled,
 }) {
   const [open, setOpen] = React.useState(false);
 
@@ -25,7 +26,9 @@ export default function AlertDialogSlide({
 
   const handleClose = () => {
     setOpen(false);
-    handleCloseParent();
+    if (areAllFieldsFilled) {
+      handleCloseParent();
+    }
   };
 
   return (
@@ -40,10 +43,12 @@ export default function AlertDialogSlide({
         onClose={handleClose}
         aria-describedby="alert-dialog-slide-description"
       >
-        <DialogTitle>{dialogTitle}</DialogTitle>
+        <DialogTitle>{areAllFieldsFilled ? dialogTitle : "Error!"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
-            {dialogMessage}
+            {areAllFieldsFilled
+              ? dialogMessage
+              : "Please fill all required fields"}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
