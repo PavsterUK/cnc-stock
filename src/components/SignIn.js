@@ -1,13 +1,16 @@
 import { useState } from "react";
-import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
+import Link from "@mui/material/Link";
+import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import GerickeLogo from "../images/GerickeLogo";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import axios from "axios";
+
 import LoginErrorModal from "./LoginErrorModal";
 
 function Copyright(props) {
@@ -19,7 +22,7 @@ function Copyright(props) {
       {...props}
     >
       {"Copyright © "}
-      "RotaVal Stock Monitor" {new Date().getFullYear()}
+      "Gericke RotaVal" {new Date().getFullYear()}
       {"."}
     </Typography>
   );
@@ -27,31 +30,34 @@ function Copyright(props) {
 
 const defaultTheme = createTheme();
 
-const users = [
-  { name: "Pavel Naumovic", rotavalId: 107, password: 1234 },
-  { name: "Bob Smith", rotavalId: 108, password: 1234 },
-  { name: "Pamela Anderson", rotavalId: 109, password: 1234 },
-];
-
 export default function SignIn({ setIsLoggedIn, setAuthenticatedUser }) {
   const [isLoginError, setIsLoginError] = useState(false);
 
-  const handleLogin = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const enteredId = data.get("id");
-    const enteredPassword = data.get("password");
+  const [formData, setFormData] = useState({
+    rotavalID: "",
+    password: "",
+  });
 
-    const user = users.find(
-      (user) =>
-        user.rotavalId === parseInt(enteredId) &&
-        user.password === parseInt(enteredPassword)
-    );
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
 
-    if (user) {
-      setIsLoggedIn(true);
-      setAuthenticatedUser(user.name);
-    } else {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      console.log("Sending sign-in request:", formData);
+      const response = await axios.post(
+        "http://localhost:8080/api/signin",
+        formData
+      );
+      console.log("Sign-in successful!", response.data);
+    } catch (error) {
+      console.error("Sign-in error:", error);
       setIsLoginError(true);
     }
   };
@@ -73,12 +79,10 @@ export default function SignIn({ setIsLoggedIn, setAuthenticatedUser }) {
             alignItems: "center",
           }}
         >
-          <GerickeLogo />
-         
-
+          <GerickeLogo sx={{ m: 1, bgcolor: "secondary.main" }} />
           <Box
             component="form"
-            onSubmit={handleLogin}
+            onSubmit={handleSubmit}
             noValidate
             sx={{ mt: 1 }}
           >
@@ -86,10 +90,10 @@ export default function SignIn({ setIsLoggedIn, setAuthenticatedUser }) {
               margin="normal"
               required
               fullWidth
-              id="id"
               label="RotaVal ID"
-              name="id"
               autoFocus
+              value={formData.rotavalID}
+              onChange={handleChange}
             />
             <TextField
               margin="normal"
@@ -100,8 +104,8 @@ export default function SignIn({ setIsLoggedIn, setAuthenticatedUser }) {
               type="password"
               id="password"
               autoComplete="current-password"
+              onChange={handleChange}
             />
-
             <Button
               type="submit"
               fullWidth
@@ -110,6 +114,18 @@ export default function SignIn({ setIsLoggedIn, setAuthenticatedUser }) {
             >
               Sign In
             </Button>
+            <Grid container>
+              <Grid item xs>
+                <Link href="#" variant="body2">
+                  Reset password
+                </Link>
+              </Grid>
+              <Grid item>
+                <Link href="#" variant="body2">
+                  Don't have an account? Sign Up
+                </Link>
+              </Grid>
+            </Grid>
           </Box>
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />
