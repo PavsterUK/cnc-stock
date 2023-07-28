@@ -30,3 +30,9 @@ td {
   justify-content: center;
   width: 100%;
 }
+
+.editButtonWrapper {
+  position: absolute;
+  top: 0;
+  right: 0;
+}

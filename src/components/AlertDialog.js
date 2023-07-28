@@ -14,11 +14,13 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 export default function AlertDialogSlide({
   name,
   handleCloseParent,
+  handleSendRequest,
   dialogTitle,
   dialogMessage,
   areAllFieldsFilled,
 }) {
   const [open, setOpen] = React.useState(false);
+
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -26,8 +28,9 @@ export default function AlertDialogSlide({
 
   const handleClose = () => {
     setOpen(false);
-    if (areAllFieldsFilled) {
+    if (areAllFieldsFilled()) {
       handleCloseParent();
+      handleSendRequest();
     }
   };
 
@@ -43,10 +46,10 @@ export default function AlertDialogSlide({
         onClose={handleClose}
         aria-describedby="alert-dialog-slide-description"
       >
-        <DialogTitle>{areAllFieldsFilled ? dialogTitle : "Error!"}</DialogTitle>
+        <DialogTitle>{areAllFieldsFilled() ? dialogTitle : "Error!"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
-            {areAllFieldsFilled
+            {areAllFieldsFilled()
               ? dialogMessage
               : "Please fill all required fields"}
           </DialogContentText>

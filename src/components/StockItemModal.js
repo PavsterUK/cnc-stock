@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import { HorizontalRule, Add } from "@mui/icons-material";
 import styles from "./StockItemModal.module.css";
-import EditExistingStockItem from "./UpdateStockItem";
+import AddOrEditStockItem from "./AddOrEditStockItem";
 
 const style = {
   position: "absolute",
@@ -84,7 +84,9 @@ export default function StockItemModal({ stockItemData }) {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <EditExistingStockItem stockItemData={stockItemData} />
+          <div className={styles.editButtonWrapper}>
+            <AddOrEditStockItem isEditMode stockItemData={stockItemData} />
+          </div>
           <Typography
             sx={{ fontWeight: "bold" }}
             variant="h5"
@@ -260,7 +262,6 @@ export default function StockItemModal({ stockItemData }) {
           <div className={styles.vendingQuantity}>
             <Button
               variant="contained"
-              
               color="primary"
               onClick={decreaseNumber}
             >
@@ -278,7 +279,6 @@ export default function StockItemModal({ stockItemData }) {
 
             <Button
               variant="contained"
-              
               color="primary"
               onClick={increaseNumber}
             >

@@ -3,11 +3,6 @@ import Modal from "@mui/material/Modal";
 import {
   Box,
   Typography,
-  Table,
-  TableHead,
-  TableBody,
-  TableRow,
-  TableCell,
   Button,
   Grid,
 } from "@mui/material/";
@@ -32,10 +27,8 @@ const style = {
   flexDirection: "column",
 };
 
-export default function PurchaseRequestsManager({
-  PurchaseRequestsManagerOpen,
-}) {
-  const [open, setOpen] = React.useState(PurchaseRequestsManagerOpen);
+export default function PurchaseRequestsManager() {
+  const [open, setOpen] = React.useState(false);
   const [age, setAge] = React.useState("");
 
   const handleChange = (event) => {

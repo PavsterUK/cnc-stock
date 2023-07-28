@@ -13,6 +13,7 @@ import {
   Checkbox,
 } from "@mui/material/";
 import FormControl from "@mui/material/FormControl";
+import EditIcon from "@mui/icons-material/Edit";
 import AlertDialog from "./AlertDialog";
 
 const style = {
@@ -29,123 +30,108 @@ const style = {
 };
 
 const categories = [
-  {
-    value: "Turning",
-  },
-  {
-    value: "Milling",
-  },
-  {
-    value: "Hole Making",
-  },
-  {
-    value: "Measuring and Inspection",
-  },
-  {
-    value: "Workholding and Fixturing",
-  },
-  {
-    value: "Machine Accessories",
-  },
-  {
-    value: "Tool Storage and Organization",
-  },
-  {
-    value: "Safety Equipment",
-  },
-  {
-    value: "Miscellaneous",
-  },
-  {
-    value: "Other",
-  },
+  "Turning",
+  "Milling",
+  "Hole Making",
+  "Measuring and Inspection",
+  "Workholding and Fixturing",
+  "Machine Accessories",
+  "Tool Storage and Organization",
+  "Safety Equipment",
+  "Miscellaneous",
+  "Other",
 ];
 
-export default function AddNewStockItem() {
-  const [open, setOpen] = React.useState();
-  // State variables for text fields
-  const [itemCodeOrTitle, setItemCodeOrTitle] = React.useState("");
-  const [brand, setBrand] = React.useState("");
-  const [itemDescription, setItemDescription] = React.useState("");
-  const [itemLocation, setItemLocation] = React.useState("");
-  const [supplier, setSupplier] = React.useState("");
-  const [itemCategory, setItemCategory] = React.useState("");
-  const [minQty, setMinQty] = React.useState("");
+export default function AddOrEditStockItem({
+  stockItemData = {},
+  isEditMode = false,
+}) {
+  const [open, setOpen] = React.useState(false);
+  const [itemCodeOrTitle, setItemCodeOrTitle] = React.useState(
+    stockItemData.title || ""
+  );
+  const [brand, setBrand] = React.useState(stockItemData.brand || "");
+  const [itemDescription, setItemDescription] = React.useState(
+    stockItemData.description || ""
+  );
+  const [itemLocation, setItemLocation] = React.useState(
+    stockItemData.location || ""
+  );
+  const [supplier, setSupplier] = React.useState(stockItemData.supplier || "");
+  const [itemCategory, setItemCategory] = React.useState(
+    stockItemData.category || ""
+  );
+  const [minQty, setMinQty] = React.useState(stockItemData.minQty || "");
+  const [isConstantStock, setIsConstantStock] = React.useState(
+    stockItemData.isConstantStock || false
+  );
+  const [selectedAttributes, setSelectedAttributes] = React.useState(
+    stockItemData.materials || []
+  );
 
-  // State variable for checkboxes
-  const [isConstantStock, setIsConstantStock] = React.useState(false);
-  const [selectedAttributes, setSelectedAttributes] = React.useState([]);
-
-  // State variables for field validation
+  // Error states
   const [itemCodeOrTitleError, setItemCodeOrTitleError] = React.useState(false);
   const [itemLocationError, setItemLocationError] = React.useState(false);
   const [supplierError, setSupplierError] = React.useState(false);
   const [categoryError, setCategoryError] = React.useState(false);
   const [minQtyError, setMinQtyError] = React.useState(false);
 
-  const handleOpen = () => {
-    setOpen(true);
-    setItemCodeOrTitleError(true);
-    setItemLocationError(true);
-    setSupplierError(true);
-    setCategoryError(true);
-    setMinQtyError(true);
-  };
+  const handleOpen = () => setOpen(true);
+
   const handleClose = () => {
     setOpen(false);
-    resetinputFields();
+    resetForm();
   };
 
-  const handleCodeOrTitleChange = (e) => {
+  const handleInputChange = (e, stateSetter, setError) => {
     const value = e.target.value;
-    setItemCodeOrTitle(value);
-    setItemCodeOrTitleError(value.trim().length === 0);
-  };
-
-  const handleItemLocationChange = (e) => {
-    const value = e.target.value;
-    setItemLocation(value);
-    setItemLocationError(value.trim().length === 0);
-  };
-
-  const handleSupplierChange = (e) => {
-    const value = e.target.value;
-    setSupplier(value);
-    setSupplierError(value.trim().length === 0);
-  };
-
-  const handleCategoryChange = (e) => {
-    const value = e.target.value;
-    setItemCategory(value);
-    setCategoryError(value.trim().length === 0);
-  };
-
-  const handleMinQtyChange = (e) => {
-    const value = e.target.value;
-    setMinQty(value);
-    setMinQtyError(value.trim().length === 0);
+    stateSetter(value);
+    setError(value.trim().length === 0);
   };
 
   const handleAttributeChange = (event) => {
     setSelectedAttributes(event.target.value);
   };
 
-  const resetinputFields = () => {
-    setItemCodeOrTitle("");
-    setBrand("");
-    setItemDescription("");
-    setItemLocation("");
-    setSupplier("");
-    setItemCategory("");
-    setMinQty("");
+  const resetForm = () => {
+    setItemCodeOrTitle(stockItemData.title || "");
+    setBrand(stockItemData.brand || "");
+    setItemDescription(stockItemData.description || "");
+    setItemLocation(stockItemData.location || "");
+    setSupplier(stockItemData.supplier || "");
+    setItemCategory(stockItemData.category || "");
+    setMinQty(stockItemData.minQty || "");
+    setIsConstantStock(stockItemData.isConstantStock || false);
+    setSelectedAttributes(stockItemData.materials || []);
+    resetAllErrors();
   };
 
-  const handleSendRequest = () => {};
+  const resetAllErrors = () => {
+    setItemCodeOrTitleError(false);
+    setItemLocationError(false);
+    setSupplierError(false);
+    setCategoryError(false);
+    setMinQtyError(false);
+  };
+
+  const areAllFieldsFilled = () => {
+    return (
+      itemCodeOrTitle.trim().length > 0 &&
+      itemLocation.toString().trim().length > 0 &&
+      supplier.trim().length > 0 &&
+      itemCategory.trim().length > 0 &&
+      minQty.toString().trim().length > 0
+    );
+  };
+
+  const handleSendRequest = () => {
+    //Sent data to api
+  };
 
   return (
     <>
       <Button variant="outlined" align="center" onClick={handleOpen} fullWidth>
-        Add New Item
+        {isEditMode ? <EditIcon /> : "Add New Item"}
       </Button>
       <Modal
         open={open}
@@ -161,7 +147,9 @@ export default function AddNewStockItem() {
               align="center"
               style={{ fontWeight: "bold" }}
             >
-              ADD A NEW ITEM TO THE STOCK LIST
+              {isEditMode
+                ? "UPDATE ITEM INFO"
+                : "ADD A NEW ITEM TO THE STOCK LIST"}
             </Typography>
           </Grid>
 
@@ -172,8 +160,20 @@ export default function AddNewStockItem() {
               id="outlined-required"
               label="Item Code or Title"
               value={itemCodeOrTitle}
-              onChange={(e) => handleCodeOrTitleChange(e)}
-              onBlur={(e) => handleCodeOrTitleChange(e)}
+              onChange={(e) =>
+                handleInputChange(
+                  e,
+                  setItemCodeOrTitle,
+                  setItemCodeOrTitleError
+                )
+              }
+              onBlur={(e) =>
+                handleInputChange(
+                  e,
+                  setItemCodeOrTitle,
+                  setItemCodeOrTitleError
+                )
+              }
               error={itemCodeOrTitleError}
               helperText={itemCodeOrTitleError && "Field cannot be empty"}
             />
@@ -207,8 +207,12 @@ export default function AddNewStockItem() {
               id="outlined-required"
               label="Item Location"
               value={itemLocation}
-              onChange={(e) => handleItemLocationChange(e)}
-              onBlur={(e) => handleItemLocationChange(e)}
+              onChange={(e) =>
+                handleInputChange(e, setItemLocation, setItemLocationError)
+              }
+              onBlur={(e) =>
+                handleInputChange(e, setItemLocation, setItemLocationError)
+              }
               error={itemLocationError}
               helperText={itemLocationError && "Field cannot be empty"}
             />
@@ -220,8 +224,12 @@ export default function AddNewStockItem() {
               id="outlined-required"
               label="Supplier"
               value={supplier}
-              onChange={(e) => handleSupplierChange(e)}
-              onBlur={(e) => handleSupplierChange(e)}
+              onChange={(e) =>
+                handleInputChange(e, setSupplier, setSupplierError)
+              }
+              onBlur={(e) =>
+                handleInputChange(e, setSupplier, setSupplierError)
+              }
               error={supplierError}
               helperText={supplierError && "Field cannot be empty"}
             />
@@ -230,19 +238,22 @@ export default function AddNewStockItem() {
           <Grid item xs={12} md={6} lg={3}>
             <TextField
               fullWidth
-              id="outlined-select-currency"
               required
               select
               label="Choose item Category"
               value={itemCategory}
-              onChange={(e) => handleCategoryChange(e)}
-              onBlur={(e) => handleCategoryChange(e)}
+              onChange={(e) =>
+                handleInputChange(e, setItemCategory, setCategoryError)
+              }
+              onBlur={(e) =>
+                handleInputChange(e, setItemCategory, setCategoryError)
+              }
               error={categoryError}
               helperText={categoryError && "Field cannot be empty"}
             >
-              {categories.map((category, index) => (
-                <MenuItem key={index} value={category.value}>
-                  {category.value}
+              {categories.map((category) => (
+                <MenuItem key={category} value={category}>
+                  {category}
                 </MenuItem>
               ))}
             </TextField>
@@ -347,8 +358,8 @@ export default function AddNewStockItem() {
               id="outlined-required"
               label="Min Qty"
               value={minQty}
-              onChange={(e) => handleMinQtyChange(e)}
-              onBlur={(e) => handleMinQtyChange(e)}
+              onChange={(e) => handleInputChange(e, setMinQty, setMinQtyError)}
+              onBlur={(e) => handleInputChange(e, setMinQty, setMinQtyError)}
               error={minQtyError}
               helperText={minQtyError && "Field cannot be empty"}
             />
@@ -357,33 +368,37 @@ export default function AddNewStockItem() {
           <Grid item xs={6} md={3} lg={3}>
             <FormGroup>
               <FormControlLabel
-                required
+                label="CON STOCK"
                 control={
                   <Checkbox
                     checked={isConstantStock}
                     onChange={(e) => setIsConstantStock(e.target.checked)}
                   />
                 }
-                label="Constant Stock"
               />
             </FormGroup>
           </Grid>
 
-          <Grid onMouseDown={handleSendRequest} item xs={12} md={12} lg={12}>
+          <Grid
+            sx={{ marginTop: "1em", paddingTop: "0 !important" }}
+            item
+            xs={12}
+            md={12}
+            lg={12}
+          >
             <AlertDialog
-              name={"Add Item"}
+              name={isEditMode ? "Update Info" : "Add Item"}
               handleCloseParent={handleClose}
-              dialogTitle={"New Item Added!"}
+              handleSendRequest={handleSendRequest}
+              dialogTitle={
+                isEditMode ? "Item Info Updated!" : "New Item Added!"
+              }
               dialogMessage={
-                "Added Item will now appear on the stock list. Thank you!"
+                isEditMode
+                  ? "Item info has been updated successfully."
+                  : "Added Item will now appear on the stock list. Thank you!"
               }
-              areAllFieldsFilled={
-                !itemCodeOrTitleError &&
-                !itemLocationError &&
-                !supplierError &&
-                !categoryError &&
-                !minQtyError
-              }
+              areAllFieldsFilled={areAllFieldsFilled}
             />
           </Grid>
         </Grid>

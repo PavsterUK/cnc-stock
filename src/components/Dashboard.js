@@ -33,7 +33,6 @@ export default function Dashboard({ setIsLoggedIn, authenticatedUser }) {
           "http://localhost:8080/api/stock-list"
         );
         setStockItems(response.data);
-        console.log(response.data);
       } catch (error) {
         // Handle error if the request fails
         console.error("Error fetching stock items:", error);
@@ -120,7 +119,7 @@ export default function Dashboard({ setIsLoggedIn, authenticatedUser }) {
                     .includes(searchKeyword.toLowerCase()))
               ) {
                 filteredItems.push(
-                  <StockItemModal stockItemData={stockItem} />
+                  <StockItemModal key={stockItem.id} stockItemData={stockItem} />
                 );
               }
               return filteredItems;

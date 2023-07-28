@@ -30,8 +30,8 @@ const style = {
   flexDirection: "column",
 };
 
-const PurchaseRequest = ({ purchaseRequestOpen }) => {
-  const [open, setOpen] = React.useState(purchaseRequestOpen);
+const PurchaseRequest = () => {
+  const [open, setOpen] = React.useState(false);
   const [inputValue, setInputValue] = React.useState("");
   const [lastWord, setLastWord] = React.useState("");
 
@@ -104,6 +104,7 @@ const PurchaseRequest = ({ purchaseRequestOpen }) => {
                     dialogMessage={
                       "Your request has been accepted and will be reviewed by the responsible person. Thank you!"
                     }
+                    areAllFieldsFilled={inputValue.trim().length !== 0}
                   />
                 </TableCell>
               </TableRow>

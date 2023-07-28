@@ -16,7 +16,7 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ListItem from "@mui/material/ListItem";
 import LogoutIcon from "@mui/icons-material/Logout";
 import PurchaseRequest from "./PurchaseRequest";
-import AddNewStockItem from "./AddNewStockItem";
+import AddOrEditStockItem from "./AddOrEditStockItem";
 import PurchaseRequestsManager from "./PurchaseRequestsManager";
 
 const drawerWidth = 240;
@@ -142,7 +142,7 @@ export default function PersistentDrawerLeft({
           </ListItem>
           <Divider />
           <ListItem>
-            <AddNewStockItem />
+            <AddOrEditStockItem />
           </ListItem>
           <Divider />
           <ListItem>
