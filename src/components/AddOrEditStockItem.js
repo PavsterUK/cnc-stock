@@ -15,6 +15,7 @@ import {
 import FormControl from "@mui/material/FormControl";
 import EditIcon from "@mui/icons-material/Edit";
 import AlertDialog from "./AlertDialog";
+import axios from "axios";
 
 const style = {
   position: "absolute",
@@ -75,6 +76,7 @@ export default function AddOrEditStockItem({
   const [supplierError, setSupplierError] = React.useState(false);
   const [categoryError, setCategoryError] = React.useState(false);
   const [minQtyError, setMinQtyError] = React.useState(false);
+  const [backEndError, setBackEndError] = React.useState("");
 
   const handleOpen = () => setOpen(true);
 
@@ -125,7 +127,53 @@ export default function AddOrEditStockItem({
   };
 
   const handleSendRequest = () => {
-    //Sent data to api
+    const itemData = {
+      title: itemCodeOrTitle,
+      brand: brand,
+      description: itemDescription,
+      location: itemLocation,
+      supplier: supplier,
+      category: itemCategory,
+      minQty: minQty,
+      isConstantStock: isConstantStock,
+      materials: selectedAttributes,
+    };
+
+    if (isEditMode) {
+      // If in edit mode, update the existing item
+      axios
+        .put(`/api/stock-item/${stockItemData.location}`, itemData)
+        .then((response) => {
+          // Handle success, e.g., show a success message
+          handleClose();
+        })
+        .catch((error) => {
+          // Handle error, e.g., show an error message
+          if (error.response && error.response.data) {
+            setBackEndError(error.response.data.message);
+          } else {
+            setBackEndError("Error updating item. Please try again.");
+          }
+          console.error(error);
+        });
+    } else {
+      // If not in edit mode, create a new item
+      axios
+        .post("/api/stock-item", itemData)
+        .then((response) => {
+          // Handle success, e.g., show a success message
+          handleClose();
+        })
+        .catch((error) => {
+          // Handle error, e.g., show an error message
+          if (error.response && error.response.data) {
+            setBackEndError(error.response.data.message);
+          } else {
+            setBackEndError("Error adding item. Please try again.");
+          }
+          console.error(error);
+        });
+    }
   };
 
   return (
@@ -378,6 +426,7 @@ export default function AddOrEditStockItem({
               />
             </FormGroup>
           </Grid>
+          <p style={{ color: "red" }}>{backEndError}</p>
 
           <Grid
             sx={{ marginTop: "1em", paddingTop: "0 !important" }}
@@ -399,6 +448,7 @@ export default function AddOrEditStockItem({
                   : "Added Item will now appear on the stock list. Thank you!"
               }
               areAllFieldsFilled={areAllFieldsFilled}
+              backEndError={backEndError}
             />
           </Grid>
         </Grid>

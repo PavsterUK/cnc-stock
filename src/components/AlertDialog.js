@@ -18,25 +18,42 @@ export default function AlertDialogSlide({
   dialogTitle,
   dialogMessage,
   areAllFieldsFilled,
+  backEndError
 }) {
   const [open, setOpen] = React.useState(false);
+  const [errorMessage, setErrorMessage] = React.useState("");
 
-
-  const handleClickOpen = () => {
+  const handleOpen = () => {
     setOpen(true);
   };
 
   const handleClose = () => {
     setOpen(false);
     if (areAllFieldsFilled()) {
-      handleCloseParent();
       handleSendRequest();
+      handleCloseParent();
+    }
+  };
+
+  const handleSendRequestWithValidation = () => {
+    handleOpen();
+    if (areAllFieldsFilled() && backEndError !== "") {
+      handleSendRequest();
+      handleCloseParent();
+    } else if (areAllFieldsFilled()) {
+      setErrorMessage("Please fill all required fields");
+    } else {
+      setErrorMessage({backEndError});
     }
   };
 
   return (
     <div>
-      <Button fullWidth variant="contained" onClick={handleClickOpen}>
+      <Button
+        fullWidth
+        variant="contained"
+        onClick={handleSendRequestWithValidation}
+      >
         {name}
       </Button>
       <Dialog
@@ -46,16 +63,18 @@ export default function AlertDialogSlide({
         onClose={handleClose}
         aria-describedby="alert-dialog-slide-description"
       >
-        <DialogTitle>{areAllFieldsFilled() ? dialogTitle : "Error!"}</DialogTitle>
+        <DialogTitle>
+          {areAllFieldsFilled() && !errorMessage ? dialogTitle : "Error!"}
+        </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
             {areAllFieldsFilled()
               ? dialogMessage
-              : "Please fill all required fields"}
+              : errorMessage || "Please fill all required fields"}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button variant="contained" onClick={handleClose}>
+          <Button variant="contained" onClick={() => setOpen(false)}>
             Ok
           </Button>
         </DialogActions>
