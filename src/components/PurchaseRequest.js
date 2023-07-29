@@ -11,7 +11,6 @@ import {
   Button,
   TextField,
 } from "@mui/material/";
-import AlertDialog from "./AlertDialog";
 import HintWordEndingInput from "./HintWordEndingInput";
 
 const style = {
@@ -96,16 +95,7 @@ const PurchaseRequest = () => {
               </TableRow>
               <TableRow>
                 <TableCell>
-                  <AlertDialog
-                    onClick={handleSendRequest}
-                    name={"Send Request"}
-                    handleCloseParent={handleClose}
-                    dialogTitle={"Purchase Request Accepted!"}
-                    dialogMessage={
-                      "Your request has been accepted and will be reviewed by the responsible person. Thank you!"
-                    }
-                    areAllFieldsFilled={inputValue.trim().length !== 0}
-                  />
+                  <Button>Ok</Button>
                 </TableCell>
               </TableRow>
             </TableBody>

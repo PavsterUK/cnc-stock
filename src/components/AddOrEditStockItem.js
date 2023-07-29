@@ -14,7 +14,6 @@ import {
 } from "@mui/material/";
 import FormControl from "@mui/material/FormControl";
 import EditIcon from "@mui/icons-material/Edit";
-import AlertDialog from "./AlertDialog";
 import axios from "axios";
 
 const style = {
@@ -76,7 +75,7 @@ export default function AddOrEditStockItem({
   const [supplierError, setSupplierError] = React.useState(false);
   const [categoryError, setCategoryError] = React.useState(false);
   const [minQtyError, setMinQtyError] = React.useState(false);
-  const [backEndError, setBackEndError] = React.useState("");
+  const [errorMessage, setErrorMessage] = React.useState("");
 
   const handleOpen = () => setOpen(true);
 
@@ -116,17 +115,21 @@ export default function AddOrEditStockItem({
     setMinQtyError(false);
   };
 
-  const areAllFieldsFilled = () => {
+  const emptyInputFields = () => {
     return (
-      itemCodeOrTitle.trim().length > 0 &&
-      itemLocation.toString().trim().length > 0 &&
-      supplier.trim().length > 0 &&
-      itemCategory.trim().length > 0 &&
-      minQty.toString().trim().length > 0
+      itemCodeOrTitle.trim().length === 0 &&
+      itemLocation.toString().trim().length === 0 &&
+      supplier.trim().length === 0 &&
+      itemCategory.trim().length === 0 &&
+      minQty.toString().trim().length === 0
     );
   };
 
   const handleSendRequest = () => {
+    if (emptyInputFields()) {
+      return setErrorMessage("Please fill all boxes with asterix *");
+    }
+
     const itemData = {
       title: itemCodeOrTitle,
       brand: brand,
@@ -148,16 +151,15 @@ export default function AddOrEditStockItem({
           handleClose();
         })
         .catch((error) => {
-          // Handle error, e.g., show an error message
           if (error.response && error.response.data) {
-            setBackEndError(error.response.data.message);
+            setErrorMessage(error.response.data);
           } else {
-            setBackEndError("Error updating item. Please try again.");
+            setErrorMessage("Error occurred during sign up.");
           }
-          console.error(error);
         });
     } else {
       // If not in edit mode, create a new item
+      console.log(itemData);
       axios
         .post("/api/stock-item", itemData)
         .then((response) => {
@@ -165,13 +167,11 @@ export default function AddOrEditStockItem({
           handleClose();
         })
         .catch((error) => {
-          // Handle error, e.g., show an error message
           if (error.response && error.response.data) {
-            setBackEndError(error.response.data.message);
+            setErrorMessage(error.response.data);
           } else {
-            setBackEndError("Error adding item. Please try again.");
+            setErrorMessage("Error occurred during sign up.");
           }
-          console.error(error);
         });
     }
   };
@@ -426,7 +426,9 @@ export default function AddOrEditStockItem({
               />
             </FormGroup>
           </Grid>
-          <p style={{ color: "red" }}>{backEndError}</p>
+          <Grid item xs={12} md={12} lg={12}>
+            {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
+          </Grid>
 
           <Grid
             sx={{ marginTop: "1em", paddingTop: "0 !important" }}
@@ -435,21 +437,9 @@ export default function AddOrEditStockItem({
             md={12}
             lg={12}
           >
-            <AlertDialog
-              name={isEditMode ? "Update Info" : "Add Item"}
-              handleCloseParent={handleClose}
-              handleSendRequest={handleSendRequest}
-              dialogTitle={
-                isEditMode ? "Item Info Updated!" : "New Item Added!"
-              }
-              dialogMessage={
-                isEditMode
-                  ? "Item info has been updated successfully."
-                  : "Added Item will now appear on the stock list. Thank you!"
-              }
-              areAllFieldsFilled={areAllFieldsFilled}
-              backEndError={backEndError}
-            />
+            <Button onClick={handleSendRequest} fullWidth variant="contained">
+              {isEditMode ? "update item" : "add new item"}
+            </Button>
           </Grid>
         </Grid>
       </Modal>
