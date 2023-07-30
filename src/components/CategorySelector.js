@@ -1,4 +1,5 @@
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import categories from "./categories";
 
 const CategorySelector = ({ searchCategory, setItemCategory }) => {
   const handleChange = (event) => {
@@ -13,15 +14,16 @@ const CategorySelector = ({ searchCategory, setItemCategory }) => {
           labelId="demo-simple-select-label"
           id="demo-simple-select"
           value={searchCategory}
-          defaultValue="all"
+          defaultValue={categories[0]}
           label="category"
           onChange={handleChange}
           sx={{ width: "13rem" }}
         >
-          <MenuItem value="all">All Categories</MenuItem>
-          <MenuItem value={"Turning"}>Turning</MenuItem>
-          <MenuItem value={"Milling"}>Milling</MenuItem>
-          <MenuItem value={"Hole Making"}>Hole Making</MenuItem>
+          {categories.map((category) => (
+            <MenuItem key={category} value={category}>
+              {category}
+            </MenuItem>
+          ))}
         </Select>
       </FormControl>
     </div>

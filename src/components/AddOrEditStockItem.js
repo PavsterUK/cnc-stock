@@ -15,6 +15,8 @@ import {
 import FormControl from "@mui/material/FormControl";
 import EditIcon from "@mui/icons-material/Edit";
 import axios from "axios";
+import DeleteConfirmDialog from "./DeleteConfirmDialog";
+import categories from "./categories";
 
 const style = {
   position: "absolute",
@@ -28,19 +30,6 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
-
-const categories = [
-  "Turning",
-  "Milling",
-  "Hole Making",
-  "Measuring and Inspection",
-  "Workholding and Fixturing",
-  "Machine Accessories",
-  "Tool Storage and Organization",
-  "Safety Equipment",
-  "Miscellaneous",
-  "Other",
-];
 
 export default function AddOrEditStockItem({
   stockItemData = {},
@@ -115,7 +104,7 @@ export default function AddOrEditStockItem({
     setMinQtyError(false);
   };
 
-  const emptyInputFields = () => {
+  const isFormFilled = () => {
     return (
       itemCodeOrTitle.trim().length === 0 &&
       itemLocation.toString().trim().length === 0 &&
@@ -126,7 +115,7 @@ export default function AddOrEditStockItem({
   };
 
   const handleSendRequest = () => {
-    if (emptyInputFields()) {
+    if (isFormFilled()) {
       return setErrorMessage("Please fill all boxes with asterix *");
     }
 
@@ -147,34 +136,49 @@ export default function AddOrEditStockItem({
       axios
         .put(`/api/stock-item/${stockItemData.location}`, itemData)
         .then((response) => {
-          // Handle success, e.g., show a success message
+          // Handle success
           handleClose();
         })
         .catch((error) => {
           if (error.response && error.response.data) {
             setErrorMessage(error.response.data);
           } else {
-            setErrorMessage("Error occurred during sign up.");
+            setErrorMessage("Error occurred when saving new item.");
           }
         });
     } else {
       // If not in edit mode, create a new item
-      console.log(itemData);
       axios
         .post("/api/stock-item", itemData)
         .then((response) => {
-          // Handle success, e.g., show a success message
+          handleClose();
+        })
+        .catch((error) => {
+          if (error.response && error.response.data) {
+            console.log(error.response.data);
+            setErrorMessage(error.response.data);
+          } else {
+            setErrorMessage("Error occurred when saving new item.");
+          }
+        });
+    }
+  };
+
+  const handleDeleteItem = () => {
+    axios
+        .delete(`/api/stock-item/${stockItemData.location}`)
+        .then((response) => {
+          // Handle success
           handleClose();
         })
         .catch((error) => {
           if (error.response && error.response.data) {
             setErrorMessage(error.response.data);
           } else {
-            setErrorMessage("Error occurred during sign up.");
+            setErrorMessage("Error occurred while trying to delete item.");
           }
         });
-    }
-  };
+  }
 
   return (
     <>
@@ -188,6 +192,10 @@ export default function AddOrEditStockItem({
         aria-describedby="modal-modal-description"
       >
         <Grid container spacing={2} sx={style}>
+          {isEditMode && (
+            <DeleteConfirmDialog handleDeleteItem={handleDeleteItem} itemTitle={stockItemData.title} />
+          )}
+
           <Grid item xs={12} md={12} lg={12}>
             <Typography
               variant="h5"
@@ -252,6 +260,7 @@ export default function AddOrEditStockItem({
             <TextField
               fullWidth
               required
+              type="number"
               id="outlined-required"
               label="Item Location"
               value={itemLocation}

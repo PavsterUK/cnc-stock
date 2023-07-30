@@ -32,6 +32,7 @@ const style = {
 };
 
 export default function StockItemModal({ stockItemData }) {
+  console.log(stockItemData);
   const [open, setOpen] = React.useState(false);
   const [checked, setChecked] = React.useState(true);
   const [number, setNumber] = React.useState(1);
@@ -60,7 +61,6 @@ export default function StockItemModal({ stockItemData }) {
       handleClose();
       setFeedbackMessage(""); // Clear the feedback message after the modal is closed
     }, 2000); // Delay for 2 seconds (adjust as needed)
-    // Additional logic for processing the "Take" action
   };
 
   const handleReturn = () => {
@@ -69,7 +69,6 @@ export default function StockItemModal({ stockItemData }) {
       handleClose();
       setFeedbackMessage(""); // Clear the feedback message after the modal is closed
     }, 2000); // Delay for 2 seconds (adjust as needed)
-    // Additional logic for processing the "Return" action
   };
 
   return (
@@ -116,10 +115,7 @@ export default function StockItemModal({ stockItemData }) {
                     component="p"
                     align="left"
                   >
-                    Soout an item sdfsdf sdfsd fsdfsdf sdf f sdf sdf
-                    sdfsdfsdfsdsdfdf sdf sdfsdfsdfsdsdf Some basic description
-                    about an item sdfsdfme basic description about an item
-                    sdfsdf sdfsd fsdfsdf sdf f ssdfsd fsdfsdf sdf f sdf sdf
+                    {stockItemData.description}
                   </Typography>
                 </TableCell>
               </TableRow>
@@ -230,7 +226,7 @@ export default function StockItemModal({ stockItemData }) {
                     component="h6"
                     align="center"
                   >
-                    8
+                    {stockItemData.stockQty}
                   </Typography>
                 </TableCell>
               </TableRow>
@@ -252,7 +248,7 @@ export default function StockItemModal({ stockItemData }) {
                     component="h5"
                     align="center"
                   >
-                    135
+                    {stockItemData.location}
                   </Typography>
                 </TableCell>
               </TableRow>

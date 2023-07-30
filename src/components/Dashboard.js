@@ -19,7 +19,7 @@ const defaultTheme = createTheme();
 export default function Dashboard({ setIsLoggedIn, authenticatedUser }) {
   const [stockItems, setStockItems] = useState([]);
   const [searchKeyword, setSearchKeyword] = useState("");
-  const [itemCategory, setItemCategory] = useState("all");
+  const [itemCategory, setItemCategory] = useState("all categories");
 
   const handleInputChange = (event) => {
     setSearchKeyword(event.target.value);
@@ -110,13 +110,10 @@ export default function Dashboard({ setIsLoggedIn, authenticatedUser }) {
           <Grid item xs={12}>
             {stockItems.reduce((filteredItems, stockItem) => {
               if (
-                (itemCategory === "all" ||
-                  stockItem.category.toLowerCase() ===
-                    itemCategory.toLowerCase()) &&
-                (searchKeyword === "" ||
-                  stockItem.title
-                    .toLowerCase()
-                    .includes(searchKeyword.toLowerCase()))
+                (itemCategory.toLocaleLowerCase() === "all categories" ||
+                  stockItem.category.toLowerCase() === itemCategory.toLowerCase()) &&
+                (searchKeyword.trim() === "" || 
+                  stockItem.title.toLowerCase().includes(searchKeyword.toLowerCase()))
               ) {
                 filteredItems.push(
                   <StockItemModal key={stockItem.id} stockItemData={stockItem} />
