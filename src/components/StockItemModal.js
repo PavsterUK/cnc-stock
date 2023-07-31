@@ -14,6 +14,7 @@ import {
 import { HorizontalRule, Add } from "@mui/icons-material";
 import styles from "./StockItemModal.module.css";
 import AddOrEditStockItem from "./AddOrEditStockItem";
+import axios from "axios";
 
 const style = {
   position: "absolute",
@@ -32,10 +33,9 @@ const style = {
 };
 
 export default function StockItemModal({ stockItemData }) {
-  console.log(stockItemData);
   const [open, setOpen] = React.useState(false);
   const [checked, setChecked] = React.useState(true);
-  const [number, setNumber] = React.useState(1);
+  const [vendQty, setVendQty] = React.useState(1);
   const [feedbackMessage, setFeedbackMessage] = React.useState("");
 
   const handleOpen = () => setOpen(true);
@@ -44,31 +44,39 @@ export default function StockItemModal({ stockItemData }) {
   };
 
   const decreaseNumber = () => {
-    setNumber((prevNumber) => (prevNumber > 1 ? prevNumber - 1 : 1));
+    setVendQty((prevNumber) => (prevNumber > 1 ? prevNumber - 1 : 1));
   };
 
   const increaseNumber = () => {
-    setNumber((prevNumber) => prevNumber + 1);
+    setVendQty((prevNumber) => prevNumber + 1);
   };
 
   const handleToggleTakeorReturn = () => {
     setChecked(!checked);
   };
 
-  const handleTake = () => {
-    setFeedbackMessage(`You took ${number} item(s).`);
-    setTimeout(() => {
-      handleClose();
-      setFeedbackMessage(""); // Clear the feedback message after the modal is closed
-    }, 2000); // Delay for 2 seconds (adjust as needed)
-  };
+  const handleVending = (vendQty, isTake) => {
+    isTake
+      ? (stockItemData.stockQty -= vendQty)
+      : (stockItemData.stockQty += vendQty);
 
-  const handleReturn = () => {
-    setFeedbackMessage(`You returned ${number} item(s).`);
-    setTimeout(() => {
-      handleClose();
-      setFeedbackMessage(""); // Clear the feedback message after the modal is closed
-    }, 2000); // Delay for 2 seconds (adjust as needed)
+    axios
+      .put(`/api/stock-item/${stockItemData.location}`, stockItemData)
+      .then((response) => {
+        // Handle success
+        setFeedbackMessage(
+          `You ${isTake ? "took" : "returned"} ${vendQty} item(s).`
+        );
+      })
+      .catch((error) => {
+        if (error.response && error.response.data) {
+          setFeedbackMessage(error.response.data);
+        } else {
+          setFeedbackMessage(
+            `Error occurred ${isTake ? "taking" : "returning"} item.`
+          );
+        }
+      });
   };
 
   return (
@@ -270,7 +278,7 @@ export default function StockItemModal({ stockItemData }) {
               component="h2"
               align="center"
             >
-              {number}
+              {vendQty}
             </Typography>
 
             <Button
@@ -284,7 +292,7 @@ export default function StockItemModal({ stockItemData }) {
 
           <div className={styles.vendingOptions}>
             <Button
-              onClick={handleReturn}
+              onClick={() => handleVending(vendQty, false)}
               fullWidth
               variant="contained"
               color="success"
@@ -298,7 +306,7 @@ export default function StockItemModal({ stockItemData }) {
               onChange={handleToggleTakeorReturn}
             />
             <Button
-              onClick={handleTake}
+              onClick={() => handleVending(vendQty, true)}
               fullWidth
               variant="contained"
               color="error"
