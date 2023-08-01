@@ -34,7 +34,7 @@ const style = {
 
 export default function StockItemModal({ stockItemData }) {
   const [open, setOpen] = React.useState(false);
-  const [checked, setChecked] = React.useState(true);
+  const [isTake, setIsTake] = React.useState(true);
   const [vendQty, setVendQty] = React.useState(1);
   const [feedbackMessage, setFeedbackMessage] = React.useState("");
 
@@ -52,13 +52,20 @@ export default function StockItemModal({ stockItemData }) {
   };
 
   const handleToggleTakeorReturn = () => {
-    setChecked(!checked);
+    setIsTake(!isTake);
   };
 
   const handleVending = (vendQty, isTake) => {
-    isTake
-      ? (stockItemData.stockQty -= vendQty)
-      : (stockItemData.stockQty += vendQty);
+    if (isTake) {
+      const newStockQty = stockItemData.stockQty - vendQty;
+      if (newStockQty < 0) {
+        return setFeedbackMessage(`Bloody hell mate, can't you do basic math?`);
+      } else {
+        stockItemData.stockQty = newStockQty; // Update stockQty
+      }
+    } else {
+      stockItemData.stockQty += vendQty;
+    }
 
     axios
       .put(`/api/stock-item/${stockItemData.location}`, stockItemData)
@@ -264,6 +271,15 @@ export default function StockItemModal({ stockItemData }) {
           </Table>
 
           <div className={styles.vendingQuantity}>
+            <Typography
+              padding="0 1em"
+              variant="h4"
+              component="h2"
+              align="center"
+            >
+              {isTake ? "TAKE" : "RETURN"}
+            </Typography>
+
             <Button
               variant="contained"
               color="primary"
@@ -288,6 +304,14 @@ export default function StockItemModal({ stockItemData }) {
             >
               <Add />
             </Button>
+            <Typography
+              padding="0 1em"
+              variant="h4"
+              component="h2"
+              align="center"
+            >
+              {"ITEM(S)"}
+            </Typography>
           </div>
 
           <div className={styles.vendingOptions}>
@@ -296,13 +320,13 @@ export default function StockItemModal({ stockItemData }) {
               fullWidth
               variant="contained"
               color="success"
-              disabled={checked}
+              disabled={isTake}
             >
               Return
             </Button>
             <Switch
               className={styles.toggleSwitch}
-              checked={checked}
+              isTake={isTake}
               onChange={handleToggleTakeorReturn}
             />
             <Button
@@ -310,12 +334,12 @@ export default function StockItemModal({ stockItemData }) {
               fullWidth
               variant="contained"
               color="error"
-              disabled={!checked}
+              disabled={!isTake}
             >
               Take
             </Button>
           </div>
-          <Typography variant="h4" component="h2" align="center">
+          <Typography mt={"1em"} color="error" variant="h4" component="h2" align="center">
             {feedbackMessage}
           </Typography>
         </Box>

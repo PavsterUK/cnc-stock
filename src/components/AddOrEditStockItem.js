@@ -261,6 +261,7 @@ export default function AddOrEditStockItem({
               fullWidth
               required
               type="number"
+              inputProps={{min:0}}
               id="outlined-required"
               label="Item Location"
               value={itemLocation}
@@ -414,6 +415,8 @@ export default function AddOrEditStockItem({
               required
               id="outlined-required"
               label="Min Qty"
+              type="number"
+              inputProps={{min:0}}
               value={minQty}
               onChange={(e) => handleInputChange(e, setMinQty, setMinQtyError)}
               onBlur={(e) => handleInputChange(e, setMinQty, setMinQtyError)}
