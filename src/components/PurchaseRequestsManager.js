@@ -1,11 +1,6 @@
 import * as React from "react";
 import Modal from "@mui/material/Modal";
-import {
-  Box,
-  Typography,
-  Button,
-  Grid,
-} from "@mui/material/";
+import { Box, Typography, Button, Grid } from "@mui/material/";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
@@ -13,7 +8,7 @@ import Select from "@mui/material/Select";
 
 const style = {
   position: "absolute",
-  top: "40%",
+  top: "5em",
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: "70vw",
@@ -54,173 +49,49 @@ export default function PurchaseRequestsManager() {
             ...style,
           }}
         >
-          <Typography
-            variant="h5"
-            component="h2"
-            align="center"
-            sx={{ fontWeight: "bold", borderBottom: "2px solid black" }}
-          >
-            MANAGE PURCHASE REQUESTS
-          </Typography>
-          <Grid
-            container
-            spacing={2}
-            sx={{ mt: 2, border: "1px solid black", padding: "0 important" }}
-          >
-            <Grid item xs={10}>
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={12}>
               <Typography
                 variant="h5"
                 component="h2"
                 align="center"
-                sx={{ border: "1px solid red", margin: "0" }}
+                sx={{ fontWeight: "bold" }}
               >
-                Item Information
+                PURCHASE REQUESTS
               </Typography>
             </Grid>
-            <Grid item xs={2}>
-              <FormControl
-                variant="standard"
-                fullWidth
-                sx={{ minWidth: 120, border: "1px solid red" }}
-              >
-                <InputLabel id="demo-simple-select-standard-label">
-                  Status
-                </InputLabel>
-                <Select
-                  labelId="demo-simple-select-standard-label"
-                  id="demo-simple-select-standard"
-                  value={age}
-                  onChange={handleChange}
-                  label="Status"
-                >
-                  <MenuItem value={10}>IN PROGRESS</MenuItem>
-                  <MenuItem value={20}>COMPLETE</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={10}>
-              <Typography
-                variant="h5"
-                component="h2"
-                align="center"
-                sx={{ border: "1px solid red", margin: "0" }}
-              >
-                Item Information
+            <Grid
+              item
+              xs={3}
+              sm={3}
+              md={3}
+              lg={3}
+              sx={{
+                borderRight: "1px solid black",
+                borderBottom: "3px solid black",
+                textAlign: "center",
+              }}
+            >
+              <Typography variant="h7" component="h7">
+                {"Requested Item(s)"}
               </Typography>
             </Grid>
-            <Grid item xs={2}>
-              <FormControl
-                variant="standard"
-                fullWidth
-                sx={{ minWidth: 120, border: "1px solid red" }}
-              >
-                <InputLabel id="demo-simple-select-standard-label">
-                  Status
-                </InputLabel>
-                <Select
-                  labelId="demo-simple-select-standard-label"
-                  id="demo-simple-select-standard"
-                  value={age}
-                  onChange={handleChange}
-                  label="Status"
-                >
-                  <MenuItem value={10}>IN PROGRESS</MenuItem>
-                  <MenuItem value={20}>COMPLETE</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={10}>
-              <Typography
-                variant="h5"
-                component="h2"
-                align="center"
-                sx={{ border: "1px solid red", margin: "0" }}
-              >
-                Item Information
+
+            <Grid
+              item
+              xs={3}
+              sm={3}
+              md={3}
+              lg={3}
+              sx={{
+                borderRight: "1px solid black",
+                borderBottom: "3px solid black",
+                textAlign: "center",
+              }}
+            >
+              <Typography variant="h7" component="h7">
+                Requested By
               </Typography>
-            </Grid>
-            <Grid item xs={2}>
-              <FormControl
-                variant="standard"
-                fullWidth
-                sx={{ minWidth: 120, border: "1px solid red" }}
-              >
-                <InputLabel id="demo-simple-select-standard-label">
-                  Status
-                </InputLabel>
-                <Select
-                  labelId="demo-simple-select-standard-label"
-                  id="demo-simple-select-standard"
-                  value={age}
-                  onChange={handleChange}
-                  label="Status"
-                >
-                  <MenuItem value={10}>IN PROGRESS</MenuItem>
-                  <MenuItem value={20}>COMPLETE</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={10}>
-              <Typography
-                variant="h5"
-                component="h2"
-                align="center"
-                sx={{ border: "1px solid red", margin: "0" }}
-              >
-                Item Information
-              </Typography>
-            </Grid>
-            <Grid item xs={2}>
-              <FormControl
-                variant="standard"
-                fullWidth
-                sx={{ minWidth: 120, border: "1px solid red" }}
-              >
-                <InputLabel id="demo-simple-select-standard-label">
-                  Status
-                </InputLabel>
-                <Select
-                  labelId="demo-simple-select-standard-label"
-                  id="demo-simple-select-standard"
-                  value={age}
-                  onChange={handleChange}
-                  label="Status"
-                >
-                  <MenuItem value={10}>IN PROGRESS</MenuItem>
-                  <MenuItem value={20}>COMPLETE</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={10}>
-              <Typography
-                variant="h5"
-                component="h2"
-                align="center"
-                sx={{ border: "1px solid red", margin: "0" }}
-              >
-                Item Information
-              </Typography>
-            </Grid>
-            <Grid item xs={2}>
-              <FormControl
-                variant="standard"
-                fullWidth
-                sx={{ minWidth: 120, border: "1px solid red" }}
-              >
-                <InputLabel id="demo-simple-select-standard-label">
-                  Status
-                </InputLabel>
-                <Select
-                  labelId="demo-simple-select-standard-label"
-                  id="demo-simple-select-standard"
-                  value={age}
-                  onChange={handleChange}
-                  label="Status"
-                >
-                  <MenuItem value={10}>IN PROGRESS</MenuItem>
-                  <MenuItem value={20}>COMPLETE</MenuItem>
-                </Select>
-              </FormControl>
             </Grid>
           </Grid>
         </Box>

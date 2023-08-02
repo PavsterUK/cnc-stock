@@ -138,7 +138,7 @@ export default function PersistentDrawerLeft({
         <Divider />
         <List>
           <ListItem>
-            <PurchaseRequest />
+            <PurchaseRequest authenticatedUser={authenticatedUser} />
           </ListItem>
           <Divider />
           <ListItem>

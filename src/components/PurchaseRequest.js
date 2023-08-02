@@ -12,6 +12,12 @@ import {
   TextField,
 } from "@mui/material/";
 import HintWordEndingInput from "./HintWordEndingInput";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import axios from "axios";
 
 const style = {
   position: "absolute",
@@ -29,26 +35,39 @@ const style = {
   flexDirection: "column",
 };
 
-const PurchaseRequest = () => {
+export default function PurchaseRequest({ authenticatedUser }) {
   const [open, setOpen] = React.useState(false);
-  const [inputValue, setInputValue] = React.useState("");
+  const [requestBody, setRequestBody] = React.useState("");
   const [lastWord, setLastWord] = React.useState("");
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const handleSendRequest = () => {
-    handleClose();
-  };
-
   const handleInputChange = (event) => {
-    setInputValue(event.target.value);
+    setRequestBody(event.target.value);
     setLastWord(getLastWordFromString(event.target.value));
   };
 
   const getLastWordFromString = (str) => {
     const words = str.trim().split(" ");
     return words[words.length - 1];
+  };
+
+  const handleSendRequest = () => {
+    axios
+      .post("/api/purchase-request", {
+        requestDate: new Date().toLocaleDateString("en-GB"),
+        requestBody: requestBody,
+        requester: authenticatedUser,
+        isComplete: false,
+      })
+      .then((response) => {
+        console.log("New Purchase Request created:", response.data);
+        handleClose();
+      })
+      .catch((error) => {
+        console.error("Error creating Purchase Request: ", error);
+      });
   };
 
   return (
@@ -82,10 +101,10 @@ const PurchaseRequest = () => {
               <TableRow>
                 <TableCell>
                   <TextField
-                    value={inputValue}
+                    value={requestBody}
                     onChange={handleInputChange}
                     id="outlined-multiline-static"
-                    label="Enter item('s) information here"
+                    label="Enter item('s) details here..."
                     multiline
                     rows={8}
                     sx={{ width: "100%" }}
@@ -95,7 +114,10 @@ const PurchaseRequest = () => {
               </TableRow>
               <TableRow>
                 <TableCell>
-                  <Button>Ok</Button>
+                  <ConfirmationDialog
+                    closeParent={handleClose}
+                    handleSendRequest={handleSendRequest}
+                  />
                 </TableCell>
               </TableRow>
             </TableBody>
@@ -104,6 +126,45 @@ const PurchaseRequest = () => {
       </Modal>
     </>
   );
-};
+}
 
-export default PurchaseRequest;
+function ConfirmationDialog({ closeParent, handleSendRequest }) {
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    handleSendRequest();
+    setOpen(false);
+    closeParent();
+  };
+
+  return (
+    <div>
+      <Button fullWidth variant="contained" onClick={handleClickOpen}>
+        SEND REQUEST
+      </Button>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"Request Sent!"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            You request has been successfully submitted. You can now put your
+            feet up and relax.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} autoFocus>
+            Cheers mate!
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </div>
+  );
+}
