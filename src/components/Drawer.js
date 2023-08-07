@@ -15,7 +15,6 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ListItem from "@mui/material/ListItem";
 import LogoutIcon from "@mui/icons-material/Logout";
-import PurchaseRequest from "./PurchaseRequest";
 import AddOrEditStockItem from "./AddOrEditStockItem";
 import PurchaseRequestsManager from "./PurchaseRequestsManager";
 
@@ -138,15 +137,11 @@ export default function PersistentDrawerLeft({
         <Divider />
         <List>
           <ListItem>
-            <PurchaseRequest authenticatedUser={authenticatedUser} />
-          </ListItem>
-          <Divider />
-          <ListItem>
             <AddOrEditStockItem />
           </ListItem>
           <Divider />
           <ListItem>
-            <PurchaseRequestsManager />
+            <PurchaseRequestsManager authenticatedUser={authenticatedUser} />
           </ListItem>
         </List>
         <Divider />

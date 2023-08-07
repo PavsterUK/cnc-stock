@@ -72,8 +72,8 @@ export default function PurchaseRequest({ authenticatedUser }) {
 
   return (
     <>
-      <Button variant="outlined" align="center" onClick={handleOpen} fullWidth>
-        Purchase Request
+      <Button variant="contained" align="center" onClick={handleOpen}>
+        Create New{" "}
       </Button>
       <Modal
         open={open}
