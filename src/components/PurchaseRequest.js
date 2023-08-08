@@ -73,7 +73,7 @@ export default function PurchaseRequest({ authenticatedUser }) {
   return (
     <>
       <Button variant="contained" align="center" onClick={handleOpen}>
-        Create New{" "}
+        Add New
       </Button>
       <Modal
         open={open}

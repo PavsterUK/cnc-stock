@@ -4,9 +4,11 @@ import { Box, Typography, Button, Grid } from "@mui/material/";
 import PurchaseRequest from "./PurchaseRequest";
 import axios from "axios";
 import PurchaseRequestItem from "./PurchaseRequestItem";
+import PurchaseHistory from "./PurchaseHistory";
 
 const style = {
   position: "absolute",
+  top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: "90vw",
@@ -17,13 +19,12 @@ const style = {
   p: 4,
   display: "flex",
   alignItems: "center",
-  justifyContent: "center",
   flexDirection: "column",
 };
 
 export default function PurchaseRequestsManager({ authenticatedUser }) {
   const [open, setOpen] = React.useState(false);
-  const [purchaseRequests, setPurchaseRequests] = React.useState();
+  const [purchaseRequests, setPurchaseRequests] = React.useState([]);
 
   React.useEffect(() => {
     const fetchPurchaseRequests = async () => {
@@ -31,13 +32,13 @@ export default function PurchaseRequestsManager({ authenticatedUser }) {
         const response = await axios.get(
           "http://localhost:8080/api/purchase-requests"
         );
+
         setPurchaseRequests(response.data);
       } catch (error) {
         // Handle error if the request fails
         console.error("Error fetching purchase request list:", error);
       }
     };
-
     fetchPurchaseRequests();
   }, []);
 
@@ -61,91 +62,104 @@ export default function PurchaseRequestsManager({ authenticatedUser }) {
           }}
         >
           <Grid container spacing={2}>
-            <Grid item>
+            <Grid
+              item
+              xs={2}
+              sm={2}
+              md={2}
+              lg={2}
+              sx={{
+                marginBottom: "2em",
+              }}
+            >
               <PurchaseRequest authenticatedUser={authenticatedUser} />
-            </Grid>
-            <Grid item xs={12} sm={12}>
-              <Typography
-                variant="h5"
-                component="h2"
-                align="center"
-                sx={{ fontWeight: "bold" }}
-              >
-                PURCHASE REQUESTS
-              </Typography>
             </Grid>
             <Grid
               item
-              xs={3}
-              sm={3}
-              md={3}
-              lg={3}
+              xs={10}
+              sm={10}
+              md={10}
+              lg={10}
+              sx={{
+                marginBottom: "2em",
+              }}
+            >
+              <PurchaseHistory/>
+            </Grid>
+
+            <Grid
+              item
+              xs={8}
+              sm={8}
+              md={8}
+              lg={8}
               sx={{
                 fontWeight: "bold",
-                borderRight: "1px solid black",
+                borderRight: "3px solid black",
+                borderLeft: "3px solid black",
                 borderBottom: "3px solid black",
                 textAlign: "center",
               }}
             >
-              <Typography variant="h7" component="h7">
+              <Typography variant="h5" component="h5">
                 {"Requested Item(s)"}
               </Typography>
             </Grid>
 
             <Grid
               item
-              xs={3}
-              sm={3}
-              md={3}
-              lg={3}
+              xs={1.5}
+              sm={1.5}
+              md={1.5}
+              lg={1.5}
               sx={{
                 fontWeight: "bold",
-                borderRight: "1px solid black",
+                borderRight: "3px solid black",
                 borderBottom: "3px solid black",
                 textAlign: "center",
               }}
             >
-              <Typography variant="h7" component="h7">
+              <Typography variant="h5" component="h5">
                 Requested By
               </Typography>
             </Grid>
 
             <Grid
               item
-              xs={3}
-              sm={3}
-              md={3}
-              lg={3}
+              xs={1}
+              sm={1}
+              md={1}
+              lg={1}
               sx={{
                 fontWeight: "bold",
-                borderRight: "1px solid black",
+                borderRight: "3px solid black",
                 borderBottom: "3px solid black",
                 textAlign: "center",
               }}
             >
-              <Typography variant="h7" component="h7">
+              <Typography variant="h5" component="h5">
                 Request Date
               </Typography>
             </Grid>
             <Grid
               item
-              xs={3}
-              sm={3}
-              md={3}
-              lg={3}
+              xs={1.5}
+              sm={1.5}
+              md={1.5}
+              lg={1.5}
               sx={{
                 fontWeight: "bold",
-                borderRight: "1px solid black",
+                borderRight: "3px solid black",
                 borderBottom: "3px solid black",
                 textAlign: "center",
               }}
             >
-              <Typography variant="h7" component="h7">
+              <Typography variant="h5" component="h5">
                 Status
               </Typography>
             </Grid>
             {purchaseRequests.map((item) => (
-              <PurchaseRequestItem itemData={item} />
+              <PurchaseRequestItem key={item.id} itemData={item} />
             ))}
           </Grid>
         </Box>
