@@ -35,7 +35,10 @@ const style = {
   flexDirection: "column",
 };
 
-export default function PurchaseRequest({ authenticatedUser }) {
+export default function PurchaseRequest({
+  authenticatedUser,
+  setPurchaseRequests,
+}) {
   const [open, setOpen] = React.useState(false);
   const [requestBody, setRequestBody] = React.useState("");
   const [lastWord, setLastWord] = React.useState("");
@@ -54,15 +57,18 @@ export default function PurchaseRequest({ authenticatedUser }) {
   };
 
   const handleSendRequest = () => {
+    const purReq = {
+      requestDate: new Date().toLocaleDateString("en-GB"),
+      requestBody: requestBody,
+      requester: authenticatedUser,
+      isComplete: false,
+    };
+
     axios
-      .post("/api/purchase-request", {
-        requestDate: new Date().toLocaleDateString("en-GB"),
-        requestBody: requestBody,
-        requester: authenticatedUser,
-        isComplete: false,
-      })
+      .post("/api/purchase-request", purReq)
       .then((response) => {
         console.log("New Purchase Request created:", response.data);
+        setPurchaseRequests((prevData) => [...prevData, response.data]);
         handleClose();
       })
       .catch((error) => {
@@ -73,7 +79,7 @@ export default function PurchaseRequest({ authenticatedUser }) {
   return (
     <>
       <Button variant="contained" align="center" onClick={handleOpen}>
-        Add New
+        Request new item
       </Button>
       <Modal
         open={open}
@@ -92,7 +98,7 @@ export default function PurchaseRequest({ authenticatedUser }) {
                     align="center"
                     sx={{ fontWeight: "bold" }}
                   >
-                    PURCHASE REQUEST
+                    NEW PURCHASE REQUEST
                   </Typography>
                 </TableCell>
               </TableRow>

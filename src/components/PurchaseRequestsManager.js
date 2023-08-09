@@ -13,6 +13,7 @@ const style = {
   transform: "translate(-50%, -50%)",
   width: "90vw",
   minHeight: "90vh",
+  maxHeight: "90vh",
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
@@ -40,7 +41,7 @@ export default function PurchaseRequestsManager({ authenticatedUser }) {
       }
     };
     fetchPurchaseRequests();
-  }, []);
+  }, [open]);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -61,32 +62,25 @@ export default function PurchaseRequestsManager({ authenticatedUser }) {
             ...style,
           }}
         >
-          <Grid container spacing={2}>
-            <Grid
-              item
-              xs={2}
-              sm={2}
-              md={2}
-              lg={2}
-              sx={{
-                marginBottom: "2em",
-              }}
-            >
-              <PurchaseRequest authenticatedUser={authenticatedUser} />
-            </Grid>
-            <Grid
-              item
-              xs={10}
-              sm={10}
-              md={10}
-              lg={10}
-              sx={{
-                marginBottom: "2em",
-              }}
-            >
-              <PurchaseHistory/>
-            </Grid>
+          <PurchaseHistory />
 
+          <Grid
+            item
+            xs={2}
+            sm={2}
+            md={2}
+            lg={2}
+            sx={{
+              marginBottom: "2em",
+            }}
+          >
+            <PurchaseRequest
+              setPurchaseRequests={setPurchaseRequests}
+              authenticatedUser={authenticatedUser}
+            />
+          </Grid>
+
+          <Grid container>
             <Grid
               item
               xs={8}
@@ -99,9 +93,10 @@ export default function PurchaseRequestsManager({ authenticatedUser }) {
                 borderLeft: "3px solid black",
                 borderBottom: "3px solid black",
                 textAlign: "center",
+                padding: "0 .5em !important",
               }}
             >
-              <Typography variant="h5" component="h5">
+              <Typography variant="h6" component="h6">
                 {"Requested Item(s)"}
               </Typography>
             </Grid>
@@ -117,9 +112,10 @@ export default function PurchaseRequestsManager({ authenticatedUser }) {
                 borderRight: "3px solid black",
                 borderBottom: "3px solid black",
                 textAlign: "center",
+                padding: "0 .5em !important",
               }}
             >
-              <Typography variant="h5" component="h5">
+              <Typography variant="h6" component="h6">
                 Requested By
               </Typography>
             </Grid>
@@ -135,10 +131,11 @@ export default function PurchaseRequestsManager({ authenticatedUser }) {
                 borderRight: "3px solid black",
                 borderBottom: "3px solid black",
                 textAlign: "center",
+                padding: "0 .5em !important",
               }}
             >
-              <Typography variant="h5" component="h5">
-                Request Date
+              <Typography variant="h6" component="h6">
+                Date
               </Typography>
             </Grid>
             <Grid
@@ -152,15 +149,19 @@ export default function PurchaseRequestsManager({ authenticatedUser }) {
                 borderRight: "3px solid black",
                 borderBottom: "3px solid black",
                 textAlign: "center",
+                padding: "0 .5em !important",
               }}
             >
-              <Typography variant="h5" component="h5">
+              <Typography variant="h6" component="h6">
                 Status
               </Typography>
             </Grid>
-            {purchaseRequests.map((item) => (
-              <PurchaseRequestItem key={item.id} itemData={item} />
-            ))}
+          </Grid>
+          <Grid container sx={{ overflow: "auto" }}>
+            {purchaseRequests &&
+              purchaseRequests.map((item) => (
+                <PurchaseRequestItem key={item.id} itemData={item} />
+              ))}
           </Grid>
         </Box>
       </Modal>

@@ -116,7 +116,7 @@ export default function Dashboard({ setIsLoggedIn, authenticatedUser }) {
                   stockItem.title.toLowerCase().includes(searchKeyword.toLowerCase()))
               ) {
                 filteredItems.push(
-                  <StockItemModal key={stockItem.id} stockItemData={stockItem} />
+                  <StockItemModal key={stockItem.location} stockItemData={stockItem} />
                 );
               }
               return filteredItems;
