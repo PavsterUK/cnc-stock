@@ -68,6 +68,7 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 export default function PersistentDrawerLeft({
   setIsLoggedIn,
   authenticatedUser,
+  stockItems
 }) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
@@ -141,7 +142,7 @@ export default function PersistentDrawerLeft({
           </ListItem>
           <Divider />
           <ListItem>
-            <PurchaseRequestsManager authenticatedUser={authenticatedUser} />
+            <PurchaseRequestsManager stockItems={stockItems} authenticatedUser={authenticatedUser} />
           </ListItem>
         </List>
         <Divider />

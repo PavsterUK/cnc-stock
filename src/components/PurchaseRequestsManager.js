@@ -23,7 +23,10 @@ const style = {
   flexDirection: "column",
 };
 
-export default function PurchaseRequestsManager({ authenticatedUser }) {
+export default function PurchaseRequestsManager({
+  authenticatedUser,
+  stockItems,
+}) {
   const [open, setOpen] = React.useState(false);
   const [purchaseRequests, setPurchaseRequests] = React.useState([]);
 
@@ -64,23 +67,13 @@ export default function PurchaseRequestsManager({ authenticatedUser }) {
         >
           <PurchaseHistory />
 
-          <Grid
-            item
-            xs={2}
-            sm={2}
-            md={2}
-            lg={2}
-            sx={{
-              marginBottom: "2em",
-            }}
-          >
-            <PurchaseRequest
-              setPurchaseRequests={setPurchaseRequests}
-              authenticatedUser={authenticatedUser}
-            />
-          </Grid>
+          <PurchaseRequest
+            stockItems={stockItems}
+            setPurchaseRequests={setPurchaseRequests}
+            authenticatedUser={authenticatedUser}
+          />
 
-          <Grid container>
+          <Grid container mt="3em">
             <Grid
               item
               xs={8}
@@ -160,7 +153,7 @@ export default function PurchaseRequestsManager({ authenticatedUser }) {
           <Grid container sx={{ overflow: "auto" }}>
             {purchaseRequests &&
               purchaseRequests.map((item) => (
-                <PurchaseRequestItem key={item.id} itemData={item} />
+                !item.itemPurchased && <PurchaseRequestItem key={item.id} itemData={item} />
               ))}
           </Grid>
         </Box>

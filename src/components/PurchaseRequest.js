@@ -38,6 +38,7 @@ const style = {
 export default function PurchaseRequest({
   authenticatedUser,
   setPurchaseRequests,
+  stockItems,
 }) {
   const [open, setOpen] = React.useState(false);
   const [requestBody, setRequestBody] = React.useState("");
@@ -78,7 +79,12 @@ export default function PurchaseRequest({
 
   return (
     <>
-      <Button variant="contained" align="center" onClick={handleOpen}>
+      <Button
+        sx={{ position: "absolute", left: 10, top: 10 }}
+        variant="contained"
+        align="center"
+        onClick={handleOpen}
+      >
         Request new item
       </Button>
       <Modal
@@ -115,7 +121,12 @@ export default function PurchaseRequest({
                     rows={8}
                     sx={{ width: "100%" }}
                   />
-                  {lastWord && <HintWordEndingInput word={lastWord} />}
+                  {lastWord && (
+                    <HintWordEndingInput
+                      word={lastWord}
+                      stockItems={stockItems}
+                    />
+                  )}
                 </TableCell>
               </TableRow>
               <TableRow>

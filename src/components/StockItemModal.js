@@ -277,7 +277,7 @@ export default function StockItemModal({ stockItemData }) {
               component="h2"
               align="center"
             >
-              {isTake ? "TAKE" : "RETURN"}
+              {isTake ? "Take" : "Return"}
             </Typography>
 
             <Button
@@ -310,7 +310,7 @@ export default function StockItemModal({ stockItemData }) {
               component="h2"
               align="center"
             >
-              {"ITEM(S)"}
+              {"Item(s)"}
             </Typography>
           </div>
 

@@ -60,6 +60,7 @@ export default function Dashboard({ setIsLoggedIn, authenticatedUser }) {
             <Drawer
               setIsLoggedIn={setIsLoggedIn}
               authenticatedUser={authenticatedUser}
+              stockItems={stockItems}
             />
           </Typography>
 
