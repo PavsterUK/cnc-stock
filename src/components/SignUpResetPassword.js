@@ -5,6 +5,7 @@ import Button from "@mui/material/Button";
 import Link from "@mui/material/Link";
 import TextField from "@mui/material/TextField";
 import axios from "axios";
+import BASE_URL from "./baseURL";
 
 const style = {
   position: "absolute",
@@ -59,7 +60,7 @@ export default function SignUpResetPassword({ isSignUp }) {
       if (isSignUp) {
         // For Sign Up - Create a new user
         axios
-          .post("/api/users/add", {
+          .post(`${BASE_URL}/api/users/add`, {
             rotavalID,
             name,
             surname,
@@ -82,7 +83,7 @@ export default function SignUpResetPassword({ isSignUp }) {
         // For Reset Password - Update password if the user exists
         axios
           .put(
-            `/api/users/updatePassword/${rotavalID}?adminCode=${adminCode}`,
+            `${BASE_URL}/api/users/updatePassword/${rotavalID}?adminCode=${adminCode}`,
             password
           )
           .then((response) => {

@@ -5,6 +5,7 @@ import PurchaseRequest from "./PurchaseRequest";
 import axios from "axios";
 import PurchaseRequestItem from "./PurchaseRequestItem";
 import PurchaseHistory from "./PurchaseHistory";
+import BASE_URL from "./baseURL";
 
 const style = {
   position: "absolute",
@@ -34,7 +35,7 @@ export default function PurchaseRequestsManager({
     const fetchPurchaseRequests = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8080/api/purchase-requests"
+          `${BASE_URL}/api/purchase-requests`
         );
 
         setPurchaseRequests(response.data);

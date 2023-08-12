@@ -15,6 +15,7 @@ import { HorizontalRule, Add } from "@mui/icons-material";
 import styles from "./StockItemModal.module.css";
 import AddOrEditStockItem from "./AddOrEditStockItem";
 import axios from "axios";
+import BASE_URL from "./baseURL";
 
 const style = {
   position: "absolute",
@@ -68,7 +69,10 @@ export default function StockItemModal({ stockItemData }) {
     }
 
     axios
-      .put(`/api/stock-item/${stockItemData.location}`, stockItemData)
+      .put(
+        `${BASE_URL}/api/stock-item/${stockItemData.location}`,
+        stockItemData
+      )
       .then((response) => {
         // Handle success
         setFeedbackMessage(
@@ -339,7 +343,13 @@ export default function StockItemModal({ stockItemData }) {
               Take
             </Button>
           </div>
-          <Typography mt={"1em"} color="error" variant="h4" component="h2" align="center">
+          <Typography
+            mt={"1em"}
+            color="error"
+            variant="h4"
+            component="h2"
+            align="center"
+          >
             {feedbackMessage}
           </Typography>
         </Box>

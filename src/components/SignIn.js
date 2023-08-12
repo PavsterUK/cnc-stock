@@ -9,7 +9,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "axios";
-
+import BASE_URL from "./baseURL";
 import LoginErrorModal from "./LoginErrorModal";
 import SignUpResetPassword from "./SignUpResetPassword";
 
@@ -52,22 +52,19 @@ export default function SignIn({ setIsLoggedIn, setAuthenticatedUser }) {
     };
   });
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const formData = new FormData();
+    formData.append("rotavalId", rotavalIDRef.current.value);
+    formData.append("password", passwordRef.current.value);
 
     try {
-      const formData = new FormData();
-      formData.append("rotavalId", rotavalIDRef.current.value);
-      formData.append("password", passwordRef.current.value);
-
-      const response = await axios.post(
-        "http://localhost:8080/api/signin",
-        formData
-      );
+      const response = await axios.post(`${BASE_URL}/api/signin`, formData);
 
       setIsLoggedIn(true);
-      setAuthenticatedUser(`Employee: ${rotavalIDRef.current.value} - ${response.data}` );
+      setAuthenticatedUser(
+        `Employee: ${rotavalIDRef.current.value} - ${response.data}`
+      );
     } catch (error) {
       console.error("Sign-in error:", error);
       setIsLoginError(true);

@@ -5,6 +5,7 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import axios from "axios";
 import { Grid } from "@mui/material";
+import BASE_URL from "./baseURL";
 
 const style = {
   position: "absolute",
@@ -33,7 +34,7 @@ const PurchaseHistory = () => {
     const fetchPurchaseRequests = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8080/api/purchase-requests"
+          `${BASE_URL}/api/purchase-requests`
         );
 
         setPurchaseRequests(response.data);

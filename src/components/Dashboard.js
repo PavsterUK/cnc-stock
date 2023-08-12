@@ -12,6 +12,7 @@ import CategorySelector from "./CategorySelector";
 import StockItemModal from "./StockItemModal";
 import Drawer from "./Drawer";
 import axios from "axios";
+import BASE_URL from "./baseURL";
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
@@ -30,7 +31,7 @@ export default function Dashboard({ setIsLoggedIn, authenticatedUser }) {
     const fetchStockItems = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8080/api/stock-list"
+          `${BASE_URL}/api/stock-list`
         );
         setStockItems(response.data);
       } catch (error) {

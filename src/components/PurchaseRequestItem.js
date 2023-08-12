@@ -1,6 +1,7 @@
 import React from "react";
 import { Typography, Grid, Select, MenuItem } from "@mui/material/";
 import axios from "axios";
+import BASE_URL from "./baseURL";
 
 const PurchaseRequestItem = ({ itemData }) => {
   const [itemPurchaseStatus, setItemPurchaseStatus] = React.useState(
@@ -26,10 +27,12 @@ const PurchaseRequestItem = ({ itemData }) => {
     }
   };
 
+  console.log(itemData);
+  
   const deletePurchaseRequest = async () => {
     try {
       await axios.delete(
-        `http://localhost:8080/api/purchase-request/${itemData.id}`
+        `${BASE_URL}/api/purchase-request/${itemData.id}`
       );
       //Succes logic
     } catch (error) {
@@ -43,7 +46,7 @@ const PurchaseRequestItem = ({ itemData }) => {
 
     try {
       await axios.put(
-        `http://localhost:8080/api/purchase-request/${itemData.id}`,
+        `${BASE_URL}/api/purchase-request/${itemData.id}`,
         {
           ...itemData, // Existing purchase request data
           itemPurchased: isItemPurchased, // Updated property

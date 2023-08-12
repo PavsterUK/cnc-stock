@@ -18,6 +18,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import axios from "axios";
+import BASE_URL from "./baseURL";
 
 const style = {
   position: "absolute",
@@ -66,7 +67,7 @@ export default function PurchaseRequest({
     };
 
     axios
-      .post("/api/purchase-request", purReq)
+      .post(`${BASE_URL}/api/purchase-request`, purReq)
       .then((response) => {
         console.log("New Purchase Request created:", response.data);
         setPurchaseRequests((prevData) => [...prevData, response.data]);

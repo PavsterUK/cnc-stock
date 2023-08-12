@@ -17,6 +17,7 @@ import ListItem from "@mui/material/ListItem";
 import LogoutIcon from "@mui/icons-material/Logout";
 import AddOrEditStockItem from "./AddOrEditStockItem";
 import PurchaseRequestsManager from "./PurchaseRequestsManager";
+import { ClickAwayListener } from "@mui/material";
 
 const drawerWidth = 240;
 
@@ -68,7 +69,7 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 export default function PersistentDrawerLeft({
   setIsLoggedIn,
   authenticatedUser,
-  stockItems
+  stockItems,
 }) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
@@ -113,40 +114,49 @@ export default function PersistentDrawerLeft({
           </Button>
         </Toolbar>
       </AppBar>
-      <Drawer
-        sx={{
-          width: drawerWidth,
-          flexShrink: 0,
-          "& .MuiDrawer-paper": {
-            width: drawerWidth,
-            boxSizing: "border-box",
-          },
-        }}
-        variant="persistent"
-        anchor="left"
-        open={open}
+      <ClickAwayListener
+        mouseEvent="onMouseDown"
+        touchEvent="onTouchStart"
+        onClickAway={() => open && handleDrawerClose()}
       >
-        <DrawerHeader>
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === "ltr" ? (
-              <ChevronLeftIcon />
-            ) : (
-              <ChevronRightIcon />
-            )}
-          </IconButton>
-        </DrawerHeader>
-        <Divider />
-        <List>
-          <ListItem>
-            <AddOrEditStockItem />
-          </ListItem>
+        <Drawer
+          sx={{
+            width: drawerWidth,
+            flexShrink: 0,
+            "& .MuiDrawer-paper": {
+              width: drawerWidth,
+              boxSizing: "border-box",
+            },
+          }}
+          variant="persistent"
+          anchor="left"
+          open={open}
+        >
+          <DrawerHeader>
+            <IconButton onClick={handleDrawerClose}>
+              {theme.direction === "ltr" ? (
+                <ChevronLeftIcon />
+              ) : (
+                <ChevronRightIcon />
+              )}
+            </IconButton>
+          </DrawerHeader>
           <Divider />
-          <ListItem>
-            <PurchaseRequestsManager stockItems={stockItems} authenticatedUser={authenticatedUser} />
-          </ListItem>
-        </List>
-        <Divider />
-      </Drawer>
+          <List>
+            <ListItem>
+              <AddOrEditStockItem />
+            </ListItem>
+            <Divider />
+            <ListItem>
+              <PurchaseRequestsManager
+                stockItems={stockItems}
+                authenticatedUser={authenticatedUser}
+              />
+            </ListItem>
+          </List>
+          <Divider />
+        </Drawer>
+      </ClickAwayListener>
       <Main open={open}></Main>
     </Box>
   );

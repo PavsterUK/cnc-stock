@@ -16,6 +16,7 @@ import FormControl from "@mui/material/FormControl";
 import EditIcon from "@mui/icons-material/Edit";
 import axios from "axios";
 import DeleteConfirmDialog from "./DeleteConfirmDialog";
+import BASE_URL from "./baseURL";
 import categories from "./categories";
 
 const style = {
@@ -134,7 +135,7 @@ export default function AddOrEditStockItem({
     if (isEditMode) {
       // If in edit mode, update the existing item
       axios
-        .put(`/api/stock-item/${stockItemData.location}`, itemData)
+        .put(`${BASE_URL}/api/stock-item/${stockItemData.location}`, itemData)
         .then((response) => {
           // Handle success
           handleClose();
@@ -149,7 +150,7 @@ export default function AddOrEditStockItem({
     } else {
       // If not in edit mode, create a new item
       axios
-        .post("/api/stock-item", itemData)
+        .post(`${BASE_URL}/api/stock-item`, itemData)
         .then((response) => {
           handleClose();
         })
@@ -166,7 +167,7 @@ export default function AddOrEditStockItem({
 
   const handleDeleteItem = () => {
     axios
-        .delete(`/api/stock-item/${stockItemData.location}`)
+        .delete(`${BASE_URL}/api/stock-item/${stockItemData.location}`)
         .then((response) => {
           // Handle success
           handleClose();
