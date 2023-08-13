@@ -1,11 +1,8 @@
 import { React, useState, useEffect } from "react";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
-import CssBaseline from "@mui/material/CssBaseline";
 import Grid from "@mui/material/Grid";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import GlobalStyles from "@mui/material/GlobalStyles";
 import Container from "@mui/material/Container";
 import { TextField } from "@mui/material";
 import CategorySelector from "./CategorySelector";
@@ -13,9 +10,7 @@ import StockItemModal from "./StockItemModal";
 import Drawer from "./Drawer";
 import axios from "axios";
 import BASE_URL from "./baseURL";
-
-// TODO remove, this demo shouldn't need to reset the theme.
-const defaultTheme = createTheme();
+import styles from "./Dashboard.module.css";
 
 export default function Dashboard({ setIsLoggedIn, authenticatedUser }) {
   const [stockItems, setStockItems] = useState([]);
@@ -30,9 +25,7 @@ export default function Dashboard({ setIsLoggedIn, authenticatedUser }) {
     // Function to fetch stock items from the server
     const fetchStockItems = async () => {
       try {
-        const response = await axios.get(
-          `${BASE_URL}/api/stock-list`
-        );
+        const response = await axios.get(`${BASE_URL}/api/stock-list`);
         setStockItems(response.data);
       } catch (error) {
         // Handle error if the request fails
@@ -45,11 +38,7 @@ export default function Dashboard({ setIsLoggedIn, authenticatedUser }) {
   }, []);
 
   return (
-    <ThemeProvider theme={defaultTheme}>
-      <GlobalStyles
-        styles={{ ul: { margin: 0, padding: 0, listStyle: "none" } }}
-      />
-      <CssBaseline />
+    <div className={styles.container}>
       <AppBar
         position="static"
         color="default"
@@ -71,17 +60,12 @@ export default function Dashboard({ setIsLoggedIn, authenticatedUser }) {
         </Toolbar>
       </AppBar>
       {/* Search Bar  */}
-      <Container
-        disableGutters
-        maxWidth="sm"
-        component="main"
-        sx={{ pt: 8, pb: 6 }}
-      >
+      <div className={styles.searchBarContainer}>
         <Typography
           component="h1"
           variant="h4"
           align="center"
-          color="text.primary"
+          color="#000"
           gutterBottom
         >
           Find Items
@@ -91,21 +75,21 @@ export default function Dashboard({ setIsLoggedIn, authenticatedUser }) {
           disableGutters
           maxWidth="sm"
           component="main"
-          sx={{ display: "flex" }}
+          sx={{ display: "flex", justifyContent: "center",  }}
         >
           <CategorySelector
             itemCategory={itemCategory}
             setItemCategory={setItemCategory}
           />
           <TextField
-            id="outlined-basic"
             label="Item keyword"
             variant="outlined"
             value={searchKeyword}
             onChange={handleInputChange}
+            size="large"
           />
         </Container>
-      </Container>
+      </div>
       {/* End search bar */}
       <Container maxWidth="md" component="main">
         <Grid container spacing={5} alignItems="flex-end">
@@ -113,12 +97,18 @@ export default function Dashboard({ setIsLoggedIn, authenticatedUser }) {
             {stockItems.reduce((filteredItems, stockItem) => {
               if (
                 (itemCategory.toLocaleLowerCase() === "all categories" ||
-                  stockItem.category.toLowerCase() === itemCategory.toLowerCase()) &&
-                (searchKeyword.trim() === "" || 
-                  stockItem.title.toLowerCase().includes(searchKeyword.toLowerCase()))
+                  stockItem.category.toLowerCase() ===
+                    itemCategory.toLowerCase()) &&
+                (searchKeyword.trim() === "" ||
+                  stockItem.title
+                    .toLowerCase()
+                    .includes(searchKeyword.toLowerCase()))
               ) {
                 filteredItems.push(
-                  <StockItemModal key={stockItem.location} stockItemData={stockItem} />
+                  <StockItemModal
+                    key={stockItem.location}
+                    stockItemData={stockItem}
+                  />
                 );
               }
               return filteredItems;
@@ -126,6 +116,6 @@ export default function Dashboard({ setIsLoggedIn, authenticatedUser }) {
           </Grid>
         </Grid>
       </Container>
-    </ThemeProvider>
+    </div>
   );
 }

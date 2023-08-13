@@ -17,7 +17,7 @@ import AddOrEditStockItem from "./AddOrEditStockItem";
 import axios from "axios";
 import BASE_URL from "./baseURL";
 
-const style = {
+const modalStyle = {
   position: "absolute",
   top: "40%",
   left: "50%",
@@ -42,6 +42,7 @@ export default function StockItemModal({ stockItemData }) {
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
     setOpen(false);
+    setFeedbackMessage("");
   };
 
   const decreaseNumber = () => {
@@ -91,17 +92,83 @@ export default function StockItemModal({ stockItemData }) {
   };
 
   return (
-    <div>
-      <Button fullWidth variant="outlined" onClick={handleOpen}>
-        {stockItemData.title}
+    <div className={styles.container}>
+      <Button
+        fullWidth
+        variant="outlined"
+        onClick={handleOpen}
+        sx={{
+          display: "flex",
+          justifyContent: "flex-start",
+          color: "#fff",
+          textTransform: "capitalize",
+          height: "100%!important",
+        }}
+      >
+        <div className={styles.location}>
+          <div className={styles.location__title}>Stock Qty</div>
+          <div className={styles.location__value}>{stockItemData.stockQty}</div>
+        </div>
+        <h2 className={styles.itemTitle}>{stockItemData.title}</h2>
+        <div className={styles.itemMaterials}>
+          <div
+            style={{
+              backgroundColor: stockItemData.materials.includes("P")
+                ? "#0eb6f7"
+                : "transparent",
+            }}
+            className={styles.itemMaterials__p}
+          ></div>
+          <div
+            style={{
+              backgroundColor: stockItemData.materials.includes("M")
+                ? "#f6ea02"
+                : "transparent",
+            }}
+            className={styles.itemMaterials__m}
+          ></div>
+          <div
+            style={{
+              backgroundColor: stockItemData.materials.includes("K")
+                ? "#e31c1e"
+                : "transparent",
+            }}
+            className={styles.itemMaterials__k}
+          ></div>
+          <div
+            style={{
+              backgroundColor: stockItemData.materials.includes("N")
+                ? "#2dc65b"
+                : "transparent",
+            }}
+            className={styles.itemMaterials__n}
+          ></div>
+          <div
+            style={{
+              backgroundColor: stockItemData.materials.includes("S")
+                ? "#f77b00"
+                : "transparent",
+            }}
+            className={styles.itemMaterials__s}
+          ></div>
+          <div
+            style={{
+              backgroundColor: stockItemData.materials.includes("H")
+                ? "#bababa"
+                : "transparent",
+            }}
+            className={styles.itemMaterials__h}
+          ></div>
+        </div>
       </Button>
+
       <Modal
         open={open}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>
+        <Box sx={modalStyle}>
           <div className={styles.editButtonWrapper}>
             <AddOrEditStockItem isEditMode stockItemData={stockItemData} />
           </div>
@@ -330,7 +397,7 @@ export default function StockItemModal({ stockItemData }) {
             </Button>
             <Switch
               className={styles.toggleSwitch}
-              isTake={isTake}
+              checked={isTake}
               onChange={handleToggleTakeorReturn}
             />
             <Button

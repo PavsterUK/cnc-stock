@@ -69,13 +69,16 @@ const PurchaseRequestItem = ({ itemData }) => {
         md={8}
         lg={8}
         sx={{
-          borderLeft: "1px solid black",
+          
           borderBottom: "1px solid black",
           backgroundColor: backgroundColor,
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          padding: "0 .5em !important",
+          padding: "1em !important",
+          marginTop: ".3em",
+          borderTopLeftRadius: "12px",
+          borderBottomLeftRadius: "12px"
         }}
       >
         <Typography variant="h6" component="h6">
@@ -96,7 +99,8 @@ const PurchaseRequestItem = ({ itemData }) => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          padding: "0 .5em !important",
+          padding: "1em !important",
+          marginTop: ".3em"
         }}
       >
         <Typography variant="h6" component="h6">
@@ -117,7 +121,8 @@ const PurchaseRequestItem = ({ itemData }) => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          padding: "0 .5em !important",
+          padding: "1em !important",
+          marginTop: ".3em"
         }}
       >
         <Typography variant="h6" component="h6">
@@ -137,7 +142,10 @@ const PurchaseRequestItem = ({ itemData }) => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          padding: "0 .5em !important",
+          padding: "1em !important",
+          marginTop: ".3em",
+          borderTopRightRadius: "12px",
+          borderBottomRightRadius: "12px"
         }}
       >
         <Select
@@ -147,8 +155,8 @@ const PurchaseRequestItem = ({ itemData }) => {
             backgroundColor: "lightgray",
           }}
         >
-          <MenuItem value="Done">Done</MenuItem>
-          <MenuItem value="In Progress">In Progress</MenuItem>
+          <MenuItem value="Done">Purchased</MenuItem>
+          <MenuItem value="In Progress">Not Purchased</MenuItem>
           <MenuItem value="Cancel">Cancel</MenuItem>
         </Select>
       </Grid>

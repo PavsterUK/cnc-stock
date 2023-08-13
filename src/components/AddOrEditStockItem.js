@@ -183,7 +183,7 @@ export default function AddOrEditStockItem({
 
   return (
     <>
-      <Button variant="outlined" align="center" onClick={handleOpen} fullWidth>
+      <Button variant="contained" align="center" onClick={handleOpen} fullWidth>
         {isEditMode ? <EditIcon /> : "Add New Item"}
       </Button>
       <Modal
