@@ -70,6 +70,7 @@ export default function PersistentDrawerLeft({
   setIsLoggedIn,
   authenticatedUser,
   stockItems,
+  setStockItems
 }) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
@@ -144,7 +145,7 @@ export default function PersistentDrawerLeft({
           <Divider />
           <List>
             <ListItem>
-              <AddOrEditStockItem />
+              <AddOrEditStockItem setStockItems={setStockItems} />
             </ListItem>
             <Divider />
             <ListItem>

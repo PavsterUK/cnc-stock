@@ -33,7 +33,11 @@ const modalStyle = {
   flexDirection: "column",
 };
 
-export default function StockItemModal({ stockItemData }) {
+export default function StockItemModal({
+  stockItemData,
+  setStockItems,
+  stockItems,
+}) {
   const [open, setOpen] = React.useState(false);
   const [isTake, setIsTake] = React.useState(true);
   const [vendQty, setVendQty] = React.useState(1);
@@ -170,7 +174,12 @@ export default function StockItemModal({ stockItemData }) {
       >
         <Box sx={modalStyle}>
           <div className={styles.editButtonWrapper}>
-            <AddOrEditStockItem isEditMode stockItemData={stockItemData} />
+            <AddOrEditStockItem
+              isEditMode
+              stockItemData={stockItemData}
+              setStockItems={setStockItems}
+              stockItems={stockItems}
+            />
           </div>
           <Typography
             sx={{ fontWeight: "bold" }}

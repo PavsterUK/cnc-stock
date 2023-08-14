@@ -51,6 +51,7 @@ export default function Dashboard({ setIsLoggedIn, authenticatedUser }) {
               setIsLoggedIn={setIsLoggedIn}
               authenticatedUser={authenticatedUser}
               stockItems={stockItems}
+              setStockItems={setStockItems}
             />
           </Typography>
 
@@ -75,7 +76,7 @@ export default function Dashboard({ setIsLoggedIn, authenticatedUser }) {
           disableGutters
           maxWidth="sm"
           component="main"
-          sx={{ display: "flex", justifyContent: "center",  }}
+          sx={{ display: "flex", justifyContent: "center" }}
         >
           <CategorySelector
             itemCategory={itemCategory}
@@ -86,7 +87,6 @@ export default function Dashboard({ setIsLoggedIn, authenticatedUser }) {
             variant="outlined"
             value={searchKeyword}
             onChange={handleInputChange}
-            size="large"
           />
         </Container>
       </div>
@@ -106,6 +106,8 @@ export default function Dashboard({ setIsLoggedIn, authenticatedUser }) {
               ) {
                 filteredItems.push(
                   <StockItemModal
+                    stockItems={stockItems}
+                    setStockItems={setStockItems}
                     key={stockItem.location}
                     stockItemData={stockItem}
                   />

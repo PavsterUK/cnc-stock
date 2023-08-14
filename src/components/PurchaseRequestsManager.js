@@ -53,7 +53,7 @@ export default function PurchaseRequestsManager({
   return (
     <>
       <Button variant="contained" align="center" onClick={handleOpen} fullWidth>
-        MANAGE PUR. REQ.
+        Purchase Requests
       </Button>
       <Modal
         open={open}

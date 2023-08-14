@@ -35,6 +35,8 @@ const style = {
 export default function AddOrEditStockItem({
   stockItemData = {},
   isEditMode = false,
+  setStockItems,
+  stockItems
 }) {
   const [open, setOpen] = React.useState(false);
   const [itemCodeOrTitle, setItemCodeOrTitle] = React.useState(
@@ -51,10 +53,12 @@ export default function AddOrEditStockItem({
   const [itemCategory, setItemCategory] = React.useState(
     stockItemData.category || ""
   );
-  const [minQty, setMinQty] = React.useState(stockItemData.minQty || "");
+  const [minQty, setMinQty] = React.useState(stockItemData.minQty || 0);
+  const [stockQty, setStockQty] = React.useState(stockItemData.stockQty || 0);
   const [isConstantStock, setIsConstantStock] = React.useState(
     stockItemData.isConstantStock || false
   );
+
   const [selectedAttributes, setSelectedAttributes] = React.useState(
     stockItemData.materials || []
   );
@@ -64,7 +68,6 @@ export default function AddOrEditStockItem({
   const [itemLocationError, setItemLocationError] = React.useState(false);
   const [supplierError, setSupplierError] = React.useState(false);
   const [categoryError, setCategoryError] = React.useState(false);
-  const [minQtyError, setMinQtyError] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState("");
 
   const handleOpen = () => setOpen(true);
@@ -77,7 +80,7 @@ export default function AddOrEditStockItem({
   const handleInputChange = (e, stateSetter, setError) => {
     const value = e.target.value;
     stateSetter(value);
-    setError(value.trim().length === 0);
+    setError && setError(value.trim().length === 0);
   };
 
   const handleAttributeChange = (event) => {
@@ -102,7 +105,6 @@ export default function AddOrEditStockItem({
     setItemLocationError(false);
     setSupplierError(false);
     setCategoryError(false);
-    setMinQtyError(false);
   };
 
   const isFormFilled = () => {
@@ -130,6 +132,7 @@ export default function AddOrEditStockItem({
       minQty: minQty,
       isConstantStock: isConstantStock,
       materials: selectedAttributes,
+      stockQty: stockQty,
     };
 
     if (isEditMode) {
@@ -139,10 +142,20 @@ export default function AddOrEditStockItem({
         .then((response) => {
           // Handle success
           handleClose();
+          setStockItems((prevItems) =>
+            prevItems.map((item) =>
+              item.location === stockItemData.location ? itemData : item
+            )
+          );
         })
         .catch((error) => {
           if (error.response && error.response.data) {
             setErrorMessage(error.response.data);
+            setStockItems((prevItems) =>
+              prevItems.map((item) =>
+                item.location === stockItemData.location ? itemData : item
+              )
+            );
           } else {
             setErrorMessage("Error occurred when saving new item.");
           }
@@ -153,6 +166,7 @@ export default function AddOrEditStockItem({
         .post(`${BASE_URL}/api/stock-item`, itemData)
         .then((response) => {
           handleClose();
+          setStockItems((prevItems) => [...prevItems, itemData]);
         })
         .catch((error) => {
           if (error.response && error.response.data) {
@@ -167,24 +181,28 @@ export default function AddOrEditStockItem({
 
   const handleDeleteItem = () => {
     axios
-        .delete(`${BASE_URL}/api/stock-item/${stockItemData.location}`)
-        .then((response) => {
-          // Handle success
-          handleClose();
-        })
-        .catch((error) => {
-          if (error.response && error.response.data) {
-            setErrorMessage(error.response.data);
-          } else {
-            setErrorMessage("Error occurred while trying to delete item.");
-          }
-        });
-  }
+      .delete(`${BASE_URL}/api/stock-item/${stockItemData.location}`)
+      .then((response) => {
+        // Handle success
+        const updatedStockItems = stockItems.filter(
+          (item) => item.location !== stockItemData.location
+        );
+        setStockItems(updatedStockItems);
+        handleClose();
+      })
+      .catch((error) => {
+        if (error.response && error.response.data) {
+          setErrorMessage(error.response.data);
+        } else {
+          setErrorMessage("Error occurred while trying to delete item.");
+        }
+      });
+  };
 
   return (
     <>
       <Button variant="contained" align="center" onClick={handleOpen} fullWidth>
-        {isEditMode ? <EditIcon /> : "Add New Item"}
+        {isEditMode ? <EditIcon /> : "New Stock Item"}
       </Button>
       <Modal
         open={open}
@@ -194,7 +212,10 @@ export default function AddOrEditStockItem({
       >
         <Grid container spacing={2} sx={style}>
           {isEditMode && (
-            <DeleteConfirmDialog handleDeleteItem={handleDeleteItem} itemTitle={stockItemData.title} />
+            <DeleteConfirmDialog
+              handleDeleteItem={handleDeleteItem}
+              itemTitle={stockItemData.title}
+            />
           )}
 
           <Grid item xs={12} md={12} lg={12}>
@@ -262,7 +283,7 @@ export default function AddOrEditStockItem({
               fullWidth
               required
               type="number"
-              inputProps={{min:0}}
+              inputProps={{ min: 0 }}
               id="outlined-required"
               label="Item Location"
               value={itemLocation}
@@ -413,23 +434,19 @@ export default function AddOrEditStockItem({
           <Grid item xs={6} md={3} lg={3}>
             <TextField
               fullWidth
-              required
               id="outlined-required"
-              label="Min Qty"
+              label="Alert Threshold Qty"
               type="number"
-              inputProps={{min:0}}
+              inputProps={{ min: 0 }}
               value={minQty}
-              onChange={(e) => handleInputChange(e, setMinQty, setMinQtyError)}
-              onBlur={(e) => handleInputChange(e, setMinQty, setMinQtyError)}
-              error={minQtyError}
-              helperText={minQtyError && "Field cannot be empty"}
+              onChange={(e) => handleInputChange(e, setMinQty)}
             />
           </Grid>
 
           <Grid item xs={6} md={3} lg={3}>
             <FormGroup>
               <FormControlLabel
-                label="CON STOCK"
+                label="CONSTANT STOCK"
                 control={
                   <Checkbox
                     checked={isConstantStock}
@@ -438,6 +455,17 @@ export default function AddOrEditStockItem({
                 }
               />
             </FormGroup>
+          </Grid>
+          <Grid item xs={6} md={3} lg={3}>
+            <TextField
+              fullWidth
+              id="outlined-required"
+              label="Stock Qty"
+              type="number"
+              inputProps={{ min: 0 }}
+              value={stockQty}
+              onChange={(e) => handleInputChange(e, setStockQty)}
+            />
           </Grid>
           <Grid item xs={12} md={12} lg={12}>
             {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
