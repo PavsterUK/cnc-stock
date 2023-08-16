@@ -12,6 +12,13 @@ import axios from "axios";
 import BASE_URL from "./baseURL";
 import styles from "./Dashboard.module.css";
 
+const extraCategories = {
+  brand: "brand",
+  description: "description",
+  location: "location",
+  supplier: "supplier",
+};
+
 export default function Dashboard({ setIsLoggedIn, authenticatedUser }) {
   const [stockItems, setStockItems] = useState([]);
   const [searchKeyword, setSearchKeyword] = useState("");
@@ -36,6 +43,40 @@ export default function Dashboard({ setIsLoggedIn, authenticatedUser }) {
     // Call the fetch function when the component mounts
     fetchStockItems();
   }, []);
+
+  const mapFilteredItems = (filteredItems) => {
+    return filteredItems.map((stockItem) => (
+      <StockItemModal
+        stockItems={stockItems}
+        setStockItems={setStockItems}
+        key={stockItem.location}
+        stockItemData={stockItem}
+      />
+    ));
+  };
+
+  const filterStockItemsByProperty = (propName) => {
+    const lowercasedPropName = propName.toLowerCase();
+    return stockItems.filter((stockItem) => {
+      return (
+        searchKeyword.trim() === "" ||
+        stockItem[lowercasedPropName]
+          .toString()
+          .toLowerCase()
+          .includes(searchKeyword.toLowerCase())
+      );
+    });
+  };
+
+  const filterStockItemsByCategory = () => {
+    return stockItems.filter(
+      (stockItem) =>
+        (itemCategory.toLocaleLowerCase() === "all categories" ||
+          stockItem.category.toLowerCase() === itemCategory.toLowerCase()) &&
+        (searchKeyword.trim() === "" ||
+          stockItem.title.toLowerCase().includes(searchKeyword.toLowerCase()))
+    );
+  };
 
   return (
     <div className={styles.container}>
@@ -94,27 +135,11 @@ export default function Dashboard({ setIsLoggedIn, authenticatedUser }) {
       <Container maxWidth="md" component="main">
         <Grid container spacing={5} alignItems="flex-end">
           <Grid item xs={12}>
-            {stockItems.reduce((filteredItems, stockItem) => {
-              if (
-                (itemCategory.toLocaleLowerCase() === "all categories" ||
-                  stockItem.category.toLowerCase() ===
-                    itemCategory.toLowerCase()) &&
-                (searchKeyword.trim() === "" ||
-                  stockItem.title
-                    .toLowerCase()
-                    .includes(searchKeyword.toLowerCase()))
-              ) {
-                filteredItems.push(
-                  <StockItemModal
-                    stockItems={stockItems}
-                    setStockItems={setStockItems}
-                    key={stockItem.location}
-                    stockItemData={stockItem}
-                  />
-                );
-              }
-              return filteredItems;
-            }, [])}
+            {["Brand", "Supplier", "Description", "Location"].includes(
+              itemCategory
+            )
+              ? mapFilteredItems(filterStockItemsByProperty(itemCategory))
+              : mapFilteredItems(filterStockItemsByCategory(itemCategory))}
           </Grid>
         </Grid>
       </Container>

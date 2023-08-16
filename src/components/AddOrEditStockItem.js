@@ -36,7 +36,7 @@ export default function AddOrEditStockItem({
   stockItemData = {},
   isEditMode = false,
   setStockItems,
-  stockItems
+  stockItems,
 }) {
   const [open, setOpen] = React.useState(false);
   const [itemCodeOrTitle, setItemCodeOrTitle] = React.useState(
@@ -151,11 +151,6 @@ export default function AddOrEditStockItem({
         .catch((error) => {
           if (error.response && error.response.data) {
             setErrorMessage(error.response.data);
-            setStockItems((prevItems) =>
-              prevItems.map((item) =>
-                item.location === stockItemData.location ? itemData : item
-              )
-            );
           } else {
             setErrorMessage("Error occurred when saving new item.");
           }
@@ -165,8 +160,8 @@ export default function AddOrEditStockItem({
       axios
         .post(`${BASE_URL}/api/stock-item`, itemData)
         .then((response) => {
+          setStockItems((prevItems) => [...prevItems, response.data]);
           handleClose();
-          setStockItems((prevItems) => [...prevItems, itemData]);
         })
         .catch((error) => {
           if (error.response && error.response.data) {

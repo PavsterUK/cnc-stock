@@ -1,10 +1,23 @@
+import { React, useState, useEffect } from "react";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import categories from "./categories";
 
 const CategorySelector = ({ searchCategory, setItemCategory }) => {
+  const [newCategories, setNewCategories] = useState(categories);
+
   const handleChange = (event) => {
     setItemCategory(event.target.value);
   };
+
+  useEffect(() => {
+    setNewCategories([
+      ...categories,
+      "Description",
+      "Supplier",
+      "Location",
+      "Brand",
+    ]);
+  }, []);
 
   return (
     <div>
@@ -19,7 +32,7 @@ const CategorySelector = ({ searchCategory, setItemCategory }) => {
           onChange={handleChange}
           sx={{ width: "13rem" }}
         >
-          {categories.map((category) => (
+          {newCategories.map((category) => (
             <MenuItem key={category} value={category}>
               {category}
             </MenuItem>
