@@ -10,13 +10,14 @@ const CategorySelector = ({ searchCategory, setItemCategory }) => {
   };
 
   useEffect(() => {
-    setNewCategories([
-      ...categories,
-      "Description",
-      "Supplier",
-      "Location",
-      "Brand",
-    ]);
+    const stockItemProps = ["Description", "Supplier", "Location", "Brand"];
+    const insertionIndex = 1;
+    const newArray = [
+      ...categories.slice(0, insertionIndex),
+      ...stockItemProps,
+      ...categories.slice(insertionIndex),
+    ];
+    setNewCategories(newArray);
   }, []);
 
   return (

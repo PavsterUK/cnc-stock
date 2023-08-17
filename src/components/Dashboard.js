@@ -12,13 +12,6 @@ import axios from "axios";
 import BASE_URL from "./baseURL";
 import styles from "./Dashboard.module.css";
 
-const extraCategories = {
-  brand: "brand",
-  description: "description",
-  location: "location",
-  supplier: "supplier",
-};
-
 export default function Dashboard({ setIsLoggedIn, authenticatedUser }) {
   const [stockItems, setStockItems] = useState([]);
   const [searchKeyword, setSearchKeyword] = useState("");
@@ -29,18 +22,15 @@ export default function Dashboard({ setIsLoggedIn, authenticatedUser }) {
   };
 
   useEffect(() => {
-    // Function to fetch stock items from the server
     const fetchStockItems = async () => {
       try {
         const response = await axios.get(`${BASE_URL}/api/stock-list`);
         setStockItems(response.data);
       } catch (error) {
-        // Handle error if the request fails
         console.error("Error fetching stock items:", error);
       }
     };
 
-    // Call the fetch function when the component mounts
     fetchStockItems();
   }, []);
 
@@ -77,6 +67,15 @@ export default function Dashboard({ setIsLoggedIn, authenticatedUser }) {
           stockItem.title.toLowerCase().includes(searchKeyword.toLowerCase()))
     );
   };
+
+  const filteredItems = [
+    "Brand",
+    "Supplier",
+    "Description",
+    "Location",
+  ].includes(itemCategory)
+    ? mapFilteredItems(filterStockItemsByProperty(itemCategory))
+    : mapFilteredItems(filterStockItemsByCategory(itemCategory));
 
   return (
     <div className={styles.container}>
@@ -132,14 +131,10 @@ export default function Dashboard({ setIsLoggedIn, authenticatedUser }) {
         </Container>
       </div>
       {/* End search bar */}
-      <Container maxWidth="md" component="main">
-        <Grid container spacing={5} alignItems="flex-end">
+      <Container component="main">
+        <Grid container spacing={5}>
           <Grid item xs={12}>
-            {["Brand", "Supplier", "Description", "Location"].includes(
-              itemCategory
-            )
-              ? mapFilteredItems(filterStockItemsByProperty(itemCategory))
-              : mapFilteredItems(filterStockItemsByCategory(itemCategory))}
+            {filteredItems}
           </Grid>
         </Grid>
       </Container>

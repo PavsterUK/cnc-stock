@@ -114,6 +114,15 @@ export default function StockItemModal({
           <div className={styles.location__value}>{stockItemData.stockQty}</div>
         </div>
         <h2 className={styles.itemTitle}>{stockItemData.title}</h2>
+        <div className={styles.itemDescription}>
+          <p>{stockItemData.description}</p>
+        </div>
+        <div className={styles.itemInfo}>
+          <div className={styles.itemInfo__brand}>{stockItemData.brand}</div>
+          <div className={styles.itemInfo__supplier}>
+            {stockItemData.supplier}
+          </div>
+        </div>
         <div className={styles.itemMaterials}>
           <div
             style={{
@@ -301,6 +310,116 @@ export default function StockItemModal({
                   align="center"
                 >
                   H
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell align="center">
+                  <Typography
+                    sx={{ fontWeight: "bold" }}
+                    variant="h6"
+                    component="h6"
+                    align="center"
+                  >
+                    Brand
+                  </Typography>
+                </TableCell>
+                <TableCell align="center" colSpan={7}>
+                  <Typography
+                    sx={{ fontWeight: "bold" }}
+                    variant="h6"
+                    component="h6"
+                    align="center"
+                  >
+                    {stockItemData.brand}
+                  </Typography>
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell align="center">
+                  <Typography
+                    sx={{ fontWeight: "bold" }}
+                    variant="h6"
+                    component="h6"
+                    align="center"
+                  >
+                    Supplier
+                  </Typography>
+                </TableCell>
+                <TableCell align="center" colSpan={7}>
+                  <Typography
+                    sx={{ fontWeight: "bold" }}
+                    variant="h6"
+                    component="h6"
+                    align="center"
+                  >
+                    {stockItemData.supplier}
+                  </Typography>
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell align="center">
+                  <Typography
+                    sx={{ fontWeight: "bold" }}
+                    variant="h6"
+                    component="h6"
+                    align="center"
+                  >
+                    Category
+                  </Typography>
+                </TableCell>
+                <TableCell align="center" colSpan={7}>
+                  <Typography
+                    sx={{ fontWeight: "bold" }}
+                    variant="h6"
+                    component="h6"
+                    align="center"
+                  >
+                    {stockItemData.category}
+                  </Typography>
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell align="center">
+                  <Typography
+                    sx={{ fontWeight: "bold" }}
+                    variant="h6"
+                    component="h6"
+                    align="center"
+                  >
+                    Alert Threshhold Qty
+                  </Typography>
+                </TableCell>
+                <TableCell align="center" colSpan={7}>
+                  <Typography
+                    sx={{ fontWeight: "bold" }}
+                    variant="h6"
+                    component="h6"
+                    align="center"
+                  >
+                    {stockItemData.minQty}
+                  </Typography>
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell align="center">
+                  <Typography
+                    sx={{ fontWeight: "bold" }}
+                    variant="h6"
+                    component="h6"
+                    align="center"
+                  >
+                    Constant Stock
+                  </Typography>
+                </TableCell>
+                <TableCell align="center" colSpan={7}>
+                  <Typography
+                    sx={{ fontWeight: "bold" }}
+                    variant="h6"
+                    component="h6"
+                    align="center"
+                  >
+                    {stockItemData.isConstantStock ? "YES" : "NO"}
+                  </Typography>
                 </TableCell>
               </TableRow>
               <TableRow>
