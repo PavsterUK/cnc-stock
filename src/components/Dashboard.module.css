@@ -1,13 +1,12 @@
 .container {
   display: flex;
   flex-direction: column;
-  margin: auto;
+  width: 100%;
+  
 }
 
 .searchBarContainer {
-  background-color: #ffffffe8;
-  padding: 3em;
-  border-radius: 12px;
-  width: fit-content;
   margin: 2em auto;
+  border: 1px solid red;
+  width: fit-content;
 }

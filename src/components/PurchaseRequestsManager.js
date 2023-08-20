@@ -16,7 +16,7 @@ const style = {
   minHeight: "90vh",
   maxHeight: "90vh",
   bgcolor: "background.paper",
-  border: "2px solid #000",
+  borderRadius: "10px",
   boxShadow: 24,
   p: 4,
   display: "flex",
@@ -78,9 +78,9 @@ export default function PurchaseRequestsManager({
             <Grid
               item
               xs={8}
-              sm={8}
-              md={8}
-              lg={8}
+              sm={5}
+              md={5}
+              lg={6}
               sx={{
                 fontWeight: "bold",
                 borderRight: "3px solid black",
@@ -98,9 +98,9 @@ export default function PurchaseRequestsManager({
             <Grid
               item
               xs={1.5}
-              sm={1.5}
-              md={1.5}
-              lg={1.5}
+              sm={2.5}
+              md={2.5}
+              lg={2}
               sx={{
                 fontWeight: "bold",
                 borderRight: "3px solid black",
@@ -117,9 +117,9 @@ export default function PurchaseRequestsManager({
             <Grid
               item
               xs={1}
-              sm={1}
-              md={1}
-              lg={1}
+              sm={2}
+              md={2}
+              lg={2}
               sx={{
                 fontWeight: "bold",
                 borderRight: "3px solid black",
@@ -135,9 +135,9 @@ export default function PurchaseRequestsManager({
             <Grid
               item
               xs={1.5}
-              sm={1.5}
-              md={1.5}
-              lg={1.5}
+              sm={2.5}
+              md={2.5}
+              lg={2}
               sx={{
                 fontWeight: "bold",
                 borderRight: "3px solid black",

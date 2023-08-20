@@ -97,83 +97,88 @@ export default function StockItemModal({
 
   return (
     <div className={styles.container}>
-      <Button
-        fullWidth
-        variant="outlined"
-        onClick={handleOpen}
-        sx={{
-          display: "flex",
-          justifyContent: "flex-start",
-          color: "#fff",
-          textTransform: "capitalize",
-          height: "100%!important",
-        }}
-      >
-        <div className={styles.location}>
-          <div className={styles.location__title}>Stock Qty</div>
-          <div className={styles.location__value}>{stockItemData.stockQty}</div>
-        </div>
-        <h2 className={styles.itemTitle}>{stockItemData.title}</h2>
-        <div className={styles.itemDescription}>
-          <p>{stockItemData.description}</p>
-        </div>
-        <div className={styles.itemInfo}>
-          <div className={styles.itemInfo__brand}>{stockItemData.brand}</div>
-          <div className={styles.itemInfo__supplier}>
-            {stockItemData.supplier}
+      <div className={styles.card}>
+        <Button
+          fullWidth
+          variant="outlined"
+          onClick={handleOpen}
+          sx={{
+            display: "flex",
+            justifyContent: "flex-start",
+            color: "#fff",
+            textTransform: "capitalize",
+            height: "100%!important",
+          }}
+        >
+          <div className={styles.itemQty}>
+            <div className={styles.itemQty__title}>Stock Qty</div>
+            <div className={styles.itemQty__value}>
+              {stockItemData.stockQty}
+            </div>
           </div>
-        </div>
-        <div className={styles.itemMaterials}>
-          <div
-            style={{
-              backgroundColor: stockItemData.materials.includes("P")
-                ? "#0eb6f7"
-                : "transparent",
-            }}
-            className={styles.itemMaterials__p}
-          ></div>
-          <div
-            style={{
-              backgroundColor: stockItemData.materials.includes("M")
-                ? "#f6ea02"
-                : "transparent",
-            }}
-            className={styles.itemMaterials__m}
-          ></div>
-          <div
-            style={{
-              backgroundColor: stockItemData.materials.includes("K")
-                ? "#e31c1e"
-                : "transparent",
-            }}
-            className={styles.itemMaterials__k}
-          ></div>
-          <div
-            style={{
-              backgroundColor: stockItemData.materials.includes("N")
-                ? "#2dc65b"
-                : "transparent",
-            }}
-            className={styles.itemMaterials__n}
-          ></div>
-          <div
-            style={{
-              backgroundColor: stockItemData.materials.includes("S")
-                ? "#f77b00"
-                : "transparent",
-            }}
-            className={styles.itemMaterials__s}
-          ></div>
-          <div
-            style={{
-              backgroundColor: stockItemData.materials.includes("H")
-                ? "#bababa"
-                : "transparent",
-            }}
-            className={styles.itemMaterials__h}
-          ></div>
-        </div>
-      </Button>
+          <h2 className={styles.itemTitle}>{stockItemData.title}</h2>
+          <div className={styles.itemDescription}>
+            <p>{stockItemData.description}</p>
+          </div>
+          <div className={styles.itemInfo}>
+            <div className={styles.itemInfo__brand}>{stockItemData.brand}</div>
+            <div className={styles.itemInfo__supplier}>
+              {stockItemData.supplier}
+            </div>
+          </div>
+          <div className={styles.itemMaterials}>
+            <div
+              style={{
+                backgroundColor: stockItemData.materials.includes("P")
+                  ? "#0eb6f7"
+                  : "transparent",
+              }}
+              className={styles.itemMaterials__p}
+            ></div>
+            <div
+              style={{
+                backgroundColor: stockItemData.materials.includes("M")
+                  ? "#f6ea02"
+                  : "transparent",
+              }}
+              className={styles.itemMaterials__m}
+            ></div>
+            <div
+              style={{
+                backgroundColor: stockItemData.materials.includes("K")
+                  ? "#e31c1e"
+                  : "transparent",
+              }}
+              className={styles.itemMaterials__k}
+            ></div>
+            <div
+              style={{
+                backgroundColor: stockItemData.materials.includes("N")
+                  ? "#2dc65b"
+                  : "transparent",
+              }}
+              className={styles.itemMaterials__n}
+            ></div>
+            <div
+              style={{
+                backgroundColor: stockItemData.materials.includes("S")
+                  ? "#f77b00"
+                  : "transparent",
+              }}
+              className={styles.itemMaterials__s}
+            ></div>
+            <div
+              style={{
+                backgroundColor: stockItemData.materials.includes("H")
+                  ? "#bababa"
+                  : "transparent",
+              }}
+              className={styles.itemMaterials__h}
+            ></div>
+          </div>
+          <div className={styles.location}><h5>Location</h5>{stockItemData.location}</div>
+        </Button>
+      </div>
 
       <Modal
         open={open}
@@ -418,7 +423,7 @@ export default function StockItemModal({
                     component="h6"
                     align="center"
                   >
-                    {stockItemData.isConstantStock ? "YES" : "NO"}
+                    {stockItemData.constantStock ? "YES" : "NO"}
                   </Typography>
                 </TableCell>
               </TableRow>

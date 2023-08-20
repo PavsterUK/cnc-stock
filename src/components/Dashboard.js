@@ -11,11 +11,15 @@ import Drawer from "./Drawer";
 import axios from "axios";
 import BASE_URL from "./baseURL";
 import styles from "./Dashboard.module.css";
+import MaterialsSelector from "./MaterialsSelector";
+
+const ISO_CODES = ["P", "M", "K", "N", "S", "H"];
 
 export default function Dashboard({ setIsLoggedIn, authenticatedUser }) {
   const [stockItems, setStockItems] = useState([]);
   const [searchKeyword, setSearchKeyword] = useState("");
   const [itemCategory, setItemCategory] = useState("all categories");
+  const [selectedMaterials, setSelectedMaterials] = useState(ISO_CODES);
 
   const handleInputChange = (event) => {
     setSearchKeyword(event.target.value);
@@ -47,35 +51,60 @@ export default function Dashboard({ setIsLoggedIn, authenticatedUser }) {
 
   const filterStockItemsByProperty = (propName) => {
     const lowercasedPropName = propName.toLowerCase();
+
     return stockItems.filter((stockItem) => {
-      return (
-        searchKeyword.trim() === "" ||
-        stockItem[lowercasedPropName]
-          .toString()
-          .toLowerCase()
-          .includes(searchKeyword.toLowerCase())
-      );
+      switch (lowercasedPropName) {
+        case "location":
+          return (
+            stockItem[lowercasedPropName].toString().toLowerCase() ===
+            searchKeyword.toLowerCase()
+          );
+        case "constock":
+          return (
+            stockItem.constantStock === true &&
+            stockItem.supplier
+              .toLowerCase()
+              .includes(searchKeyword.toLowerCase())
+          );
+        default:
+          return stockItem[lowercasedPropName]
+            .toString()
+            .toLowerCase()
+            .includes(searchKeyword.toLowerCase());
+      }
     });
+  };
+
+  const filterByMaterial = (itemsArray, selectedMaterials) => {
+    return itemsArray.filter((item) =>
+      selectedMaterials.some((selMat) => item.materials.includes(selMat))
+    );
   };
 
   const filterStockItemsByCategory = () => {
     return stockItems.filter(
       (stockItem) =>
-        (itemCategory.toLocaleLowerCase() === "all categories" ||
+        (itemCategory.toLowerCase() === "all categories" ||
           stockItem.category.toLowerCase() === itemCategory.toLowerCase()) &&
         (searchKeyword.trim() === "" ||
           stockItem.title.toLowerCase().includes(searchKeyword.toLowerCase()))
     );
   };
 
-  const filteredItems = [
+  const filteredByCategoryOrProperty = [
     "Brand",
     "Supplier",
     "Description",
     "Location",
+    "ConStock",
   ].includes(itemCategory)
-    ? mapFilteredItems(filterStockItemsByProperty(itemCategory))
-    : mapFilteredItems(filterStockItemsByCategory(itemCategory));
+    ? filterStockItemsByProperty(itemCategory)
+    : filterStockItemsByCategory(itemCategory);
+
+  const filteredBySelectedMaterials = filterByMaterial(
+    filteredByCategoryOrProperty,
+    selectedMaterials
+  );
 
   return (
     <div className={styles.container}>
@@ -112,29 +141,35 @@ export default function Dashboard({ setIsLoggedIn, authenticatedUser }) {
           Find Items
         </Typography>
 
-        <Container
-          disableGutters
-          maxWidth="sm"
-          component="main"
-          sx={{ display: "flex", justifyContent: "center" }}
-        >
-          <CategorySelector
-            itemCategory={itemCategory}
-            setItemCategory={setItemCategory}
-          />
-          <TextField
-            label="Item keyword"
-            variant="outlined"
-            value={searchKeyword}
-            onChange={handleInputChange}
-          />
-        </Container>
+        <Grid container spacing={0.5}>
+          <Grid item sm={3} md={3} lg={3}>
+            <CategorySelector
+              itemCategory={itemCategory}
+              setItemCategory={setItemCategory}
+            />
+          </Grid>
+          <Grid item sm={6} md={6} lg={6}>
+            <TextField
+              fullWidth
+              label="Item keyword"
+              variant="outlined"
+              value={searchKeyword}
+              onChange={handleInputChange}
+            />
+          </Grid>
+          <Grid item sm={3} md={3} lg={3}>
+            <MaterialsSelector
+              selectedMaterials={selectedMaterials}
+              setSelectedMaterials={setSelectedMaterials}
+            />
+          </Grid>
+        </Grid>
       </div>
       {/* End search bar */}
       <Container component="main">
         <Grid container spacing={5}>
           <Grid item xs={12}>
-            {filteredItems}
+            {mapFilteredItems(filteredBySelectedMaterials)}
           </Grid>
         </Grid>
       </Container>

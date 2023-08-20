@@ -1,4 +1,6 @@
-.container {
+
+
+.card {
   display: flex;
   align-items: center;
   border-radius: 0.5rem;
@@ -31,7 +33,7 @@
   right: 0;
 }
 
-.location {
+.itemQty {
   display: flex;
   flex-direction: column;
   width: 5.5rem;
@@ -49,7 +51,7 @@
   font-weight: bold;
 }
 
-.location__value {
+.itemQty__value {
   font-size: 1.5rem;
   font-weight: bold;
 }
@@ -87,4 +89,16 @@
   height: 1rem;
   width: 4rem;
   margin-top: 0.1em;
+}
+
+
+.location {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: white;
+  background-color: #40005d;
+  border: 1px solid white;
+  padding: 0.5rem;
+  border-radius: 12px;
+  margin-left: 1em;
 }

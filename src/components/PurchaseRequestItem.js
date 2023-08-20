@@ -28,12 +28,10 @@ const PurchaseRequestItem = ({ itemData }) => {
   };
 
   console.log(itemData);
-  
+
   const deletePurchaseRequest = async () => {
     try {
-      await axios.delete(
-        `${BASE_URL}/api/purchase-request/${itemData.id}`
-      );
+      await axios.delete(`${BASE_URL}/api/purchase-request/${itemData.id}`);
       //Succes logic
     } catch (error) {
       // Handle error if the request fails
@@ -45,13 +43,10 @@ const PurchaseRequestItem = ({ itemData }) => {
     const isItemPurchased = value === "Done";
 
     try {
-      await axios.put(
-        `${BASE_URL}/api/purchase-request/${itemData.id}`,
-        {
-          ...itemData, // Existing purchase request data
-          itemPurchased: isItemPurchased, // Updated property
-        }
-      );
+      await axios.put(`${BASE_URL}/api/purchase-request/${itemData.id}`, {
+        ...itemData, // Existing purchase request data
+        itemPurchased: isItemPurchased, // Updated property
+      });
 
       // Success logic
     } catch (error) {
@@ -65,20 +60,18 @@ const PurchaseRequestItem = ({ itemData }) => {
       <Grid
         item
         xs={8}
-        sm={8}
-        md={8}
-        lg={8}
+        sm={5}
+        md={5}
+        lg={6}
         sx={{
-          
-          borderBottom: "1px solid black",
           backgroundColor: backgroundColor,
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          padding: "1em !important",
+          padding: ".5em !important",
           marginTop: ".3em",
-          borderTopLeftRadius: "12px",
-          borderBottomLeftRadius: "12px"
+          borderTopLeftRadius: "5px",
+          borderBottomLeftRadius: "5px",
         }}
       >
         <Typography variant="h6" component="h6">
@@ -89,18 +82,17 @@ const PurchaseRequestItem = ({ itemData }) => {
       <Grid
         item
         xs={1.5}
-        sm={1.5}
-        md={1.5}
-        lg={1.5}
+        sm={2.5}
+        md={2.5}
+        lg={2}
         sx={{
-          borderBottom: "1px solid black",
           textAlign: "center",
           backgroundColor: backgroundColor,
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          padding: "1em !important",
-          marginTop: ".3em"
+          padding: ".5em !important",
+          marginTop: ".3em",
         }}
       >
         <Typography variant="h6" component="h6">
@@ -111,18 +103,17 @@ const PurchaseRequestItem = ({ itemData }) => {
       <Grid
         item
         xs={1}
-        sm={1}
-        md={1}
-        lg={1}
+        sm={2}
+        md={2}
+        lg={2}
         sx={{
-          borderBottom: "1px solid black",
           textAlign: "center",
           backgroundColor: backgroundColor,
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          padding: "1em !important",
-          marginTop: ".3em"
+          padding: ".5em !important",
+          marginTop: ".3em",
         }}
       >
         <Typography variant="h6" component="h6">
@@ -132,20 +123,19 @@ const PurchaseRequestItem = ({ itemData }) => {
       <Grid
         item
         xs={1.5}
-        sm={1.5}
-        md={1.5}
-        lg={1.5}
+        sm={2.5}
+        md={2.5}
+        lg={2}
         sx={{
-          borderBottom: "1px solid black",
           textAlign: "center",
           backgroundColor: backgroundColor,
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          padding: "1em !important",
+          padding: ".5em !important",
           marginTop: ".3em",
-          borderTopRightRadius: "12px",
-          borderBottomRightRadius: "12px"
+          borderTopRightRadius: "5px",
+          borderBottomRightRadius: "5px",
         }}
       >
         <Select

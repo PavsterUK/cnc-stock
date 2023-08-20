@@ -5,19 +5,17 @@ import {
   Button,
   TextField,
   MenuItem,
-  Select,
-  InputLabel,
   Grid,
   FormGroup,
   FormControlLabel,
   Checkbox,
 } from "@mui/material/";
-import FormControl from "@mui/material/FormControl";
 import EditIcon from "@mui/icons-material/Edit";
 import axios from "axios";
 import DeleteConfirmDialog from "./DeleteConfirmDialog";
 import BASE_URL from "./baseURL";
 import categories from "./categories";
+import MaterialsSelector from "./MaterialsSelector";
 
 const style = {
   position: "absolute",
@@ -56,10 +54,10 @@ export default function AddOrEditStockItem({
   const [minQty, setMinQty] = React.useState(stockItemData.minQty || 0);
   const [stockQty, setStockQty] = React.useState(stockItemData.stockQty || 0);
   const [isConstantStock, setIsConstantStock] = React.useState(
-    stockItemData.isConstantStock || false
+    stockItemData.constantStock || false
   );
 
-  const [selectedAttributes, setSelectedAttributes] = React.useState(
+  const [selectedMaterials, setSelectedMaterials] = React.useState(
     stockItemData.materials || []
   );
 
@@ -83,10 +81,6 @@ export default function AddOrEditStockItem({
     setError && setError(value.trim().length === 0);
   };
 
-  const handleAttributeChange = (event) => {
-    setSelectedAttributes(event.target.value);
-  };
-
   const resetForm = () => {
     setItemCodeOrTitle(stockItemData.title || "");
     setBrand(stockItemData.brand || "");
@@ -95,8 +89,8 @@ export default function AddOrEditStockItem({
     setSupplier(stockItemData.supplier || "");
     setItemCategory(stockItemData.category || "");
     setMinQty(stockItemData.minQty || "");
-    setIsConstantStock(stockItemData.isConstantStock || false);
-    setSelectedAttributes(stockItemData.materials || []);
+    setIsConstantStock(stockItemData.constantStock || false);
+    setSelectedMaterials(stockItemData.materials || []);
     resetAllErrors();
   };
 
@@ -131,7 +125,7 @@ export default function AddOrEditStockItem({
       category: itemCategory,
       minQty: minQty,
       isConstantStock: isConstantStock,
-      materials: selectedAttributes,
+      materials: selectedMaterials,
       stockQty: stockQty,
     };
 
@@ -335,95 +329,10 @@ export default function AddOrEditStockItem({
           </Grid>
 
           <Grid item xs={12} md={6} lg={3}>
-            <FormControl fullWidth>
-              <InputLabel id="item-attributes-label">
-                Suitable Materials
-              </InputLabel>
-              <Select
-                label="Suitable Materials"
-                labelId="item-attributes-label"
-                id="item-attributes-select"
-                multiple
-                value={selectedAttributes}
-                onChange={handleAttributeChange}
-              >
-                <MenuItem
-                  value="P"
-                  sx={{
-                    backgroundColor: selectedAttributes.includes("P")
-                      ? "#0eb6f7 !important"
-                      : "transparent",
-                    color: selectedAttributes.includes("P")
-                      ? "white !important"
-                      : "black",
-                  }}
-                >
-                  Mild Steel
-                </MenuItem>
-                <MenuItem
-                  value="M"
-                  sx={{
-                    backgroundColor: selectedAttributes.includes("M")
-                      ? "#f6ea02 !important"
-                      : "transparent",
-                  }}
-                >
-                  Stainless
-                </MenuItem>
-                <MenuItem
-                  value="K"
-                  sx={{
-                    backgroundColor: selectedAttributes.includes("K")
-                      ? "#e31c1e !important"
-                      : "transparent",
-                    color: selectedAttributes.includes("K")
-                      ? "white !important"
-                      : "black",
-                  }}
-                >
-                  Cast Iron
-                </MenuItem>
-                <MenuItem
-                  value="N"
-                  sx={{
-                    backgroundColor: selectedAttributes.includes("N")
-                      ? "#2dc65b !important"
-                      : "transparent",
-                    color: selectedAttributes.includes("N")
-                      ? "white !important"
-                      : "black",
-                  }}
-                >
-                  Non Ferrous
-                </MenuItem>
-                <MenuItem
-                  value="S"
-                  sx={{
-                    backgroundColor: selectedAttributes.includes("S")
-                      ? "#f77b00 !important"
-                      : "transparent",
-                    color: selectedAttributes.includes("S")
-                      ? "white !important"
-                      : "black",
-                  }}
-                >
-                  Super Alloy
-                </MenuItem>
-                <MenuItem
-                  value="H"
-                  sx={{
-                    backgroundColor: selectedAttributes.includes("H")
-                      ? "#bababa !important"
-                      : "transparent",
-                    color: selectedAttributes.includes("H")
-                      ? "white !important"
-                      : "black",
-                  }}
-                >
-                  Hardened Steel
-                </MenuItem>
-              </Select>
-            </FormControl>
+            <MaterialsSelector
+              selectedMaterials={selectedMaterials}
+              setSelectedMaterials={setSelectedMaterials}
+            />
           </Grid>
 
           <Grid item xs={6} md={3} lg={3}>

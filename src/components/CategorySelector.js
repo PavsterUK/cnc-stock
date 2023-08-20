@@ -10,8 +10,8 @@ const CategorySelector = ({ searchCategory, setItemCategory }) => {
   };
 
   useEffect(() => {
-    const stockItemProps = ["Description", "Supplier", "Location", "Brand"];
-    const insertionIndex = 1;
+    const stockItemProps = ["Description", "Supplier", "Location", "Brand", "ConStock"];
+    const insertionIndex = 5;
     const newArray = [
       ...categories.slice(0, insertionIndex),
       ...stockItemProps,
