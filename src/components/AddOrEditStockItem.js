@@ -56,10 +56,14 @@ export default function AddOrEditStockItem({
   const [isConstantStock, setIsConstantStock] = React.useState(
     stockItemData.constantStock || false
   );
+  const [restockQty, setRestockQty] = React.useState(
+    stockItemData.restockQty || 0
+  );
 
   const [selectedMaterials, setSelectedMaterials] = React.useState(
     stockItemData.materials || []
   );
+  const databaseId = stockItemData.id || null;
 
   // Error states
   const [itemCodeOrTitleError, setItemCodeOrTitleError] = React.useState(false);
@@ -99,6 +103,7 @@ export default function AddOrEditStockItem({
     setItemLocationError(false);
     setSupplierError(false);
     setCategoryError(false);
+    setErrorMessage("");
   };
 
   const isFormFilled = () => {
@@ -117,6 +122,7 @@ export default function AddOrEditStockItem({
     }
 
     const itemData = {
+      id: databaseId,
       title: itemCodeOrTitle,
       brand: brand,
       description: itemDescription,
@@ -127,18 +133,19 @@ export default function AddOrEditStockItem({
       isConstantStock: isConstantStock,
       materials: selectedMaterials,
       stockQty: stockQty,
+      restockQty: restockQty,
     };
 
     if (isEditMode) {
       // If in edit mode, update the existing item
       axios
-        .put(`${BASE_URL}/api/stock-item/${stockItemData.location}`, itemData)
+        .put(`${BASE_URL}/api/stock-item/${stockItemData.id}`, itemData)
         .then((response) => {
           // Handle success
           handleClose();
           setStockItems((prevItems) =>
             prevItems.map((item) =>
-              item.location === stockItemData.location ? itemData : item
+              item.id === stockItemData.id ? itemData : item
             )
           );
         })
@@ -170,11 +177,11 @@ export default function AddOrEditStockItem({
 
   const handleDeleteItem = () => {
     axios
-      .delete(`${BASE_URL}/api/stock-item/${stockItemData.location}`)
+      .delete(`${BASE_URL}/api/stock-item/${stockItemData.id}`)
       .then((response) => {
         // Handle success
         const updatedStockItems = stockItems.filter(
-          (item) => item.location !== stockItemData.location
+          (item) => item.id !== stockItemData.id
         );
         setStockItems(updatedStockItems);
         handleClose();
@@ -369,6 +376,17 @@ export default function AddOrEditStockItem({
               inputProps={{ min: 0 }}
               value={stockQty}
               onChange={(e) => handleInputChange(e, setStockQty)}
+            />
+          </Grid>
+          <Grid item xs={6} md={3} lg={3}>
+            <TextField
+              fullWidth
+              id="outlined-required"
+              label="Restock Qty"
+              type="number"
+              inputProps={{ min: 0 }}
+              value={restockQty}
+              onChange={(e) => handleInputChange(e, setRestockQty)}
             />
           </Grid>
           <Grid item xs={12} md={12} lg={12}>

@@ -10,7 +10,13 @@ const CategorySelector = ({ searchCategory, setItemCategory }) => {
   };
 
   useEffect(() => {
-    const stockItemProps = ["Description", "Supplier", "Location", "Brand", "ConStock"];
+    const stockItemProps = [
+      "Description",
+      "Supplier",
+      "Location",
+      "Brand",
+      "ConStock",
+    ];
     const insertionIndex = 5;
     const newArray = [
       ...categories.slice(0, insertionIndex),
@@ -21,26 +27,23 @@ const CategorySelector = ({ searchCategory, setItemCategory }) => {
   }, []);
 
   return (
-    <div>
-      <FormControl>
-        <InputLabel id="demo-simple-select-label">Select Category</InputLabel>
-        <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={searchCategory}
-          defaultValue={categories[0]}
-          label="category"
-          onChange={handleChange}
-          sx={{ width: "13rem" }}
-        >
-          {newCategories.map((category) => (
-            <MenuItem key={category} value={category}>
-              {category}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-    </div>
+    <FormControl fullWidth>
+      <InputLabel id="demo-simple-select-label">Select Category</InputLabel>
+      <Select
+        labelId="demo-simple-select-label"
+        id="demo-simple-select"
+        value={searchCategory}
+        defaultValue={categories[0]}
+        label="category"
+        onChange={handleChange}
+      >
+        {newCategories.map((category) => (
+          <MenuItem key={category} value={category}>
+            {category}
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
   );
 };
 

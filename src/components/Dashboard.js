@@ -129,44 +129,45 @@ export default function Dashboard({ setIsLoggedIn, authenticatedUser }) {
           </Typography>
         </Toolbar>
       </AppBar>
-      {/* Search Bar  */}
-      <div className={styles.searchBarContainer}>
-        <Typography
-          component="h1"
-          variant="h4"
-          align="center"
-          color="#000"
-          gutterBottom
-        >
-          Find Items
-        </Typography>
 
-        <Grid container spacing={0.5}>
-          <Grid item sm={3} md={3} lg={3}>
-            <CategorySelector
-              itemCategory={itemCategory}
-              setItemCategory={setItemCategory}
-            />
-          </Grid>
-          <Grid item sm={6} md={6} lg={6}>
-            <TextField
-              fullWidth
-              label="Item keyword"
-              variant="outlined"
-              value={searchKeyword}
-              onChange={handleInputChange}
-            />
-          </Grid>
-          <Grid item sm={3} md={3} lg={3}>
-            <MaterialsSelector
-              selectedMaterials={selectedMaterials}
-              setSelectedMaterials={setSelectedMaterials}
-            />
-          </Grid>
-        </Grid>
-      </div>
       {/* End search bar */}
       <Container component="main">
+        {/* Search Bar  */}
+        <div className={styles.searchBarContainer}>
+          <Typography
+            component="h1"
+            variant="h4"
+            align="center"
+            color="#000"
+            gutterBottom
+          >
+            Find Items
+          </Typography>
+
+          <Grid container spacing={0.5}>
+            <Grid item sm={3} md={3} lg={3}>
+              <CategorySelector
+                itemCategory={itemCategory}
+                setItemCategory={setItemCategory}
+              />
+            </Grid>
+            <Grid item sm={6} md={6} lg={6}>
+              <TextField
+                fullWidth
+                label="Item keyword"
+                variant="outlined"
+                value={searchKeyword}
+                onChange={handleInputChange}
+              />
+            </Grid>
+            <Grid item sm={3} md={3} lg={3}>
+              <MaterialsSelector
+                selectedMaterials={selectedMaterials}
+                setSelectedMaterials={setSelectedMaterials}
+              />
+            </Grid>
+          </Grid>
+        </div>
         <Grid container spacing={5}>
           <Grid item xs={12}>
             {mapFilteredItems(filteredBySelectedMaterials)}
