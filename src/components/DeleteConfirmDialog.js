@@ -7,7 +7,11 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import DeleteForeverTwoToneIcon from "@mui/icons-material/DeleteForeverTwoTone";
 
-export default function DeleteConfirmDialog({ itemTitle, handleDeleteItem }) {
+export default function DeleteConfirmDialog({
+  itemTitle,
+  handleDeleteItem,
+  handleCloseParent,
+}) {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -16,6 +20,7 @@ export default function DeleteConfirmDialog({ itemTitle, handleDeleteItem }) {
 
   const handleClose = () => {
     setOpen(false);
+    handleCloseParent();
   };
 
   const handleDeleteConfirmed = () => {

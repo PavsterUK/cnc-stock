@@ -43,7 +43,7 @@ export default function Dashboard({ setIsLoggedIn, authenticatedUser }) {
       <StockItemModal
         stockItems={stockItems}
         setStockItems={setStockItems}
-        key={stockItem.location}
+        key={stockItem.id}
         stockItemData={stockItem}
       />
     ));
@@ -78,7 +78,7 @@ export default function Dashboard({ setIsLoggedIn, authenticatedUser }) {
   const filterByMaterial = (itemsArray, selectedMaterials) => {
     return itemsArray.filter((item) =>
       selectedMaterials.some((selMat) => item.materials.includes(selMat))
-    );
+    ).sort((a, b) => a.location - b.location);
   };
 
   const filterStockItemsByCategory = () => {

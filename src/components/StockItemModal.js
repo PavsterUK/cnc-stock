@@ -75,7 +75,7 @@ export default function StockItemModal({
 
     axios
       .put(
-        `${BASE_URL}/api/stock-item/${stockItemData.location}`,
+        `${BASE_URL}/api/stock-item/${stockItemData.id}`,
         stockItemData
       )
       .then((response) => {

@@ -180,6 +180,7 @@ export default function AddOrEditStockItem({
       .delete(`${BASE_URL}/api/stock-item/${stockItemData.id}`)
       .then((response) => {
         // Handle success
+        console.log("Response "+ response);
         const updatedStockItems = stockItems.filter(
           (item) => item.id !== stockItemData.id
         );
@@ -209,6 +210,7 @@ export default function AddOrEditStockItem({
         <Grid container spacing={2} sx={style}>
           {isEditMode && (
             <DeleteConfirmDialog
+              handleCloseParent={handleClose}
               handleDeleteItem={handleDeleteItem}
               itemTitle={stockItemData.title}
             />

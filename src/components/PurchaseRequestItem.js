@@ -27,8 +27,6 @@ const PurchaseRequestItem = ({ itemData }) => {
     }
   };
 
-  console.log(itemData);
-
   const deletePurchaseRequest = async () => {
     try {
       await axios.delete(`${BASE_URL}/api/purchase-request/${itemData.id}`);
