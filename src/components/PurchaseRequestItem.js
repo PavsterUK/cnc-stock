@@ -1,6 +1,7 @@
 import React from "react";
 import { Typography, Grid, Select, MenuItem } from "@mui/material/";
 import axios from "axios";
+import { DateTime } from "luxon";
 import BASE_URL from "./baseURL";
 
 const PurchaseRequestItem = ({ itemData }) => {
@@ -8,23 +9,14 @@ const PurchaseRequestItem = ({ itemData }) => {
     itemData.itemPurchased ? "Done" : "In Progress"
   );
   const backgroundColor = itemPurchaseStatus === "Done" ? "#77DD76" : "#FFB6B3";
+  const formattedTime = DateTime.fromISO(itemData.requestDate).toFormat(
+    "MMMM d, yyyy"
+  );
 
   const handleSelectChange = (event) => {
     const value = event.target.value;
     setItemPurchaseStatus(value);
-    switch (value) {
-      case "Done":
-        updatePurchaseRequest(value);
-        break;
-      case "In Progress":
-        updatePurchaseRequest(value);
-        break;
-      case "Cancel":
-        deletePurchaseRequest();
-        break;
-      default:
-        break;
-    }
+    value === "Cancel" ? deletePurchaseRequest() : updatePurchaseRequest(value);
   };
 
   const deletePurchaseRequest = async () => {
@@ -115,7 +107,7 @@ const PurchaseRequestItem = ({ itemData }) => {
         }}
       >
         <Typography variant="h6" component="h6">
-          {itemData.requestDate}
+          {formattedTime}
         </Typography>
       </Grid>
       <Grid
