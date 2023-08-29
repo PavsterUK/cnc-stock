@@ -18,8 +18,10 @@ const ISO_CODES = ["P", "M", "K", "N", "S", "H"];
 export default function Dashboard({ setIsLoggedIn, authenticatedUser }) {
   const [stockItems, setStockItems] = useState([]);
   const [searchKeyword, setSearchKeyword] = useState("");
-  const [itemCategory, setItemCategory] = useState("all categories");
+  const [itemCategory, setItemCategory] = useState("All Categories");
   const [selectedMaterials, setSelectedMaterials] = useState(ISO_CODES);
+
+  console.log(stockItems);
 
   const handleInputChange = (event) => {
     setSearchKeyword(event.target.value);
@@ -84,20 +86,20 @@ export default function Dashboard({ setIsLoggedIn, authenticatedUser }) {
   const filterStockItemsByCategory = () => {
     return stockItems.filter(
       (stockItem) =>
-        (itemCategory.toLowerCase() === "all categories" ||
-          stockItem.category.toLowerCase() === itemCategory.toLowerCase()) &&
+        (itemCategory.toLowerCase() === "all categories" || 
+          stockItem.categoryName.toLowerCase() === itemCategory.toLowerCase()) &&
         (searchKeyword.trim() === "" ||
           stockItem.title.toLowerCase().includes(searchKeyword.toLowerCase()))
     );
   };
 
   const filteredByCategoryOrProperty = [
-    "Brand",
-    "Supplier",
-    "Description",
-    "Location",
-    "ConStock",
-  ].includes(itemCategory)
+    "brand",
+    "supplier",
+    "description",
+    "location",
+    "constock",
+  ].includes(itemCategory.toLowerCase())
     ? filterStockItemsByProperty(itemCategory)
     : filterStockItemsByCategory(itemCategory);
 
