@@ -9,15 +9,15 @@ import {
 import axios from "axios";
 import BASE_URL from "./baseURL";
 
-const CategorySelector = ({ itemCategory, setItemCategory }) => {
-  const [itemsCategories, setItemsCategories] = useState([]);
+const CategorySelector = ({ userSelectedCategory, setUserSelectedCategory }) => {
+  const [fetchedCategories, setFetchedCategories] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
         const response = await axios.get(`${BASE_URL}/api/categories`);
-        setItemsCategories(response.data);
+        setFetchedCategories(response.data);
         setIsLoading(false);
       } catch (error) {
         console.error("Error fetching categories:", error);
@@ -27,7 +27,15 @@ const CategorySelector = ({ itemCategory, setItemCategory }) => {
   }, []);
 
   const handleChange = (event) => {
-    setItemCategory(event.target.value);
+    const selectedCategoryName = event.target.value;
+    const selectedCategoryId = fetchedCategories.find(
+      (category) => category.categoryName === selectedCategoryName
+    )?.id;
+
+    setUserSelectedCategory({
+      categoryName: selectedCategoryName,
+      categoryId: selectedCategoryId
+    });
   };
 
   return (
@@ -37,10 +45,10 @@ const CategorySelector = ({ itemCategory, setItemCategory }) => {
         <CircularProgress />
       ) : (
         <Select
-          value={itemCategory}
+          value={userSelectedCategory.categoryName}
           onChange={handleChange}
         >
-          {itemsCategories.map((category) => (
+          {fetchedCategories.map((category) => (
             <MenuItem key={category.id} value={category.categoryName}>
               {category.categoryName}
             </MenuItem>

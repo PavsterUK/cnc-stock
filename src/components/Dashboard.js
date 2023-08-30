@@ -12,16 +12,19 @@ import axios from "axios";
 import BASE_URL from "./baseURL";
 import styles from "./Dashboard.module.css";
 import MaterialsSelector from "./MaterialsSelector";
+import SubCategorySelector from "./SubCategorySelector";
 
 const ISO_CODES = ["P", "M", "K", "N", "S", "H"];
 
 export default function Dashboard({ setIsLoggedIn, authenticatedUser }) {
   const [stockItems, setStockItems] = useState([]);
   const [searchKeyword, setSearchKeyword] = useState("");
-  const [itemCategory, setItemCategory] = useState("All Categories");
+  const [userSelectedCategory, setUserSelectedCategory] = useState({
+    categoryName: "All Categories",
+    categoryId: 1
+  });
+  const [userSelectedSubCategory, setUserSelectedSubCategory] = useState("All Sub");
   const [selectedMaterials, setSelectedMaterials] = useState(ISO_CODES);
-
-  console.log(stockItems);
 
   const handleInputChange = (event) => {
     setSearchKeyword(event.target.value);
@@ -78,19 +81,26 @@ export default function Dashboard({ setIsLoggedIn, authenticatedUser }) {
   };
 
   const filterByMaterial = (itemsArray, selectedMaterials) => {
-    return itemsArray.filter((item) =>
-      selectedMaterials.some((selMat) => item.materials.includes(selMat))
-    ).sort((a, b) => a.location - b.location);
+    return itemsArray
+      .filter((item) =>
+        selectedMaterials.some((selMat) => item.materials.includes(selMat))
+      )
+      .sort((a, b) => a.location - b.location);
   };
 
-  const filterStockItemsByCategory = () => {
-    return stockItems.filter(
-      (stockItem) =>
-        (itemCategory.toLowerCase() === "all categories" || 
-          stockItem.categoryName.toLowerCase() === itemCategory.toLowerCase()) &&
-        (searchKeyword.trim() === "" ||
-          stockItem.title.toLowerCase().includes(searchKeyword.toLowerCase()))
-    );
+  const filterStockItemsByCategory = (userSelectedCategory) => {
+    const userSelectedCategoryLowCase = userSelectedCategory.categoryName.toLowerCase();
+  
+    return stockItems.filter((stockItem) => {
+      if (userSelectedCategoryLowCase !== "all categories") {
+        return (
+          stockItem.categoryName.toLowerCase() === userSelectedCategoryLowCase &&
+          stockItem.title.toLowerCase().includes(searchKeyword.toLowerCase())
+        );
+      } else {
+        return stockItem.title.toLowerCase().includes(searchKeyword.toLowerCase());
+      }
+    });
   };
 
   const filteredByCategoryOrProperty = [
@@ -99,9 +109,9 @@ export default function Dashboard({ setIsLoggedIn, authenticatedUser }) {
     "description",
     "location",
     "constock",
-  ].includes(itemCategory.toLowerCase())
-    ? filterStockItemsByProperty(itemCategory)
-    : filterStockItemsByCategory(itemCategory);
+  ].includes(userSelectedCategory.categoryName.toLowerCase())
+    ? filterStockItemsByProperty(userSelectedCategory.categoryName)
+    : filterStockItemsByCategory(userSelectedCategory);
 
   const filteredBySelectedMaterials = filterByMaterial(
     filteredByCategoryOrProperty,
@@ -147,10 +157,17 @@ export default function Dashboard({ setIsLoggedIn, authenticatedUser }) {
           </Typography>
 
           <Grid container spacing={0.5}>
-            <Grid item sm={3} md={3} lg={3}>
+            <Grid item sm={1.5} md={1.5} lg={1.5}>
               <CategorySelector
-                itemCategory={itemCategory}
-                setItemCategory={setItemCategory}
+                userSelectedCategory={userSelectedCategory}
+                setUserSelectedCategory={setUserSelectedCategory}
+              />
+            </Grid>
+            <Grid item sm={1.5} md={1.5} lg={1.5}>
+              <SubCategorySelector
+                
+                userSelectedSubCategory={userSelectedSubCategory}
+                setUserSelectedSubCategory={setUserSelectedSubCategory}
               />
             </Grid>
             <Grid item sm={6} md={6} lg={6}>
