@@ -5,14 +5,14 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { TextField } from "@mui/material";
-import CategorySelector from "./CategorySelector";
-import StockItemModal from "./StockItemModal";
+import StockItemModal from "./StockItem/StockItemModal";
 import Drawer from "./Drawer";
 import axios from "axios";
 import BASE_URL from "./baseURL";
 import styles from "./Dashboard.module.css";
 import MaterialsSelector from "./MaterialsSelector";
-import SubCategorySelector from "./SubCategorySelector";
+import CategorySelector from "./Categories/CategorySelector";
+import SubCategorySelector from "./Categories/SubCategorySelector";
 
 const ISO_CODES = ["P", "M", "K", "N", "S", "H"];
 
@@ -23,7 +23,7 @@ export default function Dashboard({ setIsLoggedIn, authenticatedUser }) {
     categoryName: "All Categories",
     categoryId: 1
   });
-  const [userSelectedSubCategory, setUserSelectedSubCategory] = useState("All Sub");
+  const [userSelectedSubCategory, setUserSelectedSubCategory] = useState(["All Sub Categories"]);
   const [selectedMaterials, setSelectedMaterials] = useState(ISO_CODES);
 
   const handleInputChange = (event) => {
@@ -157,20 +157,19 @@ export default function Dashboard({ setIsLoggedIn, authenticatedUser }) {
           </Typography>
 
           <Grid container spacing={0.5}>
-            <Grid item sm={1.5} md={1.5} lg={1.5}>
+            <Grid item sm={2} md={2} lg={2}>
               <CategorySelector
                 userSelectedCategory={userSelectedCategory}
                 setUserSelectedCategory={setUserSelectedCategory}
               />
             </Grid>
-            <Grid item sm={1.5} md={1.5} lg={1.5}>
+            <Grid item sm={2} md={2} lg={2}>
               <SubCategorySelector
-                
-                userSelectedSubCategory={userSelectedSubCategory}
+                userSelectedCategory={userSelectedCategory}
                 setUserSelectedSubCategory={setUserSelectedSubCategory}
               />
             </Grid>
-            <Grid item sm={6} md={6} lg={6}>
+            <Grid item sm={5} md={5} lg={5}>
               <TextField
                 fullWidth
                 label="Item keyword"

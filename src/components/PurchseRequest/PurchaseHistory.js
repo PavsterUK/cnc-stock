@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import axios from "axios";
 import { Grid } from "@mui/material";
-import BASE_URL from "./baseURL";
+import BASE_URL from "../baseURL";
 
 const style = {
   position: "absolute",

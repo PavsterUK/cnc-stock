@@ -2,7 +2,7 @@ import React from "react";
 import { Typography, Grid, Select, MenuItem } from "@mui/material/";
 import axios from "axios";
 import { DateTime } from "luxon";
-import BASE_URL from "./baseURL";
+import BASE_URL from "../baseURL";
 
 const PurchaseRequestItem = ({ itemData }) => {
   const [itemPurchaseStatus, setItemPurchaseStatus] = React.useState(

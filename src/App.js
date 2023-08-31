@@ -1,7 +1,7 @@
 import { useState } from "react";
-import SignIn from "./components/SignIn";
+import SignIn from "./components/User/SignIn";
 import Dashboard from "./components/Dashboard";
-
+import { CategoryProvider } from "./components/Categories/CategoryContext";
 import "./index.css";
 
 function App() {
@@ -10,10 +10,20 @@ function App() {
 
   return (
     <>
-      {!isLoggedIn && <SignIn setIsLoggedIn={setIsLoggedIn} setAuthenticatedUser={setAuthenticatedUser} />}
-      {isLoggedIn && (
-        <Dashboard setIsLoggedIn={setIsLoggedIn} authenticatedUser={authenticatedUser} />
+      {!isLoggedIn && (
+        <SignIn
+          setIsLoggedIn={setIsLoggedIn}
+          setAuthenticatedUser={setAuthenticatedUser}
+        />
       )}
+      <CategoryProvider>
+        {isLoggedIn && (
+          <Dashboard
+            setIsLoggedIn={setIsLoggedIn}
+            authenticatedUser={authenticatedUser}
+          />
+        )}
+      </CategoryProvider>
     </>
   );
 }

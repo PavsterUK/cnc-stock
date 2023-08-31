@@ -19,7 +19,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import axios from "axios";
 import { DateTime } from "luxon";
-import BASE_URL from "./baseURL";
+import BASE_URL from "../baseURL";
 
 const style = {
   position: "absolute",

@@ -10,12 +10,11 @@ import {
   FormControlLabel,
   Checkbox,
 } from "@mui/material/";
-import EditIcon from "@mui/icons-material/Edit";
 import axios from "axios";
-import DeleteConfirmDialog from "./DeleteConfirmDialog";
-import BASE_URL from "./baseURL";
-import categories from "./categories";
-import MaterialsSelector from "./MaterialsSelector";
+import DeleteConfirmDialog from "../PopUpDialogs/DeleteConfirmDialog";
+import BASE_URL from "../baseURL";
+import MaterialsSelector from "../MaterialsSelector";
+import { useCategoryContext } from "../Categories/CategoryContext";
 
 const style = {
   position: "absolute",
@@ -29,6 +28,14 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
+
+const STOCK_ITEM_PROPS = [
+  "brand",
+  "supplier",
+  "description",
+  "location",
+  "constock",
+];
 
 export default function AddOrEditStockItem({
   stockItemData = {},
@@ -51,6 +58,9 @@ export default function AddOrEditStockItem({
   const [itemCategory, setItemCategory] = React.useState(
     stockItemData.category || ""
   );
+  const [itemSubCategory, setItemSubCategory] = React.useState(
+    stockItemData.subCategory || ""
+  );
   const [minQty, setMinQty] = React.useState(stockItemData.minQty || 0);
   const [stockQty, setStockQty] = React.useState(stockItemData.stockQty || 0);
   const [isConstantStock, setIsConstantStock] = React.useState(
@@ -64,12 +74,33 @@ export default function AddOrEditStockItem({
     stockItemData.materials || []
   );
   const databaseId = stockItemData.id || null;
+  const { categories, subCategories, setSelectedCategoryId } = useCategoryContext();
+
+  console.log(subCategories);
+
+  const noPropCategoryList = categories
+    .filter(
+      (category) =>
+        !STOCK_ITEM_PROPS.includes(category.categoryName.toLowerCase())
+    )
+    .map((category) => (
+      <MenuItem key={category.id} value={category.categoryName}>
+        {category.categoryName}
+      </MenuItem>
+    ));
+
+  const subcategoryList = subCategories.map((subcategory) => (
+    <MenuItem key={subcategory.id} value={subcategory.subcategoryName}>
+      {subcategory.categoryName}
+    </MenuItem>
+  ));
 
   // Error states
   const [itemCodeOrTitleError, setItemCodeOrTitleError] = React.useState(false);
   const [itemLocationError, setItemLocationError] = React.useState(false);
   const [supplierError, setSupplierError] = React.useState(false);
   const [categoryError, setCategoryError] = React.useState(false);
+  const [subCategoryError, setSubCategoryError] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState("");
 
   const handleOpen = () => setOpen(true);
@@ -93,6 +124,8 @@ export default function AddOrEditStockItem({
     setSupplier(stockItemData.supplier || "");
     setItemCategory(stockItemData.category || "");
     setMinQty(stockItemData.minQty || "");
+    setStockQty(stockItemData.stockQty || "");
+    setRestockQty(stockItemData.restockQty || "")
     setIsConstantStock(stockItemData.constantStock || false);
     setSelectedMaterials(stockItemData.materials || []);
     resetAllErrors();
@@ -103,6 +136,7 @@ export default function AddOrEditStockItem({
     setItemLocationError(false);
     setSupplierError(false);
     setCategoryError(false);
+    setSubCategoryError(false)
     setErrorMessage("");
   };
 
@@ -180,7 +214,7 @@ export default function AddOrEditStockItem({
       .delete(`${BASE_URL}/api/stock-item/${stockItemData.id}`)
       .then((response) => {
         // Handle success
-        console.log("Response "+ response);
+        console.log("Response " + response);
         const updatedStockItems = stockItems.filter(
           (item) => item.id !== stockItemData.id
         );
@@ -198,8 +232,13 @@ export default function AddOrEditStockItem({
 
   return (
     <>
-      <Button variant="contained" align="center" onClick={handleOpen} fullWidth>
-        {isEditMode ? <EditIcon /> : "New Stock Item"}
+      <Button
+        variant={isEditMode ? "text" : "contained"}
+        align="center"
+        onClick={handleOpen}
+        fullWidth
+      >
+        {isEditMode ? "UPDATE ITEM" : "New Stock Item"}
       </Button>
       <Modal
         open={open}
@@ -280,25 +319,6 @@ export default function AddOrEditStockItem({
             <TextField
               fullWidth
               required
-              type="number"
-              inputProps={{ min: 0 }}
-              id="outlined-required"
-              label="Item Location"
-              value={itemLocation}
-              onChange={(e) =>
-                handleInputChange(e, setItemLocation, setItemLocationError)
-              }
-              onBlur={(e) =>
-                handleInputChange(e, setItemLocation, setItemLocationError)
-              }
-              error={itemLocationError}
-              helperText={itemLocationError && "Field cannot be empty"}
-            />
-          </Grid>
-          <Grid item xs={12} md={6} lg={3}>
-            <TextField
-              fullWidth
-              required
               id="outlined-required"
               label="Supplier"
               value={supplier}
@@ -318,7 +338,7 @@ export default function AddOrEditStockItem({
               fullWidth
               required
               select
-              label="Choose item Category"
+              label="Choose Category"
               value={itemCategory}
               onChange={(e) =>
                 handleInputChange(e, setItemCategory, setCategoryError)
@@ -329,11 +349,26 @@ export default function AddOrEditStockItem({
               error={categoryError}
               helperText={categoryError && "Field cannot be empty"}
             >
-              {categories.map((category) => (
-                <MenuItem key={category} value={category}>
-                  {category}
-                </MenuItem>
-              ))}
+              {noPropCategoryList}
+            </TextField>
+          </Grid>
+          <Grid item xs={12} md={6} lg={3}>
+            <TextField
+              fullWidth
+              required
+              select
+              label="Choose Sub Category"
+              value={itemSubCategory}
+              onChange={(e) =>
+                handleInputChange(e, setItemSubCategory, setSubCategoryError)
+              }
+              onBlur={(e) =>
+                handleInputChange(e, setItemSubCategory, setSubCategoryError)
+              }
+              error={subCategoryError}
+              helperText={subCategoryError && "Field cannot be empty"}
+            >
+              {subcategoryList}
             </TextField>
           </Grid>
 
@@ -356,7 +391,7 @@ export default function AddOrEditStockItem({
             />
           </Grid>
 
-          <Grid item xs={6} md={3} lg={3}>
+          <Grid item xs={6} md={2} lg={2}>
             <FormGroup>
               <FormControlLabel
                 label="CONSTANT STOCK"
@@ -369,7 +404,7 @@ export default function AddOrEditStockItem({
               />
             </FormGroup>
           </Grid>
-          <Grid item xs={6} md={3} lg={3}>
+          <Grid item xs={6} md={2} lg={2}>
             <TextField
               fullWidth
               id="outlined-required"
@@ -380,7 +415,7 @@ export default function AddOrEditStockItem({
               onChange={(e) => handleInputChange(e, setStockQty)}
             />
           </Grid>
-          <Grid item xs={6} md={3} lg={3}>
+          <Grid item xs={6} md={2} lg={2}>
             <TextField
               fullWidth
               id="outlined-required"
@@ -389,6 +424,25 @@ export default function AddOrEditStockItem({
               inputProps={{ min: 0 }}
               value={restockQty}
               onChange={(e) => handleInputChange(e, setRestockQty)}
+            />
+          </Grid>
+          <Grid item xs={12} md={3} lg={3}>
+            <TextField
+              fullWidth
+              required
+              type="number"
+              inputProps={{ min: 0 }}
+              id="outlined-required"
+              label="Item Location"
+              value={itemLocation}
+              onChange={(e) =>
+                handleInputChange(e, setItemLocation, setItemLocationError)
+              }
+              onBlur={(e) =>
+                handleInputChange(e, setItemLocation, setItemLocationError)
+              }
+              error={itemLocationError}
+              helperText={itemLocationError && "Field cannot be empty"}
             />
           </Grid>
           <Grid item xs={12} md={12} lg={12}>

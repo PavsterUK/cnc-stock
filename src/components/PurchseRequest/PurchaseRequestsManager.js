@@ -5,7 +5,7 @@ import PurchaseRequest from "./PurchaseRequest";
 import axios from "axios";
 import PurchaseRequestItem from "./PurchaseRequestItem";
 import PurchaseHistory from "./PurchaseHistory";
-import BASE_URL from "./baseURL";
+import BASE_URL from "../baseURL";
 
 const style = {
   position: "absolute",

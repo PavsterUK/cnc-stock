@@ -15,8 +15,8 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ListItem from "@mui/material/ListItem";
 import LogoutIcon from "@mui/icons-material/Logout";
-import AddOrEditStockItem from "./AddOrEditStockItem";
-import PurchaseRequestsManager from "./PurchaseRequestsManager";
+import AddOrEditStockItem from "./StockItem/AddOrEditStockItem";
+import PurchaseRequestsManager from "./PurchseRequest/PurchaseRequestsManager";
 import { ClickAwayListener } from "@mui/material";
 
 const drawerWidth = 240;
