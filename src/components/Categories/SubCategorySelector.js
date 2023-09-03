@@ -13,9 +13,9 @@ const SubCategorySelector = ({
   setUserSelectedSubCategory,
   userSelectedCategory,
 }) => {
-  const [fetchedSubCategories, setFetchedSubCategories] = useState([]);
+  const [fetchedSubCategories, setFetchedSubCategories] = useState(["All Sub Categories"]);
   const [isLoading, setIsLoading] = useState(true);
-
+  console.log(fetchedSubCategories);
   useEffect(() => {
     const fetchSubCategories = async () => {
       try {

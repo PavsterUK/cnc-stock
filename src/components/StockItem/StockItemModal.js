@@ -3,14 +3,12 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import Switch from "@mui/material/Switch";
-import {
-  Typography
-} from "@mui/material";
+import { Typography } from "@mui/material";
 import { HorizontalRule, Add } from "@mui/icons-material";
 import styles from "./StockItemModal.module.css";
 import AddOrEditStockItem from "./AddOrEditStockItem";
 import axios from "axios";
-import BASE_URL from "../baseURL";
+import { BASE_URL } from "../../constants/config";
 
 const modalStyle = {
   position: "absolute",
@@ -69,10 +67,7 @@ export default function StockItemModal({
     }
 
     axios
-      .put(
-        `${BASE_URL}/api/stock-item/${stockItemData.id}`,
-        stockItemData
-      )
+      .put(`${BASE_URL}/api/stock-item/${stockItemData.id}`, stockItemData)
       .then((response) => {
         // Handle success
         setFeedbackMessage(
@@ -171,7 +166,10 @@ export default function StockItemModal({
               className={styles.itemMaterials__h}
             ></div>
           </div>
-          <div className={styles.location}><h5>Location</h5>{stockItemData.location}</div>
+          <div className={styles.location}>
+            <h5>Location</h5>
+            {stockItemData.location}
+          </div>
         </Button>
       </div>
 
@@ -199,7 +197,6 @@ export default function StockItemModal({
           >
             {stockItemData.title}
           </Typography>
-          
 
           <div className={styles.vendingQuantity}>
             <Typography

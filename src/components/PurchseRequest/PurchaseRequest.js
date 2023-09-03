@@ -19,7 +19,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import axios from "axios";
 import { DateTime } from "luxon";
-import BASE_URL from "../baseURL";
+import { BASE_URL } from "../../constants/config";
 
 const style = {
   position: "absolute",
@@ -60,7 +60,7 @@ export default function PurchaseRequest({
   };
 
   const handleSendRequest = () => {
-    const now = DateTime.local(); 
+    const now = DateTime.local();
     //Format for backend
     const formattedDate = now.toFormat("yyyy-MM-dd");
 

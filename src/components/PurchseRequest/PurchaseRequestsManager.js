@@ -5,7 +5,7 @@ import PurchaseRequest from "./PurchaseRequest";
 import axios from "axios";
 import PurchaseRequestItem from "./PurchaseRequestItem";
 import PurchaseHistory from "./PurchaseHistory";
-import BASE_URL from "../baseURL";
+import { BASE_URL } from "../../constants/config";
 
 const style = {
   position: "absolute",
@@ -34,9 +34,7 @@ export default function PurchaseRequestsManager({
   React.useEffect(() => {
     const fetchPurchaseRequests = async () => {
       try {
-        const response = await axios.get(
-          `${BASE_URL}/api/purchase-requests`
-        );
+        const response = await axios.get(`${BASE_URL}/api/purchase-requests`);
 
         setPurchaseRequests(response.data);
       } catch (error) {
@@ -153,9 +151,12 @@ export default function PurchaseRequestsManager({
           </Grid>
           <Grid container sx={{ overflow: "auto" }}>
             {purchaseRequests &&
-              purchaseRequests.map((item) => (
-                !item.itemPurchased && <PurchaseRequestItem key={item.id} itemData={item} />
-              ))}
+              purchaseRequests.map(
+                (item) =>
+                  !item.itemPurchased && (
+                    <PurchaseRequestItem key={item.id} itemData={item} />
+                  )
+              )}
           </Grid>
         </Box>
       </Modal>

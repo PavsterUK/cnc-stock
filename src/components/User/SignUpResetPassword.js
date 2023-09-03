@@ -5,7 +5,7 @@ import Button from "@mui/material/Button";
 import Link from "@mui/material/Link";
 import TextField from "@mui/material/TextField";
 import axios from "axios";
-import BASE_URL from "../baseURL";
+import { BASE_URL } from "../../constants/config";
 
 const style = {
   position: "absolute",
