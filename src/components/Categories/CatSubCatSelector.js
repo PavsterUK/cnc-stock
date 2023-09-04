@@ -7,16 +7,25 @@ import { STOCK_ITEM_PROPS } from "../../constants/stockItemConstants";
 
 const CatSubCatSelector = ({
   isSaveorUpdateMode,
-  selectedCategory,
+  selectedCategory = {
+    categoryName: "All Categories",
+    id: 1,
+  },
   setSelectedCategory,
-  selectedSubCat,
+  selectedSubCat = {
+    subCategoryName: "All Sub Categories",
+    id: 1,
+  },
   setSelectedSubCat,
 }) => {
   const [isLoadingCategories, setIsLoadingCategories] = useState(true);
   const [isLoadingSubCat, setIsLoadingSubCat] = useState(false);
   const [fetchedCategories, setFetchedCategories] = useState([]);
   const [fetchedSubCat, setFetchedSubCat] = useState([]);
-  const allSubCategoriesOption = { id: 0, subCategoryName: "All Sub Categories" };
+  const allSubCategoriesOption = {
+    subCategoryName: "All Sub Categories",
+    id: 1,
+  };
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -25,7 +34,7 @@ const CatSubCatSelector = ({
         setFetchedCategories(response.data);
         setIsLoadingCategories(false);
 
-        if (selectedCategory && selectedCategory.id) {
+        if (selectedCategory.categoryName && selectedCategory.id) {
           fetchSubCategories(selectedCategory.id);
         }
       } catch (error) {
@@ -45,11 +54,36 @@ const CatSubCatSelector = ({
   const fetchSubCategories = async (categoryId) => {
     try {
       const response = await axios.get(`${BASE_URL}/api/subcategories/${categoryId}`);
-      setFetchedSubCat([allSubCategoriesOption, ...response.data]);
+
+      const subCategories = response.data.filter((subCat) => subCat.id !== 1);
+
+      setFetchedSubCat([allSubCategoriesOption, ...subCategories]);
       setIsLoadingSubCat(false);
     } catch (error) {
       console.error("Error fetching sub categories:", error);
     }
+  };
+
+  const handleCategorySelect = (event) => {
+    const selectedCategoryName = event.target.value;
+    const id = fetchedCategories.find((category) => category.categoryName === selectedCategoryName)?.id;
+    fetchSubCategories(id);
+    setSelectedSubCat({ subCategoryName: "All Sub Categories", id: 1 });
+    setSelectedCategory({ id: id, categoryName: selectedCategoryName });
+  };
+
+  const handleSubCatSelect = (event) => {
+    const selectedSubCatName = event.target.value;
+    const categoryId = selectedCategory.id;
+    setSelectedSubCat({ categoryId: categoryId, subCategoryName: selectedSubCatName });
+  };
+
+  const mapSubCatMenuItems = () => {
+    return fetchedSubCat.map((subcategory) => (
+      <MenuItem key={subcategory.id} value={subcategory.subCategoryName}>
+        {subcategory.subCategoryName}
+      </MenuItem>
+    ));
   };
 
   const mapCategoryMenuItems = () => {
@@ -65,28 +99,6 @@ const CatSubCatSelector = ({
         {category.categoryName}
       </MenuItem>
     ));
-  };
-
-  const mapSubCatMenuItems = () => {
-    return fetchedSubCat.map((subcategory) => (
-      <MenuItem key={subcategory.id} value={subcategory.subCategoryName}>
-        {subcategory.subCategoryName}
-      </MenuItem>
-    ));
-  };
-
-  const handleCategorySelect = (event) => {
-    const selectedCategoryName = event.target.value;
-    const id = fetchedCategories.find((category) => category.categoryName === selectedCategoryName)?.id;
-    fetchSubCategories(id);
-    setSelectedSubCat({ subCategoryName: "All Sub Categories", categoryId: 1 });
-    setSelectedCategory({ id: id, categoryName: selectedCategoryName });
-  };
-
-  const handleSubCatSelect = (event) => {
-    const selectedSubCatName = event.target.value;
-    const categoryId = selectedCategory.id;
-    setSelectedSubCat({ categoryId: categoryId, subCategoryName: selectedSubCatName });
   };
 
   return (

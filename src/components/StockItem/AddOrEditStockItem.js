@@ -27,18 +27,14 @@ export default function AddOrEditStockItem({ stockItemData = {}, isEditMode = fa
   const [itemDescription, setItemDescription] = useState(stockItemData.description || "");
   const [itemLocation, setItemLocation] = useState(stockItemData.location || "");
   const [supplier, setSupplier] = useState(stockItemData.supplier || "");
-  const [selectedCategory, setSelectedCategory] = useState(
-    { categoryName: stockItemData.categoryName, categoryId: stockItemData.categoryId } || {
-      categoryName: "All Categories",
-      id: 1,
-    }
-  );
-  const [selectedSubCat, setSelectedSubCat] = useState(
-    { subCategoryName: stockItemData.subCategoryName, categoryId: stockItemData.categoryId } || {
-      subCategoryName: "All Sub Categories",
-      categoryId: 0,
-    }
-  );
+  const [selectedCategory, setSelectedCategory] = useState({
+    categoryName: stockItemData.categoryName,
+    id: stockItemData.categoryId,
+  });
+  const [selectedSubCat, setSelectedSubCat] = useState({
+    subCategoryName: stockItemData.subCategoryName,
+    id: stockItemData.subCategoryId,
+  });
   const [minQty, setMinQty] = useState(stockItemData.minQty || 0);
   const [stockQty, setStockQty] = useState(stockItemData.stockQty || 0);
   const [isConstantStock, setIsConstantStock] = useState(stockItemData.constantStock || false);
