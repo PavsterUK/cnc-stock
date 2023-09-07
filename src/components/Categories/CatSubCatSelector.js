@@ -1,76 +1,33 @@
-import React, { useState, useEffect } from "react";
-import { FormControl, InputLabel, MenuItem, Select, CircularProgress } from "@mui/material";
-import axios from "axios";
+import React, { useContext, useEffect, useState } from "react";
+import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import styles from "./CatSubCatSelector.module.css";
-import { BASE_URL } from "../../constants/config";
 import { STOCK_ITEM_PROPS } from "../../constants/stockItemConstants";
+import { CategoriesContext } from "./CategoriesContext";
 
 const CatSubCatSelector = ({
   isSaveorUpdateMode,
-  selectedCategory = {
-    categoryName: "All Categories",
-    id: 1,
-  },
+  selectedCategory,
   setSelectedCategory,
-  selectedSubCat = {
-    subCategoryName: "All Sub Categories",
-    id: 1,
-  },
+  selectedSubCat,
   setSelectedSubCat,
 }) => {
-  const [isLoadingCategories, setIsLoadingCategories] = useState(true);
-  const [isLoadingSubCat, setIsLoadingSubCat] = useState(false);
-  const [fetchedCategories, setFetchedCategories] = useState([]);
-  const [fetchedSubCat, setFetchedSubCat] = useState([]);
-  const allSubCategoriesOption = {
-    subCategoryName: "All Sub Categories",
-    id: 1,
+  const { categories, fetchSubCategoriesByCategoryId, allSubCategoriesOption } = useContext(CategoriesContext);
+  const [subCategories, setSubCategories] = useState([]);
+
+  const fetchAndSetSubCategories = async (categoryId) => {
+    try {
+      const subCategoriesData = await fetchSubCategoriesByCategoryId(categoryId);
+      setSubCategories(subCategoriesData);
+    } catch (error) {
+      console.error("Error fetching subcategories:", error);
+    }
   };
 
   useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const response = await axios.get(`${BASE_URL}/api/categories`);
-        setFetchedCategories(response.data);
-        setIsLoadingCategories(false);
-
-        if (selectedCategory.categoryName && selectedCategory.id) {
-          fetchSubCategories(selectedCategory.id);
-        }
-      } catch (error) {
-        console.error("Error fetching categories:", error);
-      }
-    };
-
-    fetchCategories();
-  }, []);
-
-  useEffect(() => {
-    if (selectedCategory && selectedCategory.id) {
-      fetchSubCategories(selectedCategory.id);
+    if (selectedCategory.id) {
+      fetchAndSetSubCategories(selectedCategory.id);
     }
   }, [selectedCategory]);
-
-  const fetchSubCategories = async (categoryId) => {
-    try {
-      const response = await axios.get(`${BASE_URL}/api/subcategories/${categoryId}`);
-
-      const subCategories = response.data.filter((subCat) => subCat.id !== 1);
-
-      setFetchedSubCat([allSubCategoriesOption, ...subCategories]);
-      setIsLoadingSubCat(false);
-    } catch (error) {
-      console.error("Error fetching sub categories:", error);
-    }
-  };
-
-  const handleCategorySelect = (event) => {
-    const selectedCategoryName = event.target.value;
-    const id = fetchedCategories.find((category) => category.categoryName === selectedCategoryName)?.id;
-    fetchSubCategories(id);
-    setSelectedSubCat({ subCategoryName: "All Sub Categories", id: 1 });
-    setSelectedCategory({ id: id, categoryName: selectedCategoryName });
-  };
 
   const handleSubCatSelect = (event) => {
     const selectedSubCatName = event.target.value;
@@ -78,8 +35,16 @@ const CatSubCatSelector = ({
     setSelectedSubCat({ categoryId: categoryId, subCategoryName: selectedSubCatName });
   };
 
+  const handleCategorySelect = (event) => {
+    const selectedCategoryName = event.target.value;
+    const id = categories.find((category) => category.categoryName === selectedCategoryName)?.id;
+    fetchAndSetSubCategories(id);
+    setSelectedCategory({ id: id, categoryName: selectedCategoryName });
+    setSelectedSubCat(allSubCategoriesOption);
+  };
+
   const mapSubCatMenuItems = () => {
-    return fetchedSubCat.map((subcategory) => (
+    return subCategories.map((subcategory) => (
       <MenuItem key={subcategory.id} value={subcategory.subCategoryName}>
         {subcategory.subCategoryName}
       </MenuItem>
@@ -87,8 +52,8 @@ const CatSubCatSelector = ({
   };
 
   const mapCategoryMenuItems = () => {
-    let categoriesToMap = fetchedCategories;
-    //Remove item props (brand, location etc)
+    let categoriesToMap = categories;
+    // Remove item props (brand, location, etc)
     if (isSaveorUpdateMode) {
       categoriesToMap = categoriesToMap.filter(
         (category) => !STOCK_ITEM_PROPS.includes(category.categoryName.toLowerCase())
@@ -105,24 +70,16 @@ const CatSubCatSelector = ({
     <div className={styles.container}>
       <FormControl fullWidth>
         <InputLabel>Category</InputLabel>
-        {isLoadingCategories ? (
-          <CircularProgress />
-        ) : (
-          <Select value={selectedCategory.categoryName} onChange={handleCategorySelect}>
-            {mapCategoryMenuItems()}
-          </Select>
-        )}
+        <Select value={selectedCategory.categoryName || ""} onChange={handleCategorySelect}>
+          {mapCategoryMenuItems()}
+        </Select>
       </FormControl>
       <FormControl fullWidth>
         <InputLabel>Sub Category</InputLabel>
-        {isLoadingSubCat ? (
-          <CircularProgress />
-        ) : (
-          fetchedSubCat.length > 0 && (
-            <Select value={selectedSubCat.subCategoryName} onChange={handleSubCatSelect}>
-              {mapSubCatMenuItems()}
-            </Select>
-          )
+        {subCategories.length > 0 && (
+          <Select value={selectedSubCat.subCategoryName || ""} onChange={handleSubCatSelect}>
+            {mapSubCatMenuItems()}
+          </Select>
         )}
       </FormControl>
     </div>

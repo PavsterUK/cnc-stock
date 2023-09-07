@@ -9,6 +9,7 @@ import styles from "./StockItemModal.module.css";
 import AddOrEditStockItem from "./AddOrEditStockItem";
 import axios from "axios";
 import { BASE_URL } from "../../constants/config";
+import CloseWindow from "../UI/CloseWindow";
 
 const modalStyle = {
   position: "absolute",
@@ -26,11 +27,7 @@ const modalStyle = {
   flexDirection: "column",
 };
 
-export default function StockItemModal({
-  stockItemData,
-  setStockItems,
-  stockItems,
-}) {
+export default function StockItemModal({ stockItemData, setStockItems, stockItems }) {
   const [open, setOpen] = React.useState(false);
   const [isTake, setIsTake] = React.useState(true);
   const [vendQty, setVendQty] = React.useState(1);
@@ -70,17 +67,13 @@ export default function StockItemModal({
       .put(`${BASE_URL}/api/stock-item/${stockItemData.id}`, stockItemData)
       .then((response) => {
         // Handle success
-        setFeedbackMessage(
-          `You ${isTake ? "took" : "returned"} ${vendQty} item(s).`
-        );
+        setFeedbackMessage(`You ${isTake ? "took" : "returned"} ${vendQty} item(s).`);
       })
       .catch((error) => {
         if (error.response && error.response.data) {
           setFeedbackMessage(error.response.data);
         } else {
-          setFeedbackMessage(
-            `Error occurred ${isTake ? "taking" : "returning"} item.`
-          );
+          setFeedbackMessage(`Error occurred ${isTake ? "taking" : "returning"} item.`);
         }
       });
   };
@@ -102,9 +95,7 @@ export default function StockItemModal({
         >
           <div className={styles.itemQty}>
             <div className={styles.itemQty__title}>Stock Qty</div>
-            <div className={styles.itemQty__value}>
-              {stockItemData.stockQty}
-            </div>
+            <div className={styles.itemQty__value}>{stockItemData.stockQty}</div>
           </div>
           <h2 className={styles.itemTitle}>{stockItemData.title}</h2>
           <div className={styles.itemDescription}>
@@ -112,56 +103,42 @@ export default function StockItemModal({
           </div>
           <div className={styles.itemInfo}>
             <div className={styles.itemInfo__brand}>{stockItemData.brand}</div>
-            <div className={styles.itemInfo__supplier}>
-              {stockItemData.supplier}
-            </div>
+            <div className={styles.itemInfo__supplier}>{stockItemData.supplier}</div>
           </div>
           <div className={styles.itemMaterials}>
             <div
               style={{
-                backgroundColor: stockItemData.materials.includes("P")
-                  ? "#0eb6f7"
-                  : "transparent",
+                backgroundColor: stockItemData.materials.includes("P") ? "#0eb6f7" : "transparent",
               }}
               className={styles.itemMaterials__p}
             ></div>
             <div
               style={{
-                backgroundColor: stockItemData.materials.includes("M")
-                  ? "#f6ea02"
-                  : "transparent",
+                backgroundColor: stockItemData.materials.includes("M") ? "#f6ea02" : "transparent",
               }}
               className={styles.itemMaterials__m}
             ></div>
             <div
               style={{
-                backgroundColor: stockItemData.materials.includes("K")
-                  ? "#e31c1e"
-                  : "transparent",
+                backgroundColor: stockItemData.materials.includes("K") ? "#e31c1e" : "transparent",
               }}
               className={styles.itemMaterials__k}
             ></div>
             <div
               style={{
-                backgroundColor: stockItemData.materials.includes("N")
-                  ? "#2dc65b"
-                  : "transparent",
+                backgroundColor: stockItemData.materials.includes("N") ? "#2dc65b" : "transparent",
               }}
               className={styles.itemMaterials__n}
             ></div>
             <div
               style={{
-                backgroundColor: stockItemData.materials.includes("S")
-                  ? "#f77b00"
-                  : "transparent",
+                backgroundColor: stockItemData.materials.includes("S") ? "#f77b00" : "transparent",
               }}
               className={styles.itemMaterials__s}
             ></div>
             <div
               style={{
-                backgroundColor: stockItemData.materials.includes("H")
-                  ? "#bababa"
-                  : "transparent",
+                backgroundColor: stockItemData.materials.includes("H") ? "#bababa" : "transparent",
               }}
               className={styles.itemMaterials__h}
             ></div>
@@ -180,6 +157,7 @@ export default function StockItemModal({
         aria-describedby="modal-modal-description"
       >
         <Box sx={modalStyle}>
+          <CloseWindow handleClose={handleClose} />
           <div className={styles.editButtonWrapper}>
             <AddOrEditStockItem
               isEditMode
@@ -188,58 +166,22 @@ export default function StockItemModal({
               stockItems={stockItems}
             />
           </div>
-          <Typography
-            sx={{ fontWeight: "bold" }}
-            variant="h5"
-            margin={"1em"}
-            component="h2"
-            align="center"
-          >
+          <Typography sx={{ fontWeight: "bold" }} variant="h5" margin={"1em"} component="h2" align="center">
             {stockItemData.title}
           </Typography>
 
           <div className={styles.vendingQuantity}>
-            <Typography
-              padding="0 1em"
-              variant="h4"
-              component="h2"
-              align="center"
-            >
-              {isTake ? "Take" : "Return"}
-            </Typography>
-
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={decreaseNumber}
-            >
+            <Button variant="contained" color="primary" onClick={decreaseNumber}>
               <HorizontalRule />
             </Button>
 
-            <Typography
-              padding="0 1em"
-              variant="h4"
-              component="h2"
-              align="center"
-            >
+            <Typography padding="0 1em" variant="h4" component="h2" align="center">
               {vendQty}
             </Typography>
 
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={increaseNumber}
-            >
+            <Button variant="contained" color="primary" onClick={increaseNumber}>
               <Add />
             </Button>
-            <Typography
-              padding="0 1em"
-              variant="h4"
-              component="h2"
-              align="center"
-            >
-              {"Item(s)"}
-            </Typography>
           </div>
 
           <div className={styles.vendingOptions}>
@@ -252,11 +194,7 @@ export default function StockItemModal({
             >
               Return
             </Button>
-            <Switch
-              className={styles.toggleSwitch}
-              checked={isTake}
-              onChange={handleToggleTakeorReturn}
-            />
+            <Switch className={styles.toggleSwitch} checked={isTake} onChange={handleToggleTakeorReturn} />
             <Button
               onClick={() => handleVending(vendQty, true)}
               fullWidth
@@ -267,13 +205,7 @@ export default function StockItemModal({
               Take
             </Button>
           </div>
-          <Typography
-            mt={"1em"}
-            color="error"
-            variant="h4"
-            component="h2"
-            align="center"
-          >
+          <Typography mt={"1em"} color="error" variant="h4" component="h2" align="center">
             {feedbackMessage}
           </Typography>
         </Box>

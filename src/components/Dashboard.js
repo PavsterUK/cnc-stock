@@ -18,8 +18,14 @@ import CatSubCatSelector from "./Categories/CatSubCatSelector";
 export default function Dashboard({ setIsLoggedIn, authenticatedUser }) {
   const [stockItems, setStockItems] = useState([]);
   const [searchKeyword, setSearchKeyword] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState( );
-  const [selectedSubCat, setSelectedSubCat] = useState();
+  const [selectedCategory, setSelectedCategory] = useState({
+    categoryName: "All Categories",
+    id: 1,
+  });
+  const [selectedSubCat, setSelectedSubCat] = useState({
+    subCategoryName: "All Sub Categories",
+    id: 1,
+  });
   const [selectedMaterials, setSelectedMaterials] = useState(ISO_CODES);
 
   const handleInputChange = (event) => {

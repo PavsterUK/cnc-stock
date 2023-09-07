@@ -1,5 +1,8 @@
-
-
+.editButtonWrapper {
+  position: absolute;
+  top: 1%;
+  left: 1%;
+}
 .card {
   display: flex;
   align-items: center;
@@ -25,12 +28,6 @@
   display: flex;
   justify-content: center;
   width: 100%;
-}
-
-.editButtonWrapper {
-  position: absolute;
-  top: 0;
-  right: 0;
 }
 
 .itemQty {
@@ -90,7 +87,6 @@
   width: 4rem;
   margin-top: 0.1em;
 }
-
 
 .location {
   font-size: 1.2rem;
