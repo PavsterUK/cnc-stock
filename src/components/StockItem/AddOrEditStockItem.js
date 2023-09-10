@@ -6,8 +6,8 @@ import DeleteConfirmDialog from "../PopUpDialogs/DeleteConfirmDialog";
 import { BASE_URL } from "../../constants/config";
 import MaterialsSelector from "../MaterialsSelector";
 import CatSubCatSelector from "../Categories/CatSubCatSelector";
-import CategoryManager from "../Categories/CategoryManager";
 import { CategoriesContext } from "../Categories/CategoriesContext";
+import CloseWindow from "../UI/CloseWindow";
 
 const style = {
   position: "absolute",
@@ -139,9 +139,9 @@ export default function AddOrEditStockItem({ stockItemData = {}, isEditMode = fa
       axios
         .put(`${BASE_URL}/api/stock-item/${stockItemData.id}`, itemData)
         .then((response) => {
-          // Handle success
+          const updatedItem = response.data;
           handleClose();
-          setStockItems((prevItems) => prevItems.map((item) => (item.id === stockItemData.id ? itemData : item)));
+          setStockItems((prevItems) => prevItems.map((item) => (item.id === stockItemData.id ? updatedItem : item)));
         })
         .catch((error) => {
           if (error.response && error.response.data) {
@@ -200,6 +200,7 @@ export default function AddOrEditStockItem({ stockItemData = {}, isEditMode = fa
         aria-describedby="modal-modal-description"
       >
         <Grid container spacing={2} sx={style}>
+          <CloseWindow handleClose={handleClose} />
           <Grid item xs={12} md={12} lg={12}>
             <Typography variant="h5" component="h2" align="center" style={{ fontWeight: "bold" }}>
               {isEditMode ? "UPDATE ITEM INFO" : "ADD A NEW ITEM TO THE STOCK LIST"}

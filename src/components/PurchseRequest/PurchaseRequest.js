@@ -1,16 +1,6 @@
 import * as React from "react";
 import Modal from "@mui/material/Modal";
-import {
-  Box,
-  Typography,
-  Table,
-  TableHead,
-  TableBody,
-  TableRow,
-  TableCell,
-  Button,
-  TextField,
-} from "@mui/material/";
+import { Box, Typography, Button, TextField, Container } from "@mui/material/";
 import HintWordEndingInput from "./HintWordEndingInput";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -20,6 +10,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import axios from "axios";
 import { DateTime } from "luxon";
 import { BASE_URL } from "../../constants/config";
+import CloseWindow from "../UI/CloseWindow";
 
 const style = {
   position: "absolute",
@@ -37,11 +28,7 @@ const style = {
   flexDirection: "column",
 };
 
-export default function PurchaseRequest({
-  authenticatedUser,
-  setPurchaseRequests,
-  stockItems,
-}) {
+export default function PurchaseRequest({ authenticatedUser, setPurchaseRequests, stockItems }) {
   const [open, setOpen] = React.useState(false);
   const [requestBody, setRequestBody] = React.useState("");
   const [lastWord, setLastWord] = React.useState("");
@@ -85,12 +72,7 @@ export default function PurchaseRequest({
 
   return (
     <>
-      <Button
-        sx={{ position: "absolute", left: 10, top: 10 }}
-        variant="contained"
-        align="center"
-        onClick={handleOpen}
-      >
+      <Button  variant="contained" align="center" onClick={handleOpen}>
         Request new item
       </Button>
       <Modal
@@ -99,52 +81,23 @@ export default function PurchaseRequest({
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={{ ...style }}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell colSpan={8}>
-                  <Typography
-                    variant="h5"
-                    component="h2"
-                    align="center"
-                    sx={{ fontWeight: "bold" }}
-                  >
-                    NEW PURCHASE REQUEST
-                  </Typography>
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              <TableRow>
-                <TableCell>
-                  <TextField
-                    value={requestBody}
-                    onChange={handleInputChange}
-                    id="outlined-multiline-static"
-                    label="Enter item('s) details here..."
-                    multiline
-                    rows={8}
-                    sx={{ width: "100%" }}
-                  />
-                  {lastWord && (
-                    <HintWordEndingInput
-                      word={lastWord}
-                      stockItems={stockItems}
-                    />
-                  )}
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>
-                  <ConfirmationDialog
-                    closeParent={handleClose}
-                    handleSendRequest={handleSendRequest}
-                  />
-                </TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
+        <Box sx={style}>
+          <CloseWindow handleClose={handleClose} />
+
+          <Typography variant="h5" component="h2" align="center" sx={{ fontWeight: "bold" }}>
+            NEW PURCHASE REQUEST
+          </Typography>
+
+          <TextField
+            value={requestBody}
+            onChange={handleInputChange}
+            id="outlined-multiline-static"
+            label="Enter item('s) details here..."
+            multiline
+            rows={8}
+            sx={{ width: "100%" }}
+          />
+          <ConfirmationDialog closeParent={handleClose} handleSendRequest={handleSendRequest} />
         </Box>
       </Modal>
     </>
@@ -165,7 +118,7 @@ function ConfirmationDialog({ closeParent, handleSendRequest }) {
   };
 
   return (
-    <div>
+    <Container mt="1em" >
       <Button fullWidth variant="contained" onClick={handleClickOpen}>
         SEND REQUEST
       </Button>
@@ -178,8 +131,7 @@ function ConfirmationDialog({ closeParent, handleSendRequest }) {
         <DialogTitle id="alert-dialog-title">{"Request Sent!"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            You request has been successfully submitted. You can now put your
-            feet up and relax.
+            You request has been successfully submitted. You can now put your feet up and relax.
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -188,6 +140,6 @@ function ConfirmationDialog({ closeParent, handleSendRequest }) {
           </Button>
         </DialogActions>
       </Dialog>
-    </div>
+    </Container>
   );
 }

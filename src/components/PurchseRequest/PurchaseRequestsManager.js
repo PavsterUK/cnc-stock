@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import Modal from "@mui/material/Modal";
 import { Box, Typography, Button, Grid } from "@mui/material/";
 import PurchaseRequest from "./PurchaseRequest";
@@ -6,6 +6,7 @@ import axios from "axios";
 import PurchaseRequestItem from "./PurchaseRequestItem";
 import PurchaseHistory from "./PurchaseHistory";
 import { BASE_URL } from "../../constants/config";
+import CloseWindow from "../UI/CloseWindow";
 
 const style = {
   position: "absolute",
@@ -24,14 +25,11 @@ const style = {
   flexDirection: "column",
 };
 
-export default function PurchaseRequestsManager({
-  authenticatedUser,
-  stockItems,
-}) {
-  const [open, setOpen] = React.useState(false);
-  const [purchaseRequests, setPurchaseRequests] = React.useState([]);
+export default function PurchaseRequestsManager({ authenticatedUser, stockItems }) {
+  const [open, setOpen] = useState(false);
+  const [purchaseRequests, setPurchaseRequests] = useState([]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const fetchPurchaseRequests = async () => {
       try {
         const response = await axios.get(`${BASE_URL}/api/purchase-requests`);
@@ -64,15 +62,17 @@ export default function PurchaseRequestsManager({
             ...style,
           }}
         >
-          <PurchaseHistory />
+          <div style={{ display: "flex", marginRight: "auto" }}>
+            <PurchaseRequest
+              stockItems={stockItems}
+              setPurchaseRequests={setPurchaseRequests}
+              authenticatedUser={authenticatedUser}
+            />
+            <PurchaseHistory />
+          </div>
+          <CloseWindow handleClose={handleClose} />
 
-          <PurchaseRequest
-            stockItems={stockItems}
-            setPurchaseRequests={setPurchaseRequests}
-            authenticatedUser={authenticatedUser}
-          />
-
-          <Grid container mt="3em">
+          <Grid container mt="1em">
             <Grid
               item
               xs={8}
@@ -152,10 +152,7 @@ export default function PurchaseRequestsManager({
           <Grid container sx={{ overflow: "auto" }}>
             {purchaseRequests &&
               purchaseRequests.map(
-                (item) =>
-                  !item.itemPurchased && (
-                    <PurchaseRequestItem key={item.id} itemData={item} />
-                  )
+                (item) => !item.itemPurchased && <PurchaseRequestItem key={item.id} itemData={item} />
               )}
           </Grid>
         </Box>

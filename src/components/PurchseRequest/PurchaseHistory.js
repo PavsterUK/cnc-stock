@@ -6,6 +6,7 @@ import Modal from "@mui/material/Modal";
 import axios from "axios";
 import { Grid } from "@mui/material";
 import { BASE_URL } from "../../constants/config";
+import CloseWindow from "../UI/CloseWindow";
 
 const style = {
   position: "absolute",
@@ -46,11 +47,7 @@ const PurchaseHistory = () => {
 
   return (
     <div>
-      <Button
-        color="success"
-        sx={{ position: "absolute", top: 1, right: 1 }}
-        onClick={handleOpen}
-      >
+      <Button color="success" sx={{}} onClick={handleOpen}>
         Purchase History
       </Button>
       <Modal
@@ -60,14 +57,10 @@ const PurchaseHistory = () => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
+          <CloseWindow handleClose={handleClose} />
           <Grid container spacing={2}>
             <Grid item xs={12} sm={12} md={12} lg={12}>
-              <Typography
-                textAlign="center"
-                id="modal-modal-title"
-                variant="h4"
-                component="h4"
-              >
+              <Typography textAlign="center" id="modal-modal-title" variant="h4" component="h4">
                 Purchase History
               </Typography>
             </Grid>
