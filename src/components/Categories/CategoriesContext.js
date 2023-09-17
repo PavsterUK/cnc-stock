@@ -41,6 +41,34 @@ export function CategoriesProvider({ children }) {
     }
   };
 
+  const addSubcategory = async (categoryId, subcategoryName) => {
+    try {
+      const response = await axios.post(
+        `${BASE_URL}/api/subcategory/add/${categoryId}?subcategoryName=${subcategoryName}`
+      );
+    } catch (error) {
+      console.error("Error saving subcategory:", error);
+    }
+  };
+
+  const updateSubcategory = async (subcategoryId, subCategoryName) => {
+    try {
+      const response = await axios.put(`${BASE_URL}/api/subcategories/update`, subcategoryId, subCategoryName);
+    } catch (error) {
+      console.error("Error saving subcategory:", error);
+    }
+  };
+
+  const addCategory = async (categoryName) => {
+    try {
+      const response = await axios.post(
+        `${BASE_URL}/api/category/add/?categoryName=${categoryName}`
+      );
+    } catch (error) {
+      console.error("Error saving category:", error);
+    }
+  };
+
   return (
     <CategoriesContext.Provider
       value={{
@@ -50,6 +78,8 @@ export function CategoriesProvider({ children }) {
         allSubCategoriesOption,
         fetchCategories,
         fetchSubCategoriesByCategoryId,
+        addSubcategory,
+        addCategory
       }}
     >
       {children}

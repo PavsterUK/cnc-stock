@@ -2,6 +2,7 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
+import CloseWindow from "./CloseWindow";
 
 const style = {
   position: "absolute",
@@ -17,21 +18,26 @@ const style = {
   p: 4,
 };
 
-export default function SimpleModal(props) {
+export default function SimpleModal({ title, children, color }) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   return (
     <div>
-      <Button onClick={handleOpen}>{props.title}l</Button>
+      <Button onClick={handleOpen} color={color} sx={{ padding: 0, margin: 0 }}>
+        {title}
+      </Button>
       <Modal
         open={open}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>{props.children}</Box>
+        <Box sx={{ ...style }}>
+          {<CloseWindow handleClose={handleClose} />}
+          {children}
+        </Box>
       </Modal>
     </div>
   );

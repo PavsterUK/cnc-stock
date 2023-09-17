@@ -40,7 +40,6 @@ const CatSubCatSelector = ({
   const handleSubCatSelect = (event) => {
     const selectedSubCatName = event.target.value;
     const categoryId = selectedCategory.id;
-    console.log(subCategories);
     const id = subCategories.find((subCategory) => subCategory.subCategoryName === selectedSubCatName)?.id;
     setSelectedSubCat({ id: id, categoryId: categoryId, subCategoryName: selectedSubCatName });
   };

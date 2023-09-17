@@ -20,7 +20,7 @@ import PurchaseRequestsManager from "./PurchseRequest/PurchaseRequestsManager";
 import { ClickAwayListener } from "@mui/material";
 import SimpleModal from "./UI/SimpleModal";
 import SendEmail from "./SendEmail";
-import ListManager from "./Categories/ListManager";
+import ListCategories from "./Categories/ListCategories";
 
 const drawerWidth = 240;
 
@@ -148,8 +148,8 @@ export default function PersistentDrawerLeft({ setIsLoggedIn, authenticatedUser,
           <SimpleModal title={"Send Email"}>
             <SendEmail />
           </SimpleModal>
-          <SimpleModal>
-            <ListManager />
+          <SimpleModal title={"category manager"}>
+            <ListCategories />
           </SimpleModal>
         </Drawer>
       </ClickAwayListener>
