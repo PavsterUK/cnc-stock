@@ -46,8 +46,10 @@ export function CategoriesProvider({ children }) {
       const response = await axios.post(
         `${BASE_URL}/api/subcategory/add/${categoryId}?subcategoryName=${subcategoryName}`
       );
+      return response;
     } catch (error) {
       console.error("Error saving subcategory:", error);
+      return error;
     }
   };
 
@@ -61,9 +63,7 @@ export function CategoriesProvider({ children }) {
 
   const addCategory = async (categoryName) => {
     try {
-      const response = await axios.post(
-        `${BASE_URL}/api/category/add/?categoryName=${categoryName}`
-      );
+      const response = await axios.post(`${BASE_URL}/api/category/add/?categoryName=${categoryName}`);
     } catch (error) {
       console.error("Error saving category:", error);
     }
@@ -79,7 +79,7 @@ export function CategoriesProvider({ children }) {
         fetchCategories,
         fetchSubCategoriesByCategoryId,
         addSubcategory,
-        addCategory
+        addCategory,
       }}
     >
       {children}

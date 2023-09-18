@@ -19,7 +19,12 @@ export default function ListManager() {
 
   return (
     <List
-      sx={{ width: "fit-content", bgcolor: "background.paper" }}
+      sx={{
+        width: "100%",
+        bgcolor: "background.paper",
+        height: "70vh",
+        overflowY: "scroll",
+      }}
       component="nav"
       aria-labelledby="nested-list-subheader"
     >

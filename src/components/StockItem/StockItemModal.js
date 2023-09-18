@@ -67,7 +67,7 @@ export default function StockItemModal({ stockItemData, setStockItems, stockItem
       .put(`${BASE_URL}/api/stock-item/${stockItemData.id}`, stockItemData)
       .then((response) => {
         // Handle success
-        setFeedbackMessage(`You ${isTake ? "took" : "returned"} ${vendQty} item(s).`);
+        setFeedbackMessage(`You ${isTake ? "took" : "returned"} ${vendQty} item(s).  ${stockItemData.stockQty} left in stock`);
       })
       .catch((error) => {
         if (error.response && error.response.data) {

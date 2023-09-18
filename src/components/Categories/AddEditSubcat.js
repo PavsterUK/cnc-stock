@@ -4,10 +4,10 @@ import TextField from "@mui/material/TextField";
 import SimpleModal from "../UI/SimpleModal";
 import { CategoriesContext } from "./CategoriesContext";
 
-const AddEditSubcat = ({ isEditMode, title, name, id, categoryId }) => {
+const AddEditSubcat = ({ isEditMode, name, categoryId }) => {
   const [_name, setName] = useState(name);
   const [feedbackMessage, setFeedbackMessage] = useState();
-  const { addSubcategory } = useContext(CategoriesContext);
+  const { addSubcategory, fetchCategories } = useContext(CategoriesContext);
   const buttonText = isEditMode ? "Update" : "Add";
 
   const handleUserInput = (event) => {
@@ -17,16 +17,20 @@ const AddEditSubcat = ({ isEditMode, title, name, id, categoryId }) => {
 
   const saveOrUpdateHandler = async (event) => {
     if (!isEditMode) {
-      const status = await addSubcategory(categoryId, _name);
-      console.log(status);
+      const response = await addSubcategory(categoryId, _name);
+      setFeedbackMessage(response.data);
     }
   };
 
   return (
     <SimpleModal title={_name} color="warning">
-      <TextField onChange={handleUserInput} value={_name} label="Name" variant="outlined" />
-      <Button onClick={saveOrUpdateHandler}>{buttonText}</Button>
-      <h3>{feedbackMessage}</h3>
+      <div>
+        <div>
+          <TextField onChange={handleUserInput} value={_name} label="Name" variant="outlined" />
+          <Button onClick={saveOrUpdateHandler}>{buttonText}</Button>
+        </div>
+        <h3 style={{color: "green"}} >{feedbackMessage}</h3>
+      </div>
     </SimpleModal>
   );
 };

@@ -68,7 +68,6 @@ export default function Dashboard({ setIsLoggedIn, authenticatedUser }) {
       };
 
       const filterByMaterial = (itemsToFilter) => {
-        console.log(itemsToFilter);
         return itemsToFilter
           .filter((item) => selectedMaterials.some((selMat) => item.materials.includes(selMat)))
           .sort((a, b) => a.location - b.location);
@@ -109,8 +108,6 @@ export default function Dashboard({ setIsLoggedIn, authenticatedUser }) {
     },
     [selectedCategory, selectedSubCat, selectedMaterials, searchKeyword]
   );
-
-  console.log(filterItems(stockItems));
 
   const mapFilteredItems = useMemo(() => {
     return filterItems(stockItems).map((stockItem) => (
