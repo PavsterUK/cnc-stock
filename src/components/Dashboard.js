@@ -46,35 +46,37 @@ export default function Dashboard({ setIsLoggedIn, authenticatedUser }) {
   }, []);
 
   const filterItems = useCallback(
-    (stockItems) => {
-      let itemsToFilter = stockItems;
-
-      const filterByProperty = (propName, stockItems) => {
+    (itemsToFilter) => {
+      let filteredItems = itemsToFilter;
+      const filterByProperty = (propName) => {
         const lowercasedPropName = propName.toLowerCase();
-        return stockItems.filter((stockItem) => {
-          switch (lowercasedPropName) {
-            case "location":
-              return stockItem[lowercasedPropName].toString().toLowerCase() === searchKeyword.toLowerCase();
-            case "constock":
-              return (
-                stockItem.constantStock === true &&
-                stockItem.supplier.toLowerCase().includes(searchKeyword.toLowerCase())
-              );
-            default:
-              return stockItem[lowercasedPropName].toString().toLowerCase().includes(searchKeyword.toLowerCase());
-          }
-        });
+        return setStockItems(
+          filteredItems.filter((stockItem) => {
+            switch (lowercasedPropName) {
+              case "location":
+                return stockItem[lowercasedPropName].toString().toLowerCase() === searchKeyword.toLowerCase();
+              case "constock":
+                return (
+                  stockItem.constantStock === true &&
+                  stockItem.supplier.toLowerCase().includes(searchKeyword.toLowerCase())
+                );
+              default:
+                return stockItem[lowercasedPropName].toString().toLowerCase().includes(searchKeyword.toLowerCase());
+            }
+          })
+        );
       };
 
-      const filterByMaterial = (selectedMaterials, stockItems) => {
-        return stockItems
+      const filterByMaterial = (itemsToFilter) => {
+        console.log(itemsToFilter);
+        return itemsToFilter
           .filter((item) => selectedMaterials.some((selMat) => item.materials.includes(selMat)))
           .sort((a, b) => a.location - b.location);
       };
 
-      const filterByCategory = (category, stockItems) => {
-        const categoryLowCase = category.toLowerCase();
-        return stockItems.filter((stockItem) => {
+      const filterByCategory = (itemsToFilter) => {
+        const categoryLowCase = selectedCategory.categoryName.toLowerCase();
+        return itemsToFilter.filter((stockItem) => {
           if (categoryLowCase !== "all categories") {
             return (
               stockItem.categoryName.toLowerCase() === categoryLowCase &&
@@ -86,31 +88,29 @@ export default function Dashboard({ setIsLoggedIn, authenticatedUser }) {
         });
       };
 
-      const filterBySubcategory = (subCategory, stockItems) => {
-        const subCategoryLowCase = subCategory.toLowerCase();
-        return stockItems.filter((stockItem) => {
-          if (subCategoryLowCase !== "all sub categories") {
-            return (
-              stockItem.subCategoryName.toLowerCase() === subCategoryLowCase &&
-              stockItem.title.toLowerCase().includes(searchKeyword.toLowerCase())
-            );
-          } else {
-            return stockItem.title.toLowerCase().includes(searchKeyword.toLowerCase());
-          }
-        });
+      const filterBySubcategory = (itemsToFilter) => {
+        const subCategoryLowCase = selectedSubCat.subCategoryName.toLowerCase();
+
+        if (subCategoryLowCase === "all sub categories") {
+          return itemsToFilter;
+        }
+
+        return itemsToFilter.filter((stockItem) => stockItem.subCategoryName.toLowerCase() === subCategoryLowCase);
       };
 
       const filteredByCategoryOrProperty = STOCK_ITEM_PROPS.includes(selectedCategory.categoryName.toLowerCase())
-        ? filterByProperty(selectedCategory.categoryName, itemsToFilter)
-        : filterByCategory(selectedCategory.categoryName, itemsToFilter);
+        ? filterByProperty(itemsToFilter)
+        : filterByCategory(itemsToFilter);
 
-      const filteredBySubCategory = filterBySubcategory(selectedSubCat.subCategoryName, filteredByCategoryOrProperty);
-      const filteredByMaterial = filterByMaterial(selectedMaterials, filteredBySubCategory);
+      const filteredBySubCategory = filterBySubcategory(filteredByCategoryOrProperty);
+      const filteredByMaterial = filterByMaterial(filteredBySubCategory);
 
       return filteredByMaterial;
     },
-    [selectedCategory, selectedMaterials, searchKeyword]
+    [selectedCategory, selectedSubCat, selectedMaterials, searchKeyword]
   );
+
+  console.log(filterItems(stockItems));
 
   const mapFilteredItems = useMemo(() => {
     return filterItems(stockItems).map((stockItem) => (
