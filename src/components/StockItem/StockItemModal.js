@@ -10,6 +10,7 @@ import AddOrEditStockItem from "./AddOrEditStockItem";
 import axios from "axios";
 import { BASE_URL } from "../../constants/config";
 import CloseWindow from "../UI/CloseWindow";
+import ItemInfoModal from "../Chart/ItemInfoModal";
 
 const modalStyle = {
   position: "absolute",
@@ -66,7 +67,6 @@ export default function StockItemModal({ stockItemData, setStockItems, stockItem
     axios
       .put(`${BASE_URL}/api/stock-item/${stockItemData.id}`, stockItemData)
       .then((response) => {
-        // Handle success
         setFeedbackMessage(
           `You ${isTake ? "took" : "returned"} ${vendQty} item(s).  ${stockItemData.stockQty} left in stock`
         );
@@ -180,6 +180,9 @@ export default function StockItemModal({ stockItemData, setStockItems, stockItem
               setStockItems={setStockItems}
               stockItems={stockItems}
             />
+            <ItemInfoModal itemId={stockItemData.id}/>
+
+
           </div>
           <Typography sx={{ fontWeight: "bold" }} variant="h5" margin={"1em"} component="h2" align="center">
             {stockItemData.title}
