@@ -2,26 +2,25 @@ import React, { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
-import styles from './ItemInfoModal.module.css';
 import axios from 'axios';
 import TransactionsChart from './TransactionsChart';
-import { parseISO, format, getYear } from 'date-fns';
 import { BASE_URL } from '../../constants/config';
 import CloseWindow from '../UI/CloseWindow';
 
 const modalStyle = {
     position: 'absolute',
-    top: '40%',
+    top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: '50vw',
+    width: '90vw',
+    minHeight: '90vh',
+    maxHeight: '90vh',
     bgcolor: 'background.paper',
-    border: '2px solid #000',
+    borderRadius: '10px',
     boxShadow: 24,
     p: 4,
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center',
     flexDirection: 'column',
 };
 
@@ -39,7 +38,7 @@ export default function ItemInfoModal({ itemId }) {
             if (itemId) {
                 try {
                     const response = await axios.get(`${BASE_URL}/api/transactions/${itemId}`);
-                    console.log(response.data)
+                    console.log(response.data);
                     setTransactions(response.data);
                 } catch (error) {
                     console.error('Data fetching failed:', error.message);
@@ -51,8 +50,8 @@ export default function ItemInfoModal({ itemId }) {
     }, [itemId]);
 
     return (
-        <div className={styles.container}>
-            <div className={styles.card}>
+        <div>
+            <div>
                 <Button
                     fullWidth
                     variant="outlined"

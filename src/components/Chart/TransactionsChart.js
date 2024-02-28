@@ -1,7 +1,7 @@
 // 
 import React, { useState, useEffect } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { format } from 'date-fns'; // Assuming you've installed date-fns for date formatting
+import { format } from 'date-fns';
 
 const TransactionsChart = ({ data }) => {
     const [processedData, setProcessedData] = useState([]);

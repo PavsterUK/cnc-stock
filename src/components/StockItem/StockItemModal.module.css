@@ -72,6 +72,13 @@
   margin: 0 1em 0 auto;
 }
 
+.itemInfo__subCategory {
+  text-transform: capitalize;
+  color: rgb(167, 174, 220);
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
 .itemInfo__brand {
   font-weight: bold;
   font-size: 1.2rem;
