@@ -26,9 +26,11 @@ const style = {
     padding: 0,
 };
 
-export default function PurchaseRequestsManager({ authenticatedUser, stockItems }) {
+export default function PurchaseRequestsManager() {
     const [open, setOpen] = useState(false);
     const [lowStockItems, setLowStockItems] = useState([]);
+
+    console.log(lowStockItems)
 
     function sortItemsBySupplierAndSubcategory(items) {
         return items.sort((a, b) => {
