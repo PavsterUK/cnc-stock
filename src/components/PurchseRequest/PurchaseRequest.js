@@ -28,7 +28,7 @@ const style = {
   flexDirection: "column",
 };
 
-export default function PurchaseRequest({ authenticatedUser, setPurchaseRequests, stockItems }) {
+export default function PurchaseRequest({ setPurchaseRequests, stockItems }) {
   const [open, setOpen] = React.useState(false);
   const [requestBody, setRequestBody] = React.useState("");
   const [lastWord, setLastWord] = React.useState("");
@@ -54,7 +54,7 @@ export default function PurchaseRequest({ authenticatedUser, setPurchaseRequests
     const purReq = {
       requestDate: formattedDate,
       requestBody: requestBody,
-      requester: authenticatedUser,
+      requester: "Shop Floor Employee",
       isComplete: false,
     };
 

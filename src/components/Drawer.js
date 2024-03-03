@@ -2,24 +2,20 @@ import * as React from 'react';
 import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
-import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiAppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
-import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListItem from '@mui/material/ListItem';
-import LogoutIcon from '@mui/icons-material/Logout';
 import AddOrEditStockItem from './StockItem/AddOrEditStockItem';
 import PurchaseRequestsManager from './PurchseRequest/PurchaseRequestsManager';
 import { ClickAwayListener } from '@mui/material';
 import SimpleModal from './UI/SimpleModal';
-import SendEmail from './SendEmail';
 import ListCategories from './Categories/ListCategories';
 import LowStockItemModal from './LowStockItems/LowStockItemsModal';
 
@@ -63,12 +59,11 @@ const DrawerHeader = styled('div')(({ theme }) => ({
     display: 'flex',
     alignItems: 'center',
     padding: theme.spacing(0, 1),
-    // necessary for content to be below app bar
     ...theme.mixins.toolbar,
     justifyContent: 'flex-end',
 }));
 
-export default function PersistentDrawerLeft({ setIsLoggedIn, authenticatedUser, stockItems, setStockItems }) {
+export default function PersistentDrawerLeft({ stockItems, setStockItems }) {
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
 
@@ -78,10 +73,6 @@ export default function PersistentDrawerLeft({ setIsLoggedIn, authenticatedUser,
 
     const handleDrawerClose = () => {
         setOpen(false);
-    };
-
-    const userLogOut = () => {
-        setIsLoggedIn(false);
     };
 
     return (
@@ -98,18 +89,6 @@ export default function PersistentDrawerLeft({ setIsLoggedIn, authenticatedUser,
                     >
                         <MenuIcon />
                     </IconButton>
-                    <Typography variant="h6" noWrap component="div">
-                        {authenticatedUser}
-                    </Typography>
-                    <Button
-                        onClick={userLogOut}
-                        variant="contained"
-                        color="error"
-                        sx={{ my: 1, mx: 1.5 }}
-                        endIcon={<LogoutIcon />}
-                    >
-                        Log Out
-                    </Button>
                 </Toolbar>
             </AppBar>
             <ClickAwayListener
@@ -142,7 +121,7 @@ export default function PersistentDrawerLeft({ setIsLoggedIn, authenticatedUser,
                         </ListItem>
                         <Divider />
                         <ListItem>
-                            <PurchaseRequestsManager stockItems={stockItems} authenticatedUser={authenticatedUser} />
+                            <PurchaseRequestsManager stockItems={stockItems} />
                         </ListItem>
                         <ListItem>
                             <LowStockItemModal />
@@ -154,9 +133,6 @@ export default function PersistentDrawerLeft({ setIsLoggedIn, authenticatedUser,
                         </ListItem>
                     </List>
                     <Divider />
-                    {/* <SimpleModal title={"Send Email"}>
-            <SendEmail />
-          </SimpleModal> */}
                 </Drawer>
             </ClickAwayListener>
             <Main open={open}></Main>

@@ -5,15 +5,16 @@ import axios from 'axios';
 import { BASE_URL } from '../../constants/config';
 import CloseWindow from '../UI/CloseWindow';
 import LowStockLevelItem from './LowStockLevelItem';
+import styles from './LowStockItemsModal.module.css';
 
 const style = {
     position: 'absolute',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: '90vw',
-    minHeight: '90vh',
-    maxHeight: '90vh',
+    width: '100dvw',
+    minHeight: '100dvh',
+    maxHeight: '100dvh',
     bgcolor: 'background.paper',
     borderRadius: '10px',
     boxShadow: 24,
@@ -22,7 +23,7 @@ const style = {
     alignItems: 'center',
     flexDirection: 'column',
     overflow: 'auto',
-    padding: '0.5em 0',
+    padding: 0,
 };
 
 export default function PurchaseRequestsManager({ authenticatedUser, stockItems }) {
@@ -74,12 +75,13 @@ export default function PurchaseRequestsManager({ authenticatedUser, stockItems 
                         ...style,
                     }}
                 >
-                    
-                    <Grid item xs={12} md={12} lg={12}>
-                        <Typography variant="h5" component="h2" align="center" style={{ fontWeight: 'bold' }}>
-                        <CloseWindow handleClose={handleClose} />
-                            LOW STOCK LEVEL ITEMS
+                    <div className={styles.stickyHeader}>
+                        <Typography variant="h5" component="h2" align="center" style={{ fontWeight: 'bold', paddingLeft: "1em" }}>
+                            LOW STOCK ITEMS
                         </Typography>
+                        <CloseWindow handleClose={handleClose} />
+                    </div>
+                    <Grid item xs={12} md={12} lg={12}>
                         {sortItemsBySupplierAndSubcategory(lowStockItems).map(item => (
                             <LowStockLevelItem data={item} />
                         ))}

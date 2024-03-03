@@ -110,12 +110,19 @@ export default function StockItemModal({ stockItemData, setStockItems, stockItem
                         <h5>Location</h5>
                         {stockItemData.location}
                     </div>
-                    <h2 className={styles.itemTitle}>{stockItemData.title}</h2>
-                    <div className={styles.itemDescription}>
-                        <p>{stockItemData.description}</p>
-                    </div>
-                    <div className={styles.itemInfo}>
+                    <div className={styles.itemDescriptionWrapper}>
                         <div className={styles.itemInfo__subCategory}>{stockItemData.subCategoryName}</div>
+                        <div>
+                            <div className={styles.itemTitleWrapper}>
+                                <h2 className={styles.itemTitle}>{stockItemData.title}</h2>
+                                <div className={styles.itemDescription}>
+                                    <p>{stockItemData.description}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className={styles.itemInfo}>
                         <div className={styles.itemInfo__brand}>{stockItemData.brand}</div>
                         <div className={styles.itemInfo__supplier}>{stockItemData.supplier}</div>
                     </div>

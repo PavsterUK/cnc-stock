@@ -15,7 +15,7 @@ import MaterialsSelector from "./MaterialsSelector";
 import CatSubCatSelector from "./Categories/CatSubCatSelector";
 import styles from "./Dashboard.module.css";
 
-export default function Dashboard({ setIsLoggedIn, authenticatedUser }) {
+export default function Dashboard() {
   const [stockItems, setStockItems] = useState([]);
   const [searchKeyword, setSearchKeyword] = useState("");
   const [selectedCategory, setSelectedCategory] = useState({
@@ -129,15 +129,12 @@ export default function Dashboard({ setIsLoggedIn, authenticatedUser }) {
         <Toolbar sx={{ flexWrap: "wrap" }}>
           <Typography variant="h6" color="inherit" noWrap sx={{ flexGrow: 1 }}>
             <Drawer
-              setIsLoggedIn={setIsLoggedIn}
-              authenticatedUser={authenticatedUser}
               stockItems={stockItems}
               setStockItems={setStockItems}
             />
           </Typography>
 
           <Typography variant="h6" color="inherit" noWrap sx={{ flexGrow: 1 }}>
-            {authenticatedUser}
           </Typography>
         </Toolbar>
       </AppBar>

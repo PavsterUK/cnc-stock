@@ -53,10 +53,22 @@
   font-weight: bold;
 }
 
+.itemDescriptionWrapper {
+  display: flex ;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.itemTitleWrapper {
+  display: flex;
+  border: 1px solid red;
+}
+
 .itemTitle {
-  margin-left: 1em;
   font-size: 1.5rem;
 }
+
+
 
 .itemDescription {
   margin: auto;
@@ -70,6 +82,9 @@
 
 .itemInfo {
   margin: 0 1em 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
 }
 
 .itemInfo__subCategory {

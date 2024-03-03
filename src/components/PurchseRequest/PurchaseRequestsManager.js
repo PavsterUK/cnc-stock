@@ -25,7 +25,7 @@ const style = {
   flexDirection: "column",
 };
 
-export default function PurchaseRequestsManager({ authenticatedUser, stockItems }) {
+export default function PurchaseRequestsManager({ stockItems }) {
   const [open, setOpen] = useState(false);
   const [purchaseRequests, setPurchaseRequests] = useState([]);
 
@@ -66,7 +66,6 @@ export default function PurchaseRequestsManager({ authenticatedUser, stockItems 
             <PurchaseRequest
               stockItems={stockItems}
               setPurchaseRequests={setPurchaseRequests}
-              authenticatedUser={authenticatedUser}
             />
             <PurchaseHistory />
           </div>
