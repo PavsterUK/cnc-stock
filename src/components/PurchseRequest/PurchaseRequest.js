@@ -1,7 +1,6 @@
 import * as React from "react";
 import Modal from "@mui/material/Modal";
 import { Box, Typography, Button, TextField, Container } from "@mui/material/";
-import HintWordEndingInput from "./HintWordEndingInput";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -31,19 +30,12 @@ const style = {
 export default function PurchaseRequest({ setPurchaseRequests, stockItems }) {
   const [open, setOpen] = React.useState(false);
   const [requestBody, setRequestBody] = React.useState("");
-  const [lastWord, setLastWord] = React.useState("");
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   const handleInputChange = (event) => {
     setRequestBody(event.target.value);
-    setLastWord(getLastWordFromString(event.target.value));
-  };
-
-  const getLastWordFromString = (str) => {
-    const words = str.trim().split(" ");
-    return words[words.length - 1];
   };
 
   const handleSendRequest = () => {

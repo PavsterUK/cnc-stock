@@ -57,17 +57,17 @@
   display: flex ;
   flex-direction: column;
   align-items: flex-start;
+  padding-left: 1em;
 }
 
-.itemTitleWrapper {
+.itemTitleAndDescriptionWrapper {
   display: flex;
-  border: 1px solid red;
+  gap: 1em;
 }
 
 .itemTitle {
   font-size: 1.5rem;
 }
-
 
 
 .itemDescription {

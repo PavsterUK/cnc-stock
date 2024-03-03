@@ -113,7 +113,7 @@ export default function StockItemModal({ stockItemData, setStockItems, stockItem
                     <div className={styles.itemDescriptionWrapper}>
                         <div className={styles.itemInfo__subCategory}>{stockItemData.subCategoryName}</div>
                         <div>
-                            <div className={styles.itemTitleWrapper}>
+                            <div className={styles.itemTitleAndDescriptionWrapper}>
                                 <h2 className={styles.itemTitle}>{stockItemData.title}</h2>
                                 <div className={styles.itemDescription}>
                                     <p>{stockItemData.description}</p>
