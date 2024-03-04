@@ -60,8 +60,13 @@
 }
 
 .itemInfo__brand {
-    font-weight: bold;
+    
     font-size: 1.2rem;
+}
+
+.itemInfo__supplier {
+    font-size: 1.5rem;
+    font-weight: bold;
 }
 
 .itemQty__value {
@@ -80,5 +85,4 @@
 
 .lowItemInfo{
     padding: 0 1em;
-
 }

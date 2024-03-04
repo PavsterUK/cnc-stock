@@ -2,9 +2,12 @@ import React from 'react';
 import styles from './LowStockLevelItem.module.css';
 import { parseISO, format } from 'date-fns';
 import { Select, MenuItem } from '@mui/material/';
+import { BASE_URL } from '../../constants/config';
+import axios from 'axios';
 
 const LowStockLevelItem = ({ data }) => {
     const [isOrdered, setIsOrdered] = React.useState(data.ordered);
+    const [orderDate, setOrderDate] = React.useState(data.orderDate);
 
     const itemOrderStatus = isOrdered ? 'Purchased' : 'Not Purchased';
 
@@ -21,24 +24,36 @@ const LowStockLevelItem = ({ data }) => {
         return color;
     }
 
-    const parseItemAddedDate = parseISO(data.dateAdded);
-    const formattedAddedDate = format(parseItemAddedDate, 'd MMMM, yyyy');
+    function parseAndFormatDate(date) {
+        const parseItemAddedDate = parseISO(date);
+        return format(parseItemAddedDate, 'd MMMM, yyyy');
+    }
+
+    const toggleItemPurchaseStatus = async () => {
+        try {
+            const response = await axios.put(`${BASE_URL}/api/low-stock-item/${data.id}`);
+            const toggledItem = response.data;
+            setIsOrdered(toggledItem.ordered);
+            setOrderDate(toggledItem.orderDate);
+        } catch (error) {
+            console.error('Error updating low stock item', error);
+        }
+    };
 
     const dropdown = (
         <Select
             value={itemOrderStatus}
-            onChange={event => setIsOrdered(event)}
+            onChange={toggleItemPurchaseStatus}
             sx={{
                 backgroundColor: dropdownBgColor,
-
                 zIndex: 0,
             }}
         >
             <MenuItem value="Purchased">
                 <div>
-                    Purchased on
+                    Purchased
                     <br />
-                    {new Date().toLocaleDateString()}
+                    {orderDate === null ? '' : parseAndFormatDate(orderDate)}
                 </div>
             </MenuItem>
             <MenuItem value="Not Purchased">Not Purchased</MenuItem>
@@ -68,17 +83,17 @@ const LowStockLevelItem = ({ data }) => {
                 <div className={styles.itemInfo__supplier}>{data.stockItem.supplier}</div>
             </div>
 
+            {dropdown}
+            <div className={styles.lowItemInfo}>
+                <h3>Low From </h3>
+                <h3>{parseAndFormatDate(data.dateAdded)}</h3>
+            </div>
             <div className={styles.itemQty}>
                 <div className={styles.itemQty__title}>Stock Qty</div>
                 <div className={styles.itemQty__value} style={{ color: getStockQtyColor() }}>
                     {data.stockItem.stockQty}
                 </div>
             </div>
-            <div className={styles.lowItemInfo}>
-                <h3>Dropped On</h3>
-                <h3>{formattedAddedDate}</h3>
-            </div>
-            {dropdown}
         </div>
     );
 };

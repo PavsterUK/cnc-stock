@@ -32,10 +32,8 @@ export default function PurchaseRequestsManager() {
 
     console.log(lowStockItems)
 
-    function sortItemsBySupplierAndSubcategory(items) {
+    function sortItemsBySubcategory(items) {
         return items.sort((a, b) => {
-            if (a.stockItem.supplier < b.stockItem.supplier) return -1;
-            if (a.stockItem.supplier > b.stockItem.supplier) return 1;
 
             if (a.stockItem.subCategory.subCategoryName < b.stockItem.subCategory.subCategoryName) return -1;
             if (a.stockItem.subCategory.subCategoryName > b.stockItem.subCategory.subCategoryName) return 1;
@@ -47,7 +45,7 @@ export default function PurchaseRequestsManager() {
     useEffect(() => {
         const fetchPurchaseRequests = async () => {
             try {
-                const response = await axios.get(`${BASE_URL}/api/lowstockitems`);
+                const response = await axios.get(`${BASE_URL}/api/low-stock-items`);
 
                 setLowStockItems(response.data);
             } catch (error) {
@@ -84,8 +82,8 @@ export default function PurchaseRequestsManager() {
                         <CloseWindow handleClose={handleClose} />
                     </div>
                     <Grid item xs={12} md={12} lg={12}>
-                        {sortItemsBySupplierAndSubcategory(lowStockItems).map(item => (
-                            <LowStockLevelItem data={item} />
+                        {sortItemsBySubcategory(lowStockItems).map(item => (
+                            <LowStockLevelItem key={item.id} data={item} />
                         ))}
                     </Grid>
                 </Box>
