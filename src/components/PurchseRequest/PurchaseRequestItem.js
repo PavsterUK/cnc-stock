@@ -85,9 +85,7 @@ const PurchaseRequestItem = ({ itemData }) => {
           marginTop: ".3em",
         }}
       >
-        <Typography variant="h6" component="h6">
-          {itemData.requester.split("-")[1].trim()}
-        </Typography>
+        
       </Grid>
 
       <Grid

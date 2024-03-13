@@ -1,70 +1,70 @@
-import * as React from "react";
-import Modal from "@mui/material/Modal";
-import { Box, Typography, Button, TextField, Container } from "@mui/material/";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
-import axios from "axios";
-import { DateTime } from "luxon";
-import { BASE_URL } from "../../constants/config";
-import CloseWindow from "../UI/CloseWindow";
+import * as React from 'react';
+import Modal from '@mui/material/Modal';
+import { Box, Typography, Button, TextField, Container } from '@mui/material/';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import axios from 'axios';
+import { DateTime } from 'luxon';
+import { BASE_URL } from '../../constants/config';
+import CloseWindow from '../UI/CloseWindow';
 
 const style = {
-  position: "absolute",
-  top: "40%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: "70vw",
-  bgcolor: "background.paper",
-  border: "2px solid #000",
+  position: 'absolute',
+  top: '40%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: '70vw',
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
   boxShadow: 24,
   p: 4,
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  flexDirection: "column",
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  flexDirection: 'column',
 };
 
 export default function PurchaseRequest({ setPurchaseRequests, stockItems }) {
   const [open, setOpen] = React.useState(false);
-  const [requestBody, setRequestBody] = React.useState("");
+  const [requestBody, setRequestBody] = React.useState('');
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const handleInputChange = (event) => {
+  const handleInputChange = event => {
     setRequestBody(event.target.value);
   };
 
   const handleSendRequest = () => {
     const now = DateTime.local();
     //Format for backend
-    const formattedDate = now.toFormat("yyyy-MM-dd");
+    const formattedDate = now.toFormat('yyyy-MM-dd');
 
     const purReq = {
       requestDate: formattedDate,
       requestBody: requestBody,
-      requester: "Shop Floor Employee",
+      requester: 'Shop Floor Employee',
       isComplete: false,
     };
 
     axios
       .post(`${BASE_URL}/api/purchase-request`, purReq)
-      .then((response) => {
-        console.log("New Purchase Request created:", response.data);
-        setPurchaseRequests((prevData) => [...prevData, response.data]);
+      .then(response => {
+        console.log('New Purchase Request created:', response.data);
+        setPurchaseRequests(prevData => [...prevData, response.data]);
         handleClose();
       })
-      .catch((error) => {
-        console.error("Error creating Purchase Request: ", error);
+      .catch(error => {
+        console.error('Error creating Purchase Request: ', error);
       });
   };
 
   return (
     <>
-      <Button  variant="contained" align="center" onClick={handleOpen}>
+      <Button variant="contained" align="center" onClick={handleOpen}>
         Request new item
       </Button>
       <Modal
@@ -74,9 +74,9 @@ export default function PurchaseRequest({ setPurchaseRequests, stockItems }) {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <CloseWindow handleClose={handleClose} />
+          <CloseWindow handleClose={handleClose} styles={{ position: 'absolute', top: 1, right: 1 }} />
 
-          <Typography variant="h5" component="h2" align="center" sx={{ fontWeight: "bold" }}>
+          <Typography variant="h5" component="h2" align="center" sx={{ fontWeight: 'bold' }}>
             NEW PURCHASE REQUEST
           </Typography>
 
@@ -87,7 +87,7 @@ export default function PurchaseRequest({ setPurchaseRequests, stockItems }) {
             label="Enter item('s) details here..."
             multiline
             rows={8}
-            sx={{ width: "100%" }}
+            sx={{ width: '100%' }}
           />
           <ConfirmationDialog closeParent={handleClose} handleSendRequest={handleSendRequest} />
         </Box>
@@ -110,7 +110,7 @@ function ConfirmationDialog({ closeParent, handleSendRequest }) {
   };
 
   return (
-    <Container mt="1em" >
+    <Container mt="1em">
       <Button fullWidth variant="contained" onClick={handleClickOpen}>
         SEND REQUEST
       </Button>
@@ -120,7 +120,7 @@ function ConfirmationDialog({ closeParent, handleSendRequest }) {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">{"Request Sent!"}</DialogTitle>
+        <DialogTitle id="alert-dialog-title">{'Request Sent!'}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             You request has been successfully submitted. You can now put your feet up and relax.

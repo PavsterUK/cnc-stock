@@ -4,6 +4,7 @@ import { Box, Typography, Button, Grid } from '@mui/material/';
 import axios from 'axios';
 import { BASE_URL } from '../../constants/config';
 import CloseWindow from '../UI/CloseWindow';
+import { parseISO, format, compareDesc } from 'date-fns';
 import LowStockLevelItem from './LowStockLevelItem';
 import styles from './LowStockItemsModal.module.css';
 
@@ -30,14 +31,24 @@ export default function PurchaseRequestsManager() {
     const [open, setOpen] = useState(false);
     const [lowStockItems, setLowStockItems] = useState([]);
 
-    console.log(lowStockItems)
+    console.log(lowStockItems);
 
-    function sortItemsBySubcategory(items) {
+    function sortItemsByDateAndSubcategory(items) {
         return items.sort((a, b) => {
-
-            if (a.stockItem.subCategory.subCategoryName < b.stockItem.subCategory.subCategoryName) return -1;
-            if (a.stockItem.subCategory.subCategoryName > b.stockItem.subCategory.subCategoryName) return 1;
-
+            
+            const date1 = parseISO(a.dateAdded);
+            const date2 = parseISO(b.dateAdded);
+    
+            const comparisonDesc = compareDesc(date1, date2);
+           
+            if (comparisonDesc !== 0) return comparisonDesc;
+    
+            const subCatA = a.stockItem.subCategory.subCategoryName;
+            const subCatB = b.stockItem.subCategory.subCategoryName;
+    
+            if (subCatA < subCatB) return -1;
+            if (subCatA > subCatB) return 1;
+    
             return 0;
         });
     }
@@ -76,13 +87,18 @@ export default function PurchaseRequestsManager() {
                     }}
                 >
                     <div className={styles.stickyHeader}>
-                        <Typography variant="h5" component="h2" align="center" style={{ fontWeight: 'bold', paddingLeft: "1em" }}>
+                        <Typography
+                            variant="h5"
+                            component="h2"
+                            align="center"
+                            style={{ fontWeight: 'bold', paddingLeft: '1em' }}
+                        >
                             LOW STOCK ITEMS
                         </Typography>
                         <CloseWindow handleClose={handleClose} />
                     </div>
                     <Grid item xs={12} md={12} lg={12}>
-                        {sortItemsBySubcategory(lowStockItems).map(item => (
+                        {sortItemsByDateAndSubcategory(lowStockItems).map(item => (
                             <LowStockLevelItem key={item.id} data={item} />
                         ))}
                     </Grid>
